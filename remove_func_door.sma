@@ -1,8 +1,12 @@
 #include <amxmodx>
 #include <fakemeta>
 
+#define PLUGIN "Deathrun Entity Remover"
+#define VERSION "1.0"
+#define AUTHOR "ftl~"
+
 public plugin_init() {
-    register_plugin("Remove door entity", "1.0", "ftl~");
+    register_plugin(PLUGIN, VERSION, AUTHOR);
 }
 
 public plugin_cfg() {
@@ -10,14 +14,21 @@ public plugin_cfg() {
     get_mapname(mapname, charsmax(mapname));
 
     if (equali(mapname, "deathrun", 8) || equali(mapname, "deathrace", 9)) {
-        remove_func_doors();
+        remove_entities();
     }
 }
 
-public remove_func_doors() {
+public remove_entities() {
+    remove_specific_entity("func_door");
+    remove_specific_entity("func_button");
+    remove_specific_entity("func_door_rotating");
+    remove_specific_entity("func_breakable");
+}
+
+public remove_specific_entity(const classname[]) {
     new ent = -1;
 
-    while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", "func_door"))) {
+    while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", classname))) {
         if (pev_valid(ent)) {
             RemoveEntity(ent);
         }
