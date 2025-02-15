@@ -188,7 +188,7 @@ public OpenEntityMenu(id) {
 
     for (new i = 0; i < sizeof(ENTITIES); i++) {
         new item[64];
-        formatex(item, charsmax(item), "%s [%s]", ENTITIES[i], g_remove_entities[i] ? "\yON" : "\rOFF");
+        formatex(item, charsmax(item), "%s [%s]%s", ENTITIES[i], g_remove_entities[i] ? "\yON" : "\rOFF", i == sizeof(ENTITIES) - 1 ? "^n" : "");
         menu_additem(menu, item, "", 0);
     }
 
