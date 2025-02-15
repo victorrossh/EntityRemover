@@ -39,8 +39,8 @@ enum _:EntityData {
 public plugin_init() {
     register_plugin(PLUGIN, VERSION, AUTHOR);
 
-    register_clcmd("say /remove", "MainEntityMenu");
-    register_clcmd("say_team /remove", "MainEntityMenu");
+    register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
+    register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 
     // Initialize undo stacks for each player
     for (new i = 1; i <= 32; i++) {
@@ -55,14 +55,20 @@ public plugin_cfg() {
     remove_selected_entities();
 }
 
-public MainEntityMenu(id) {
+public MainEntityMenu(id, level, cid) {
+    if (!cmd_access(id, level, cid, 1))
+        return PLUGIN_HANDLED;
+
     new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
 
     menu_additem(menu, "\wRemove Aimed Entity", "1");
     menu_additem(menu, "\wRemove Specific Entities", "2");
+    menu_additem(menu, "\wReset All Settings", "3");
 
     menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
+
+    return PLUGIN_HANDLED;
 }
 
 public MainMenuHandler(id, menu, item) {
@@ -77,6 +83,7 @@ public MainMenuHandler(id, menu, item) {
     switch (str_to_num(data)) {
         case 1: OpenAimMenu(id);
         case 2: OpenEntityMenu(id);
+        case 3: ResetSettings(id);
     }
 
     menu_destroy(menu);
@@ -181,6 +188,24 @@ public UndoLastRemoval(id) {
     } else {
         client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
     }
+}
+
+public ResetSettings(id) {
+    for (new i = 0; i < sizeof(ENTITIES); i++) {
+        g_remove_entities[i] = false;
+    }
+
+    new mapname[32];
+    get_mapname(mapname, charsmax(mapname));
+
+    new filepath[256];
+    formatex(filepath, charsmax(filepath), "%s/%s.txt", CONFIG_FOLDER, mapname);
+
+    if (file_exists(filepath)) {
+        delete_file(filepath);
+    }
+
+    client_print_color(id, print_chat, "^4[FWO] ^1All settings have been reset.");
 }
 
 public OpenEntityMenu(id) {
