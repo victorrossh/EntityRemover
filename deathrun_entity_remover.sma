@@ -24,11 +24,29 @@ new bool:g_remove_entities[sizeof(ENTITIES)];
 new g_target_ent[33];
 new g_target_class[33][32];
 
+// Stack to handle undo functionality
+new Array:g_undo_stack[33];
+new g_undo_size[33];
+
+// Structure to store entity data for undo
+enum _:EntityData {
+    ent_index,
+    Float:ent_origin[3],
+    Float:ent_angles[3],
+    ent_classname[32]
+};
+
 public plugin_init() {
     register_plugin(PLUGIN, VERSION, AUTHOR);
 
-    register_clcmd("say /remove", "OpenRemoveMenu");
-    register_clcmd("say_team /remove", "OpenRemoveMenu");
+    register_clcmd("say /remove", "MainEntityMenu");
+    register_clcmd("say_team /remove", "MainEntityMenu");
+
+    // Initialize undo stacks for each player
+    for (new i = 1; i <= 32; i++) {
+        g_undo_stack[i] = ArrayCreate(EntityData);
+        g_undo_size[i] = 0;
+    }
 
     load_map_config();
 }
@@ -37,8 +55,136 @@ public plugin_cfg() {
     remove_selected_entities();
 }
 
-public OpenRemoveMenu(id) {
-    new menu = menu_create("\r[FWO] \d- \wEntity remove:", "RemoveMenuHandler");
+public MainEntityMenu(id) {
+    new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
+
+    menu_additem(menu, "\wRemove Aimed Entity", "1");
+    menu_additem(menu, "\wRemove Specific Entities", "2");
+
+    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
+    menu_display(id, menu, 0);
+}
+
+public MainMenuHandler(id, menu, item) {
+    if (item == MENU_EXIT) {
+        menu_destroy(menu);
+        return;
+    }
+
+    new data[6], name[64], access, callback;
+    menu_item_getinfo(menu, item, access, data, charsmax(data), name, charsmax(name), callback);
+
+    switch (str_to_num(data)) {
+        case 1: OpenAimMenu(id);
+        case 2: OpenEntityMenu(id);
+    }
+
+    menu_destroy(menu);
+}
+
+public OpenAimMenu(id) {
+    new menu = menu_create("\r[FWO] \d- \wRemove Aimed Entity:", "AimMenuHandler");
+
+    menu_additem(menu, "\wRemove", "1");
+    menu_additem(menu, "\wUndo", "2");
+
+    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
+    menu_display(id, menu, 0);
+}
+
+public AimMenuHandler(id, menu, item) {
+    if (item == MENU_EXIT) {
+        menu_destroy(menu);
+        return;
+    }
+
+    new data[6], name[64], access, callback;
+    menu_item_getinfo(menu, item, access, data, charsmax(data), name, charsmax(name), callback);
+
+    switch (str_to_num(data)) {
+        case 1: {
+            new ent = GetAimAtEnt(id);
+            if (pev_valid(ent)) {
+                pev(ent, pev_classname, g_target_class[id], charsmax(g_target_class[]));
+                g_target_ent[id] = ent;
+                OpenConfirmationMenu(id);
+            } else {
+                client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
+            }
+        }
+        case 2: {
+            UndoLastRemoval(id);
+        }
+    }
+
+    menu_destroy(menu);
+}
+
+public OpenConfirmationMenu(id) {
+    new title[128];
+    formatex(title, charsmax(title), "\r[FWO] \d- \wRemove Entity: \y%s?", g_target_class[id]);
+
+    new menu = menu_create(title, "ConfirmationMenuHandler");
+
+    menu_additem(menu, "\wYes", "1");
+    menu_additem(menu, "\wNo", "2");
+
+    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
+    menu_display(id, menu, 0);
+}
+
+public ConfirmationMenuHandler(id, menu, item) {
+    if (item == 0) { // "Yes"
+        if (pev_valid(g_target_ent[id])) {
+            new ent_data[EntityData];
+            ent_data[ent_index] = g_target_ent[id];
+            pev(g_target_ent[id], pev_origin, ent_data[ent_origin]);
+            pev(g_target_ent[id], pev_angles, ent_data[ent_angles]);
+            copy(ent_data[ent_classname], charsmax(ent_data[ent_classname]), g_target_class[id]);
+
+            RemoveEntity(g_target_ent[id]);
+            client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", g_target_class[id]);
+
+            // Save the removed entity for undo
+            ArrayPushArray(g_undo_stack[id], ent_data);
+            g_undo_size[id]++;
+
+            // Save the removed entity to the map config
+            save_removed_entity(g_target_ent[id], g_target_class[id]);
+        } else {
+            client_print_color(id, print_chat, "^4[FWO] ^1Invalid entity.");
+        }
+    }
+
+    menu_destroy(menu);
+}
+
+public UndoLastRemoval(id) {
+    if (g_undo_size[id] > 0) {
+        new ent_data[EntityData];
+        ArrayGetArray(g_undo_stack[id], g_undo_size[id] - 1, ent_data);
+        ArrayDeleteItem(g_undo_stack[id], g_undo_size[id] - 1);
+        g_undo_size[id]--;
+
+        new ent = engfunc(EngFunc_CreateNamedEntity, engfunc(EngFunc_AllocString, ent_data[ent_classname]));
+        if (pev_valid(ent)) {
+            set_pev(ent, pev_origin, ent_data[ent_origin]);
+            set_pev(ent, pev_angles, ent_data[ent_angles]);
+            set_pev(ent, pev_solid, SOLID_BSP);
+            set_pev(ent, pev_movetype, MOVETYPE_PUSH);
+            dllfunc(DLLFunc_Spawn, ent);
+
+            client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
+        } else {
+            client_print_color(id, print_chat, "^4[FWO] ^1Failed to restore entity.");
+        }
+    } else {
+        client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
+    }
+}
+
+public OpenEntityMenu(id) {
+    new menu = menu_create("\r[FWO] \d- \wRemove Specific Entities:", "EntityMenuHandler");
 
     for (new i = 0; i < sizeof(ENTITIES); i++) {
         new item[64];
@@ -46,28 +192,15 @@ public OpenRemoveMenu(id) {
         menu_additem(menu, item, "", 0);
     }
 
-    menu_additem(menu, "Remove Targeted Entity", "", 0);
-    menu_additem(menu, "Save", "", 0);
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
+    menu_additem(menu, "\wSave", "save");
 
+    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
 }
 
-public RemoveMenuHandler(id, menu, item) {
+public EntityMenuHandler(id, menu, item) {
     if (item == sizeof(ENTITIES)) {
-        new ent = GetAimAtEnt(id);
-        if (pev_valid(ent)) {
-            pev(ent, pev_classname, g_target_class[id], charsmax(g_target_class[]));
-            g_target_ent[id] = ent;
-            OpenConfirmationMenu(id);
-        } else {
-            client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
-        }
-        menu_destroy(menu);
-        return;
-    }
-
-    if (item == sizeof(ENTITIES) + 1) {
+        // "Save" option
         save_map_config();
         menu_destroy(menu);
         client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
@@ -76,34 +209,7 @@ public RemoveMenuHandler(id, menu, item) {
 
     g_remove_entities[item] = !g_remove_entities[item];
 
-    OpenRemoveMenu(id);
-    menu_destroy(menu);
-}
-
-public OpenConfirmationMenu(id) {
-    new menu = menu_create("\r[FWO] \d- \wRemove Entity?", "ConfirmationMenuHandler");
-
-    new title[128];
-    formatex(title, charsmax(title), "\wRemove \y%s\w?", g_target_class[id]);
-    menu_additem(menu, title, "1");
-
-    menu_additem(menu, "\wYes", "2");
-    menu_additem(menu, "\wNo", "3");
-
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
-    menu_display(id, menu, 0);
-}
-
-public ConfirmationMenuHandler(id, menu, item) {
-    if (item == 1) {
-        if (pev_valid(g_target_ent[id])) {
-            RemoveEntity(g_target_ent[id]);
-            client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", g_target_class[id]);
-        } else {
-            client_print_color(id, print_chat, "^4[FWO] ^1Invalid entity.");
-        }
-    }
-
+    OpenEntityMenu(id);
     menu_destroy(menu);
 }
 
@@ -136,7 +242,7 @@ public load_map_config() {
     get_mapname(mapname, charsmax(mapname));
 
     new filepath[256];
-    formatex(filepath, charsmax(filepath), "%s/%s.cfg", CONFIG_FOLDER, mapname);
+    formatex(filepath, charsmax(filepath), "%s/%s.txt", CONFIG_FOLDER, mapname);
 
     if (!file_exists(filepath)) {
         // If the file is not found, all entities will be set as not removed
@@ -153,7 +259,7 @@ public load_map_config() {
 
     new line[64];
     while (fgets(file, line, charsmax(line))) {
-        // Remove the entity from the .cfg file
+        // Remove the entity from the .txt file
         trim(line);
 
         // Checks if the line corresponds to an entity
@@ -173,7 +279,7 @@ public save_map_config() {
     get_mapname(mapname, charsmax(mapname));
 
     new filepath[256];
-    formatex(filepath, charsmax(filepath), "%s/%s.cfg", CONFIG_FOLDER, mapname);
+    formatex(filepath, charsmax(filepath), "%s/%s.txt", CONFIG_FOLDER, mapname);
 
     new file = fopen(filepath, "wt");
     if (!file) {
@@ -186,6 +292,24 @@ public save_map_config() {
             fputs(file, "^n");
         }
     }
+
+    fclose(file);
+}
+
+public save_removed_entity(ent, const classname[]) {
+    new mapname[32];
+    get_mapname(mapname, charsmax(mapname));
+
+    new filepath[256];
+    formatex(filepath, charsmax(filepath), "%s/%s.txt", CONFIG_FOLDER, mapname);
+
+    new file = fopen(filepath, "at");
+    if (!file) {
+        return;
+    }
+
+    // Save the entity with its index
+    fprintf(file, "^"%s^" ^"*%d^"^n", classname, ent);
 
     fclose(file);
 }
