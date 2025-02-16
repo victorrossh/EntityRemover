@@ -110,13 +110,10 @@ public MainMenuHandler(id, menu, item) {
         return PLUGIN_HANDLED;
     }
 
-    new data[6], name[64], access, callback;
-    menu_item_getinfo(menu, item, access, data, charsmax(data), name, charsmax(name), callback);
-
-    switch(str_to_num(data)) {
-        case 1: OpenAimMenu(id);
-        case 2: OpenEntityMenu(id);
-        case 3: ResetSettings(id);
+    switch(item) {
+        case 0: OpenAimMenu(id);
+        case 1: OpenEntityMenu(id);
+        case 2: ResetSettings(id);
     }
     return PLUGIN_HANDLED;
 }
@@ -136,11 +133,8 @@ public AimMenuHandler(id, menu, item) {
         return PLUGIN_HANDLED;
     }
 
-    new data[6], name[64], access, callback;
-    menu_item_getinfo(menu, item, access, data, charsmax(data), name, charsmax(name), callback);
-
-    switch(str_to_num(data)) {
-        case 1: {
+    switch(item) {
+        case 0: {
             new ent = GetAimAtEnt(id);
             if(pev_valid(ent)) {
                 new class[32];
@@ -154,7 +148,7 @@ public AimMenuHandler(id, menu, item) {
                 client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
             }
         }
-        case 2: {
+        case 1: {
             UndoLastRemoval(id);
             MainEntityMenu(id, 0, 0);
         }
