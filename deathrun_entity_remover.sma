@@ -356,6 +356,7 @@ public load_map_config() {
                     parse(line, class, 31, model, 31);
                     replace(class, 31, "^"", "");
                     replace(model, 31, "^"", "");
+                    replace(model, 31, "*", ""); // Remove o asterisco
                     
                     ArrayPushString(g_class, class);
                     ArrayPushString(g_model, model);
