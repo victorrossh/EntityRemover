@@ -100,16 +100,14 @@ public MainEntityMenu(id, level, cid) {
     menu_additem(menu, "\wRemove Specific Entities", "2");
     menu_additem(menu, "\wReset All Settings", "3");
 
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
-
     return PLUGIN_HANDLED;
 }
 
 public MainMenuHandler(id, menu, item) {
     if(item == MENU_EXIT) {
         menu_destroy(menu);
-        return;
+        return PLUGIN_HANDLED;
     }
 
     new data[6], name[64], access, callback;
@@ -120,8 +118,7 @@ public MainMenuHandler(id, menu, item) {
         case 2: OpenEntityMenu(id);
         case 3: ResetSettings(id);
     }
-
-    menu_destroy(menu);
+    return PLUGIN_HANDLED;
 }
 
 public OpenAimMenu(id) {
@@ -130,14 +127,13 @@ public OpenAimMenu(id) {
     menu_additem(menu, "\wRemove", "1");
     menu_additem(menu, "\wUndo", "2");
 
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
 }
 
 public AimMenuHandler(id, menu, item) {
     if(item == MENU_EXIT) {
         menu_destroy(menu);
-        return;
+        return PLUGIN_HANDLED;
     }
 
     new data[6], name[64], access, callback;
@@ -160,10 +156,10 @@ public AimMenuHandler(id, menu, item) {
         }
         case 2: {
             UndoLastRemoval(id);
+            MainEntityMenu(id, 0, 0);
         }
     }
-
-    menu_destroy(menu);
+    return PLUGIN_HANDLED;
 }
 
 public OpenConfirmationMenu(id, ent, const class[]) {
@@ -174,7 +170,6 @@ public OpenConfirmationMenu(id, ent, const class[]) {
     menu_additem(menu, "\wYes", "1");
     menu_additem(menu, "\wNo", "2");
     
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
     
     // Store entity data
@@ -201,7 +196,9 @@ public ConfirmationMenuHandler(id, menu, item) {
             client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
         }
     }
-    menu_destroy(menu);
+
+    MainEntityMenu(id, 0, 0);
+    return PLUGIN_HANDLED;
 }
 
 public UndoLastRemoval(id) {
@@ -223,6 +220,9 @@ public UndoLastRemoval(id) {
     else {
         client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
     }
+
+    MainEntityMenu(id, 0, 0);
+    return PLUGIN_HANDLED;
 }
 
 public SaveSpecificEntity(const class[], const model[]) {
