@@ -146,6 +146,7 @@ public AimMenuHandler(id, menu, item) {
             }
             else {
                 client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
+                MainEntityMenu(id, 0, 0);
             }
         }
         case 1: {
