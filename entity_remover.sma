@@ -191,7 +191,6 @@ public ConfirmationMenuHandler(id, menu, item) {
             client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
         }
     }
-
     MainEntityMenu(id, 0, 0);
     return PLUGIN_HANDLED;
 }
@@ -215,7 +214,6 @@ public UndoLastRemoval(id) {
     else {
         client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
     }
-
     MainEntityMenu(id, 0, 0);
     return PLUGIN_HANDLED;
 }
@@ -282,21 +280,25 @@ public OpenEntityMenu(id) {
     }
     
     menu_additem(menu, "\wSave", "save");
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
     menu_display(id, menu, 0);
 }
 
 public EntityMenuHandler(id, menu, item) {
+    if(item == MENU_EXIT) {
+        menu_destroy(menu);
+        return PLUGIN_HANDLED;
+    }
+
     if(item == sizeof(ENTITIES)) {
         save_map_config();
         client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
+        MainEntityMenu(id, 0, 0);
     }
     else if(item >= 0 && item < sizeof(ENTITIES)) {
         g_remove_entities[item] = !g_remove_entities[item];
         OpenEntityMenu(id);
     }
-    
-    menu_destroy(menu);
+    return PLUGIN_HANDLED;
 }
 
 public RemoveEntity(ent) {
