@@ -16,7 +16,8 @@ new const ENTITIES[][] = {
     "func_door",
     "func_button",
     "func_door_rotating",
-    "func_breakable"
+    "func_breakable",
+    "cycler"
 };
 
 enum _:EntityData {
