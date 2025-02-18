@@ -54,6 +54,7 @@ public plugin_init() {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
 
+    create_config_folder();
     load_map_config();
 }
 
@@ -332,6 +333,10 @@ public GetAimAtEnt(id) {
         }
     }
     return 0;
+}
+
+public create_config_folder() {
+    mkdir(CONFIG_FOLDER);
 }
 
 public load_map_config() {
