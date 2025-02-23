@@ -57,5 +57,16 @@ The plugin automatically creates a configuration file for each map where specifi
 - It saves removed entities to a file specific to the current map, allowing for persistent entity removal configurations.
 - You can toggle the removal of entities globally or specifically using in-game menus.
 
+## **Credits & Inspiration**
+This plugin was inspired by the original **Entity Remover** plugin by Exolent:  
+[Entity Remover by Exolent](https://forums.alliedmods.net/showthread.php?t=74680)
+
+The original plugin allowed administrators to remove specific entities in any map using admin commands, including an **undo** function for accidental removals.  
+This version expands upon Exolent's idea by introducing:  
+- **Mass entity removal**, allowing users to remove multiple entities at once.  
+- **Dynamic entity management**, making it easy to add new entity types without modifying the core code.  
+- **Automatic menu generation**, where the plugin detects available entities and creates a menu dynamically.  
+- **Item-by-item removal menu**, allowing precise selection and deletion of entities directly from a list.  
+
 ## **Authors**
 - **ftl~ツ**
