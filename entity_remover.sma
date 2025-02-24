@@ -1,5 +1,4 @@
 #include <amxmodx>
-#include <fakemeta>
 #include <amxmisc>
 #include <xs>
 #include <cromchat2>
