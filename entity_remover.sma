@@ -57,11 +57,11 @@ public plugin_init() {
     load_map_config();
 
     //Chat prefix
-	CC_SetPrefix("&x04[FWO]");
+    CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_cfg(){
-	register_dictionary("entity_remover_ftl.txt");
+    register_dictionary("entity_remover_ftl.txt");
 }
 
 public FwdSpawn(ent) {
