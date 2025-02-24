@@ -2,6 +2,7 @@
 #include <fakemeta>
 #include <amxmisc>
 #include <xs>
+#include <cromchat2>
 
 #define PLUGIN "Entity Remover"
 #define VERSION "1.0"
@@ -56,6 +57,10 @@ public plugin_init() {
 
     create_config_folder();
     load_map_config();
+}
+
+public plugin_cfg(){
+	register_dictionary("entity_remover_ftl.txt");
 }
 
 public FwdSpawn(ent) {
@@ -147,7 +152,8 @@ public AimMenuHandler(id, menu, item) {
                 OpenConfirmationMenu(id, ent, class);
             }
             else {
-                client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
+                //client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
+                CC_SendMessage(id, "%L", id, "NO_ENTITY");
                 MainEntityMenu(id, 0, 0);
             }
         }
@@ -190,7 +196,8 @@ public ConfirmationMenuHandler(id, menu, item) {
         if(pev_valid(ent_data[ent_index])) {
             RemoveEntity(ent_data[ent_index]);
             SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
-            client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
+            //client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
+            CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
         }
     }
     MainEntityMenu(id, 0, 0);
@@ -210,11 +217,13 @@ public UndoLastRemoval(id) {
             set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
             
             RemoveSavedEntity(ent_data[ent_model]);
-            client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
+            //client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
+            CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", ent_data[ent_classname]);
         }
     }
     else {
-        client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
+        //client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
+        CC_SendMessage(id, "%L", id, "NO_REMOVALS");
     }
     MainEntityMenu(id, 0, 0);
     return PLUGIN_HANDLED;
@@ -268,7 +277,8 @@ public ResetSettings(id) {
         delete_file(filepath);
     }
     
-    client_print_color(id, print_chat, "^4[FWO] ^1All settings have been reset.");
+    //client_print_color(id, print_chat, "^4[FWO] ^1All settings have been reset.");
+    CC_SendMessage(id, "%L", id, "ALL_SETTINGS_RESET");
 }
 
 public OpenEntityMenu(id) {
@@ -293,7 +303,8 @@ public EntityMenuHandler(id, menu, item) {
 
     if(item == sizeof(ENTITIES)) {
         save_map_config();
-        client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
+        //client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
+        CC_SendMessage(id, "%L", id, "SETTINGS_SAVED");
         MainEntityMenu(id, 0, 0);
     }
     else if(item >= 0 && item < sizeof(ENTITIES)) {

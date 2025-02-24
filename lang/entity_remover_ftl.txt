@@ -1,0 +1,26 @@
+[en]
+
+NO_ENTITY = No entity found.
+ENTITY_REMOVED = Entity removed: &x04%s
+LAST_REMOVAL_UNDONE = Last removal undone: &x04%s
+NO_REMOVALS = No removals to undo.
+ALL_SETTINGS_RESET = All settings have been reset.
+SETTINGS_SAVED = Settings saved.
+
+[bp]
+
+NO_ENTITY = Nenhuma entidade encontrada.
+ENTITY_REMOVED = Entidade removida: &x04%s
+LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
+NO_REMOVALS = Nenhuma remoção para desfazer.
+ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
+SETTINGS_SAVED = Configurações salvas.
+
+[ro]
+
+NO_ENTITY = Nicio entitate găsită.
+ENTITY_REMOVED = Entitate eliminată: &x04%s
+LAST_REMOVAL_UNDONE = Ultima eliminare anullată: &x04%s
+NO_REMOVALS = Nicio eliminare de anulat.
+ALL_SETTINGS_RESET = Toate setările au fost resetate.
+SETTINGS_SAVED = Setările au fost salvate.
