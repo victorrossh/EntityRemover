@@ -53,9 +53,11 @@ public plugin_init() {
     for(new i = 1; i <= 32; i++) {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
-
     create_config_folder();
     load_map_config();
+
+    //Chat prefix
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_cfg(){
