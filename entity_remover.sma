@@ -372,17 +372,20 @@ public load_map_config() {
                     replace(class, 31, "^"", "");
                     replace(model, 31, "^"", "");
                     
-                    ArrayPushString(g_class, class);
-                    ArrayPushString(g_model, model);
-                    g_total++;
-                }
-                else {
-                    // Global entity
-                    for(new i = 0; i < sizeof(ENTITIES); i++) {
-                        if(equali(line, ENTITIES[i])) {
-                            g_remove_entities[i] = true;
-                            break;
+                    if(equali(model, "GLOBAL")) {
+                        // Global entity
+                        for(new i = 0; i < sizeof(ENTITIES); i++) {
+                            if(equali(class, ENTITIES[i])) {
+                                g_remove_entities[i] = true;
+                                break;
+                            }
                         }
+                    }
+                    else {
+                        // Specific entity
+                        ArrayPushString(g_class, class);
+                        ArrayPushString(g_model, model);
+                        g_total++;
                     }
                 }
             }
@@ -403,7 +406,7 @@ public save_map_config() {
         // Save global entities
         for(new i = 0; i < sizeof(ENTITIES); i++) {
             if(g_remove_entities[i]) {
-                fprintf(file, "%s^n", ENTITIES[i]);
+                fprintf(file, "^"%s^" ^"GLOBAL^"^n", ENTITIES[i]);
             }
         }
         
@@ -412,7 +415,8 @@ public save_map_config() {
             new class[32], model[32];
             ArrayGetString(g_class, i, class, 31);
             ArrayGetString(g_model, i, model, 31);
-            fprintf(file, "^"%s^" ^"*%s^"^n", class, model);
+            
+            fprintf(file, "^"%s^" ^"%s^"^n", class, model);
         }
         fclose(file);
     }
