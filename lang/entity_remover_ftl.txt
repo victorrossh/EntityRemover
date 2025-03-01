@@ -6,6 +6,9 @@ LAST_REMOVAL_UNDONE = Last removal undone: &x04%s
 NO_REMOVALS = No removals to undo.
 ALL_SETTINGS_RESET = All settings have been reset.
 SETTINGS_SAVED = Settings saved.
+GLOBAL_ENTITY_TOGGLED = Global entity &x04%s %s
+MSG_GLOBAL_REMOVED = &x07removed&x01.
+MSG_GLOBAL_RESTORED = &x06restored&x01.
 
 [bp]
 
@@ -15,6 +18,9 @@ LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
 NO_REMOVALS = Nenhuma remoção para desfazer.
 ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 SETTINGS_SAVED = Configurações salvas.
+GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
+MSG_GLOBAL_REMOVED = &x07removida&x01.
+MSG_GLOBAL_RESTORED = &x06restaurada&x01.
 
 [ro]
 
@@ -24,3 +30,18 @@ LAST_REMOVAL_UNDONE = Ultima eliminare anullată: &x04%s
 NO_REMOVALS = Nicio eliminare de anulat.
 ALL_SETTINGS_RESET = Toate setările au fost resetate.
 SETTINGS_SAVED = Setările au fost salvate.
+GLOBAL_ENTITY_TOGGLED = Entitate globală &x04%s %s
+MSG_GLOBAL_REMOVED = &x07eliminat&x01.
+MSG_GLOBAL_RESTORED = &x06restaurat&x01.
+
+[pt]
+
+NO_ENTITY = Nenhuma entidade encontrada.
+ENTITY_REMOVED = Entidade removida: &x04%s
+LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
+NO_REMOVALS = Nenhuma remoção para desfazer.
+ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
+SETTINGS_SAVED = Configurações salvas.
+GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
+MSG_GLOBAL_REMOVED = &x07removida&x01.
+MSG_GLOBAL_RESTORED = &x06restaurada&x01.
