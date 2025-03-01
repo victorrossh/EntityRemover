@@ -315,12 +315,16 @@ public EntityMenuHandler(id, menu, item) {
     else if(item >= 0 && item < sizeof(ENTITIES)) {
         g_remove_entities[item] = !g_remove_entities[item];
         ApplyGlobalEntityToggle(item, g_remove_entities[item]);
+        new status[32];
+        formatex(status, charsmax(status), "%L", id, g_remove_entities[item] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
+        CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ENTITIES[item], status);
         OpenEntityMenu(id);
     }
     return PLUGIN_HANDLED;
 }
 
 // Apply ON/OFF toggle instantly
+// Note: If I want to clean up the code and remove this function in the future, I can move its logic into EntityMenuHandler.
 public ApplyGlobalEntityToggle(entity_idx, bool:remove) {
     new ent = -1;
     while((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ENTITIES[entity_idx])) != 0) {
@@ -334,7 +338,6 @@ public ApplyGlobalEntityToggle(entity_idx, bool:remove) {
             }
         }
     }
-    CC_SendMessage(0, "%s %s", ENTITIES[entity_idx], remove ? "removed" : "restored");
 }
 
 public RemoveEntity(ent) {
