@@ -265,7 +265,10 @@ public RemoveSavedEntity(const model[]) {
 
 public ResetSettings(id) {
     for(new i = 0; i < sizeof(ENTITIES); i++) {
-        g_remove_entities[i] = false;
+        if(g_remove_entities[i]) {
+            g_remove_entities[i] = false;
+            ApplyGlobalEntityToggle(i, false); // Restore entities when resetting
+        }
     }
     
     new map[32];
@@ -277,9 +280,10 @@ public ResetSettings(id) {
     if(file_exists(filepath)) {
         delete_file(filepath);
     }
-    
+
     //client_print_color(id, print_chat, "^4[FWO] ^1All settings have been reset.");
     CC_SendMessage(id, "%L", id, "ALL_SETTINGS_RESET");
+    MainEntityMenu(id, 0, 0);
 }
 
 public OpenEntityMenu(id) {
@@ -310,9 +314,27 @@ public EntityMenuHandler(id, menu, item) {
     }
     else if(item >= 0 && item < sizeof(ENTITIES)) {
         g_remove_entities[item] = !g_remove_entities[item];
+        ApplyGlobalEntityToggle(item, g_remove_entities[item]);
         OpenEntityMenu(id);
     }
     return PLUGIN_HANDLED;
+}
+
+// Apply ON/OFF toggle instantly
+public ApplyGlobalEntityToggle(entity_idx, bool:remove) {
+    new ent = -1;
+    while((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ENTITIES[entity_idx])) != 0) {
+        if(pev_valid(ent)) {
+            if(remove) {
+                RemoveEntity(ent);
+            } else {
+                set_pev(ent, pev_rendermode, kRenderNormal);
+                set_pev(ent, pev_renderamt, 255.0);
+                set_pev(ent, pev_solid, SOLID_BSP);
+            }
+        }
+    }
+    CC_SendMessage(0, "%s %s", ENTITIES[entity_idx], remove ? "removed" : "restored");
 }
 
 public RemoveEntity(ent) {
