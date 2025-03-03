@@ -213,7 +213,7 @@ public UndoLastRemoval(id) {
         g_undo_size[id]--;
         
         if(pev_valid(ent_data[ent_index])) {
-            set_pev(ent_data[ent_index], pev_solid, ent_data[ent_solid]);
+            set_pev(ent_data[ent_index], pev_solid, SOLID_BSP);
             set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
             set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
             
