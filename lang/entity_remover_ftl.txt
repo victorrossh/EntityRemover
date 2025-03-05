@@ -1,5 +1,7 @@
 [en]
 
+FOLLOW_PLASMA = Follow the plasma line to the entity.
+ENTITY_INVALID = Entity no longer valid.
 NO_ENTITY = No entity found.
 ENTITY_REMOVED = Entity removed: &x04%s
 LAST_REMOVAL_UNDONE = Last removal undone: &x04%s
@@ -9,9 +11,12 @@ SETTINGS_SAVED = Settings saved.
 GLOBAL_ENTITY_TOGGLED = Global entity &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removed&x01.
 MSG_GLOBAL_RESTORED = &x06restored&x01.
+NOCLIP_TO_PLASMA = Noclip &x06activated&x01, follow the plasma to visualize the desired entity.
 
 [bp]
 
+FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
+ENTITY_INVALID = Entidade não válida.
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
@@ -21,9 +26,12 @@ SETTINGS_SAVED = Configurações salvas.
 GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removida&x01.
 MSG_GLOBAL_RESTORED = &x06restaurada&x01.
+NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
 
 [ro]
 
+FOLLOW_PLASMA = Urmează linia de plasma până la entitate.
+ENTITY_INVALID = Entitate nevalidă.
 NO_ENTITY = Nicio entitate găsită.
 ENTITY_REMOVED = Entitate eliminată: &x04%s
 LAST_REMOVAL_UNDONE = Ultima eliminare anullată: &x04%s
@@ -33,9 +41,12 @@ SETTINGS_SAVED = Setările au fost salvate.
 GLOBAL_ENTITY_TOGGLED = Entitate globală &x04%s %s
 MSG_GLOBAL_REMOVED = &x07eliminat&x01.
 MSG_GLOBAL_RESTORED = &x06restaurat&x01.
+NOCLIP_TO_PLASMA = Noclip &x06activat&x01, urmează plasma pentru a vizualiza entitatea dorită.
 
 [pt]
 
+FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
+ENTITY_INVALID = Entidade não válida.
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
@@ -45,3 +56,4 @@ SETTINGS_SAVED = Configurações salvas.
 GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removida&x01.
 MSG_GLOBAL_RESTORED = &x06restaurada&x01.
+NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
