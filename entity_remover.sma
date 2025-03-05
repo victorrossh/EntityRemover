@@ -5,11 +5,13 @@
 #include <cromchat2>
 
 #define PLUGIN "Entity Remover"
-#define VERSION "1.0"
+#define VERSION "2.0"
 #define AUTHOR "ftl~"
 
 // Path to save the configuration files
 new const CONFIG_FOLDER[] = "addons/amxmodx/configs/entity_remover";
+new const PLASMA_SPRITE[] = "sprites/plasma.spr";
+new g_plasma_sprite;
 
 // Temporary array to store the map entities
 new Array:g_map_entities;
@@ -44,6 +46,8 @@ new Array:g_map_entity_types; // Array of EntityInfo for unique classnames
 new g_map_entity_type_count;  // Count of unique types
 new bool:g_remove_map_entities[4096];
 
+new bool:g_noclip_enabled[33]; 
+
 new bool:g_remove_entities[sizeof(ENTITIES)];
 new Array:g_undo_stack[33];
 new g_undo_size[33];
@@ -63,6 +67,8 @@ public plugin_precache() {
     g_map_entity_count = 0;
     g_map_entity_types = ArrayCreate(EntityInfo, 1); // New array unique types
     g_map_entity_type_count = 0;
+
+    g_plasma_sprite = precache_model(PLASMA_SPRITE);
 }
 
 public plugin_init() {
@@ -187,11 +193,15 @@ public MainEntityMenu(id, level, cid) {
         return PLUGIN_HANDLED;
 
     new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
+    new item_text[64];
 
     menu_additem(menu, "\wRemove Aimed Entity", "1");
     menu_additem(menu, "\wRemove Specific Entities", "2");
     menu_additem(menu, "\wMap Entities", "3");
-    menu_additem(menu, "\wReset All Settings", "4");
+    menu_additem(menu, "\wReset All Settings^n", "4");
+
+    formatex(item_text, sizeof(item_text) - 1, "\wNoclip %s", g_noclip_enabled[id]?"\y[ON]^n":"\r[OFF]^n");
+    menu_additem(menu, item_text, "5");
 
     menu_display(id, menu, 0);
     return PLUGIN_HANDLED;
@@ -208,6 +218,7 @@ public MainMenuHandler(id, menu, item) {
         case 1: OpenEntityMenu(id);
         case 2: ShowMapEntities(id);
         case 3: ResetSettings(id);
+        case 4: ToggleNoclip(id);
     }
     return PLUGIN_HANDLED;
 }
@@ -292,12 +303,22 @@ public entity_options_handler(id, menu, item) {
             CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
             SaveMapEntityState(type_index); // Saves directly to the .txt
             OpenEntityOptionsMenu(id, type_index);
-        } else { // Individual entities
-            new ent_array_index;
-            parse(info, type_index, 8, ent_array_index, 8);
-            new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
-            CC_SendMessage(id, "Selected %s entity (ID: %d).", ent_info[ei_classname], ent_id);
-            OpenEntityOptionsMenu(id, type_index);
+        } else if (item >= 1) { 
+            new ent_array_index = item - 1;
+            if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
+                new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
+                if (pev_valid(ent_id)) {
+                    CreateGuideLine(id, ent_id);
+                    OpenAimMenu(id);
+                    CC_SendMessage(id, "Follow the plasma line to the entity.");
+                } else {
+                    CC_SendMessage(id, "Entity no longer valid.");
+                    OpenEntityOptionsMenu(id, type_index);
+                }
+            } else {
+                CC_SendMessage(id, "Invalid entity index.");
+                OpenEntityOptionsMenu(id, type_index);
+            }
         }
     }
 
@@ -655,6 +676,79 @@ public GetAimAtEnt(id) {
         }
     }
     return 0;
+}
+
+public ToggleNoclip(id) {
+    g_noclip_enabled[id] = !g_noclip_enabled[id];
+    /*if (g_noclip_enabled[id]) {
+        set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
+        CC_SendMessage(id, "Noclip: &x06ON&x01.");
+    } else {
+        set_pev(id, pev_movetype, MOVETYPE_WALK);
+        CC_SendMessage(id, "Noclip: &x07OFF&x01.");
+    }*/
+    MainEntityMenu(id, ADMIN_IMMUNITY, 0);
+}
+
+public CreateGuideLine(id, ent_id) {
+    new Float:player_origin[3], Float:ent_origin[3];
+    
+    // Get the player's position
+    pev(id, pev_origin, player_origin);
+    player_origin[2] += 10.0; // Adjust the line to be created at the player's eye level
+    
+    // Get the entity's position
+    pev(ent_id, pev_origin, ent_origin);
+    
+    if (!g_noclip_enabled[id]) { 
+        g_noclip_enabled[id] = true;
+        set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
+        CC_SendMessage(id, "Noclip &x06activated&x01, follow the plasma to visualize the desired entity.");
+    }
+    
+    // Calculate the distance between the player and the entity
+    new Float:distance = vector_distance(player_origin, ent_origin);
+    
+    // The maximum range the line can reach (For example: If the player is too far from the entity, the plasma will travel across the map to the entity)
+    new Float:max_segment_length = 9999999.0;
+    
+    // Calculate the number of segments needed
+    new num_segments = floatround(distance / max_segment_length, floatround_ceil);
+    
+    new Float:segment_start[3], Float:segment_end[3];
+    segment_start = player_origin; // Start at the player
+    
+    for (new i = 1; i <= num_segments; i++) {
+        // Calculate the end point of the current segment
+        for (new j = 0; j < 3; j++) {
+            segment_end[j] = player_origin[j] + (ent_origin[j] - player_origin[j]) * (float(i) / float(num_segments));
+        }
+        
+        // Create the beam between segment_start and segment_end
+        message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
+        write_byte(TE_BEAMPOINTS);                          // Temporary entity type: line between two points
+        engfunc(EngFunc_WriteCoord, segment_start[0]);      // Origin X
+        engfunc(EngFunc_WriteCoord, segment_start[1]);      // Origin Y
+        engfunc(EngFunc_WriteCoord, segment_start[2]);      // Origin Z
+        engfunc(EngFunc_WriteCoord, segment_end[0]);        // Destination X
+        engfunc(EngFunc_WriteCoord, segment_end[1]);        // Destination Y
+        engfunc(EngFunc_WriteCoord, segment_end[2]);        // Destination Z
+        write_short(g_plasma_sprite);                       // Precached sprite index
+        write_byte(0);                                      // Frame start
+        write_byte(0);                                      // Frame rate
+        write_byte(200);                                    // Time the line remains active (set_task in frames), 20 seconds = 200
+        write_byte(20);                                     // Line width
+        write_byte(0);                                      // Noise
+        write_byte(255);                                    // Color R (red)
+        write_byte(0);                                      // Color G (green)
+        write_byte(0);                                      // Color B (blue)
+        write_byte(200);                                    // Brightness
+        write_byte(0);                                      // Scroll speed
+        message_end();
+        
+        // Update the starting point for the next segment
+        segment_start = segment_end;
+    }
 }
 
 public create_config_folder() {
