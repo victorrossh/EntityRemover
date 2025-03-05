@@ -34,6 +34,14 @@ enum _:EntityData {
     ent_model[32]
 };
 
+enum _:EntityInfo {
+    ei_classname[32],
+    ei_count
+};
+
+new Array:g_map_entity_types; // Array of EntityInfo for unique classnames 
+new g_map_entity_type_count;  // Count of unique types
+
 new bool:g_remove_entities[sizeof(ENTITIES)];
 new Array:g_undo_stack[33];
 new g_undo_size[33];
@@ -48,11 +56,12 @@ public plugin_precache() {
     g_model = ArrayCreate(32, 1);
     g_total = 0;
 
-    // Initializes the temporary array to store the map entities
+    // Initializes the temporary arrays
     g_map_entities = ArrayCreate(32, 1);
     g_map_entity_count = 0;
+    g_map_entity_types = ArrayCreate(EntityInfo, 1); // New array unique types
+    g_map_entity_type_count = 0;
 }
-
 public plugin_init() {
     register_plugin(PLUGIN, VERSION, AUTHOR);
 
@@ -75,31 +84,54 @@ public plugin_cfg(){
 }
 
 public ScanMapEntities() {
-    new entity_index = -1;
-    new entity_name[32];
-
-    // Clears the temporary array before scanning
+    // Clear previous data
     ArrayClear(g_map_entities);
+    ArrayClear(g_map_entity_types);
     g_map_entity_count = 0;
+    g_map_entity_type_count = 0;
 
-    // Scans all the entities on the map
-    while ((entity_index = find_ent_by_class(entity_index, ""))) {
-        pev(entity_index, pev_classname, entity_name, sizeof(entity_name) - 1);
+    // Scan all entities in the map
+    new entity_index = 0;
+    new entity_name[32];
+    new max_entities = engfunc(EngFunc_NumberOfEntities);
 
-        // Debug: Displays the name of the entity found
-        server_print("[FWO] Entidade encontrada: %s", entity_name);
+    for (entity_index = 1; entity_index < max_entities; entity_index++) {
+        if (pev_valid(entity_index)) {
+            pev(entity_index, pev_classname, entity_name, sizeof(entity_name) - 1);
 
-        // Adds the entity's name to the temporary array
-        ArrayPushString(g_map_entities, entity_name);
-        g_map_entity_count++;
-    }
+            // Skip unwanted entities
+            if (equali(entity_name, "player") || equali(entity_name, "worldspawn") || equali(entity_name, "")) {
+                continue;
+            }
 
-    // Debug: Displays the number of entities found
-    server_print("[FWO] Total de entidades encontradas no mapa: %d", g_map_entity_count);
+            // Check if classname already exists
+            new found = -1;
+            for (new i = 0; i < g_map_entity_type_count; i++) {
+                new ent_info[EntityInfo];
+                ArrayGetArray(g_map_entity_types, i, ent_info);
+                if (equali(ent_info[ei_classname], entity_name)) {
+                    found = i;
+                    break;
+                }
+            }
 
-        // In case no entity is found
-    if (g_map_entity_count == 0) {
-        server_print("[FWO] Nenhuma entidade encontrada.");
+            if (found == -1) {
+                // New classname
+                new ent_info[EntityInfo];
+                copy(ent_info[ei_classname], 31, entity_name);
+                ent_info[ei_count] = 1;
+                ArrayPushArray(g_map_entity_types, ent_info);
+                g_map_entity_type_count++;
+            } else {
+                // Existing classname, increment count
+                new ent_info[EntityInfo];
+                ArrayGetArray(g_map_entity_types, found, ent_info);
+                ent_info[ei_count]++;
+                ArraySetArray(g_map_entity_types, found, ent_info);
+            }
+
+            g_map_entity_count++;
+        }
     }
 }
 
@@ -170,11 +202,13 @@ public MainMenuHandler(id, menu, item) {
 public ShowMapEntities(id) {
     new menu = menu_create("\r[FWO] \d- \wMap Entities:", "map_entities_handler");
 
-    if (g_map_entity_count > 0) {
-        new entity_name[32];
-        for (new i = 0; i < g_map_entity_count; i++) {
-            ArrayGetString(g_map_entities, i, entity_name, sizeof(entity_name) - 1);
-            menu_additem(menu, entity_name, "");
+    if (g_map_entity_type_count > 0) {
+        new entity_item[64];
+        for (new i = 0; i < g_map_entity_type_count; i++) {
+            new ent_info[EntityInfo];
+            ArrayGetArray(g_map_entity_types, i, ent_info);
+            formatex(entity_item, sizeof(entity_item) - 1, "%s (%dx)", ent_info[ei_classname], ent_info[ei_count]);
+            menu_additem(menu, entity_item, fmt("%d", i));
         }
     } else {
         menu_additem(menu, "No entities found", "");
@@ -189,13 +223,15 @@ public map_entities_handler(id, menu, item) {
         return PLUGIN_HANDLED;
     }
 
-    // Gets the entity's name to display in the menu
-    new entity_name[32];
-    ArrayGetString(g_map_entities, item, entity_name, sizeof(entity_name) - 1);
+    new info[8], dummy;
+    menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
+    new type_index = str_to_num(info);
 
-    // Takes us to the submenu when an entity is selected
-    OpenEntityOptionsMenu(id, entity_name);
+    new ent_info[EntityInfo];
+    ArrayGetArray(g_map_entity_types, type_index, ent_info);
+    CC_SendMessage(id, "Selected: %s (%dx)", ent_info[ei_classname], ent_info[ei_count]);
 
+    menu_destroy(menu);
     return PLUGIN_HANDLED;
 }
 
