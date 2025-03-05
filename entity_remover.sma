@@ -310,14 +310,13 @@ public entity_options_handler(id, menu, item) {
                 if (pev_valid(ent_id)) {
                     CreateGuideLine(id, ent_id);
                     OpenAimMenu(id);
-                    CC_SendMessage(id, "Follow the plasma line to the entity.");
+                    //CC_SendMessage(id, "Follow the plasma line to the entity.");
+                    CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
                 } else {
-                    CC_SendMessage(id, "Entity no longer valid.");
+                    //CC_SendMessage(id, "Entity no longer valid.");
+                    CC_SendMessage(id, "%L", id, "ENTITY_INVALID");
                     OpenEntityOptionsMenu(id, type_index);
                 }
-            } else {
-                CC_SendMessage(id, "Invalid entity index.");
-                OpenEntityOptionsMenu(id, type_index);
             }
         }
     }
@@ -703,7 +702,8 @@ public CreateGuideLine(id, ent_id) {
     if (!g_noclip_enabled[id]) { 
         g_noclip_enabled[id] = true;
         set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
-        CC_SendMessage(id, "Noclip &x06activated&x01, follow the plasma to visualize the desired entity.");
+        //CC_SendMessage(id, "Noclip &x06activated&x01, follow the plasma to visualize the desired entity.");
+        CC_SendMessage(id, "%L", id, "NOCLIP_TO_PLASMA");
     }
     
     // Calculate the distance between the player and the entity
