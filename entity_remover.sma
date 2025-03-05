@@ -653,13 +653,8 @@ public GetAimAtEnt(id) {
 
 public ToggleNoclip(id) {
     g_noclip_enabled[id] = !g_noclip_enabled[id];
-    /*if (g_noclip_enabled[id]) {
-        set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
-        CC_SendMessage(id, "Noclip: &x06ON&x01.");
-    } else {
-        set_pev(id, pev_movetype, MOVETYPE_WALK);
-        CC_SendMessage(id, "Noclip: &x07OFF&x01.");
-    }*/
+    
+    set_pev(id, pev_movetype, g_noclip_enabled[id] ? MOVETYPE_NOCLIP : MOVETYPE_WALK);
     MainEntityMenu(id, ADMIN_IMMUNITY, 0);
 }
 
