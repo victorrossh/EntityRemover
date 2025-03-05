@@ -20,3 +20,5 @@ tasks.json
 .vscode/*.json
 
 # End of https://www.toptal.com/developers/gitignore/api/pawn
+
+entity_remover_versions_without_ScanMap.sma
