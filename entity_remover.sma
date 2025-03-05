@@ -36,11 +36,13 @@ enum _:EntityData {
 
 enum _:EntityInfo {
     ei_classname[32],
-    ei_count
+    ei_count,
+    Array:ei_indices
 };
 
 new Array:g_map_entity_types; // Array of EntityInfo for unique classnames 
 new g_map_entity_type_count;  // Count of unique types
+new bool:g_remove_map_entities[4096];
 
 new bool:g_remove_entities[sizeof(ENTITIES)];
 new Array:g_undo_stack[33];
@@ -62,6 +64,7 @@ public plugin_precache() {
     g_map_entity_types = ArrayCreate(EntityInfo, 1); // New array unique types
     g_map_entity_type_count = 0;
 }
+
 public plugin_init() {
     register_plugin(PLUGIN, VERSION, AUTHOR);
 
@@ -120,17 +123,27 @@ public ScanMapEntities() {
                 new ent_info[EntityInfo];
                 copy(ent_info[ei_classname], 31, entity_name);
                 ent_info[ei_count] = 1;
+                ent_info[ei_indices] = ArrayCreate(1, 1);
+                ArrayPushCell(ent_info[ei_indices], entity_index);
                 ArrayPushArray(g_map_entity_types, ent_info);
                 g_map_entity_type_count++;
+                found = g_map_entity_type_count - 1;
             } else {
                 // Existing classname, increment count
                 new ent_info[EntityInfo];
                 ArrayGetArray(g_map_entity_types, found, ent_info);
                 ent_info[ei_count]++;
+                ArrayPushCell(ent_info[ei_indices], entity_index);
                 ArraySetArray(g_map_entity_types, found, ent_info);
             }
 
             g_map_entity_count++;
+        }
+    }
+
+    for (new i = 0; i < g_map_entity_type_count; i++) {
+        if (g_remove_map_entities[i]) {
+            ApplyMapEntityToggle(i, true);
         }
     }
 }
@@ -227,20 +240,31 @@ public map_entities_handler(id, menu, item) {
     menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
     new type_index = str_to_num(info);
 
-    new ent_info[EntityInfo];
-    ArrayGetArray(g_map_entity_types, type_index, ent_info);
-    CC_SendMessage(id, "Selected: %s (%dx)", ent_info[ei_classname], ent_info[ei_count]);
+    OpenEntityOptionsMenu(id, type_index);
 
     menu_destroy(menu);
     return PLUGIN_HANDLED;
 }
 
-public OpenEntityOptionsMenu(id, const entity_name[]) {
-    new menu = menu_create("\r[FWO] \d- \wEntity Options:", "entity_options_handler");
+public OpenEntityOptionsMenu(id, type_index) {
+    new ent_info[EntityInfo];
+    ArrayGetArray(g_map_entity_types, type_index, ent_info);
+    
+    new menu_title[64];
+    formatex(menu_title, sizeof(menu_title) - 1, "\r[FWO] \d- \w%s Options:", ent_info[ei_classname]);
+    new menu = menu_create(menu_title, "entity_options_handler");
 
-    menu_additem(menu, "Remove All", entity_name); // Removes all entities of this type
-    menu_additem(menu, "Remove One", entity_name); // Removes only the selected entity
-    menu_additem(menu, "Save for Auto-Removal", entity_name); // Save
+    new item[64], status[8];
+    format(status, 7, g_remove_map_entities[type_index] ? "\y[ON]" : "\r[OFF]");
+    formatex(item, sizeof(item) - 1, "%s %s", ent_info[ei_classname], status);
+    menu_additem(menu, item, fmt("%d", type_index));
+    
+    // Uniques entites 
+    for (new i = 0; i < ent_info[ei_count]; i++) {
+        new item_name[32];
+        formatex(item_name, sizeof(item_name) - 1, "Entity #%d", i + 1);
+        menu_additem(menu, item_name, fmt("%d %d", type_index, ArrayGetCell(ent_info[ei_indices], i)));
+    }
 
     menu_display(id, menu, 0);
 }
@@ -248,34 +272,121 @@ public OpenEntityOptionsMenu(id, const entity_name[]) {
 public entity_options_handler(id, menu, item) {
     if (item == MENU_EXIT) {
         menu_destroy(menu);
-        return;
+        ShowMapEntities(id);
+        return PLUGIN_HANDLED;
     }
 
-    // Gets the name of the selected entity
-    new entity_name[32];
-    menu_item_getinfo(menu, item, _, entity_name, sizeof(entity_name) - 1, _, _, _);
+    new info[16], dummy;
+    menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
+    new type_index = str_to_num(info);
 
-    switch (item) {
-        case 0: {
-            // Removes all entities of this type
-            RemoveAllEntitiesOfType(entity_name);
-            client_print_color(id, print_chat, "^4[FWO] ^1Removed all entities of type: ^4%s.", entity_name);
-        }
-        case 1: {
-            // Removes just one entity of this type
-            RemoveOneEntityOfType(entity_name);
-            client_print_color(id, print_chat, "^4[FWO] ^1Removed one entity of type: ^4%s.", entity_name);
-        }
-        case 2: {
-            // Saves the entity for automatic removal
-            SaveEntityForAutoRemoval(entity_name);
-            client_print_color(id, print_chat, "^4[FWO] ^1Saved entity for auto-removal: ^4%s.", entity_name);
+    if (item >= 0 && item < g_map_entity_type_count) {
+        new ent_info[EntityInfo];
+        ArrayGetArray(g_map_entity_types, type_index, ent_info);
+        
+        if (item == 0) { // Toggle Remove All
+            g_remove_map_entities[type_index] = !g_remove_map_entities[type_index];
+            ApplyMapEntityToggle(type_index, g_remove_map_entities[type_index]);
+            new status[32];
+            formatex(status, charsmax(status), "%L", id, g_remove_map_entities[type_index] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
+            CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
+            SaveMapEntityState(type_index); // Saves directly to the .txt
+            OpenEntityOptionsMenu(id, type_index);
+        } else { // Individual entities
+            new ent_array_index;
+            parse(info, type_index, 8, ent_array_index, 8);
+            new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
+            CC_SendMessage(id, "Selected %s entity (ID: %d).", ent_info[ei_classname], ent_id);
+            OpenEntityOptionsMenu(id, type_index);
         }
     }
 
-    // Updates the entity list after removal
-    ScanMapEntities();
-    return;
+    menu_destroy(menu);
+    return PLUGIN_HANDLED;
+}
+
+public SaveMapEntityState(type_index) {
+    new map[32];
+    get_mapname(map, 31);
+    
+    new filepath[256];
+    formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+    
+    new temp_filepath[256];
+    formatex(temp_filepath, 255, "%s/%s_temp.txt", CONFIG_FOLDER, map);
+    
+    new ent_info[EntityInfo];
+    ArrayGetArray(g_map_entity_types, type_index, ent_info);
+    new classname[32];
+    copy(classname, 31, ent_info[ei_classname]);
+
+    // Read the current file and rewrite it, adding or removing the entry
+    new file = fopen(filepath, "rt");
+    new temp_file = fopen(temp_filepath, "wt");
+    
+    if (file && temp_file) {
+        new line[128], found = 0;
+        while (fgets(file, line, 127)) {
+            trim(line);
+            if (contain(line, "^"") != -1) {
+                new class[32], model[32];
+                parse(line, class, 31, model, 31);
+                replace(class, 31, "^"", "");
+                replace(model, 31, "^"", "");
+                
+                // Do not copy the line if it is the entity we are modifying
+                if (equali(class, classname) && equali(model, "GLOBAL")) {
+                    found = 1;
+                    if (g_remove_map_entities[type_index]) {
+                        fprintf(temp_file, "^"%s^" ^"GLOBAL^"^n", classname);
+                    }
+                    continue;
+                }
+                fprintf(temp_file, "%s^n", line);
+            }
+        }
+        
+        // If not found and it is ON, add the entry
+        if (!found && g_remove_map_entities[type_index]) {
+            fprintf(temp_file, "^"%s^" ^"GLOBAL^"^n", classname);
+        }
+        
+        fclose(file);
+        fclose(temp_file);
+        
+        delete_file(filepath);
+        rename_file(temp_filepath, filepath, 1);
+    } else {
+        if (temp_file) fclose(temp_file);
+        if (file) fclose(file);
+        
+        // If the file doesn't exist, create a new one
+        file = fopen(filepath, "wt");
+        if (file) {
+            if (g_remove_map_entities[type_index]) {
+                fprintf(file, "^"%s^" ^"GLOBAL^"^n", classname);
+            }
+            fclose(file);
+        }
+    }
+}
+
+public ApplyMapEntityToggle(type_index, bool:remove) {
+    new ent_info[EntityInfo];
+    ArrayGetArray(g_map_entity_types, type_index, ent_info);
+
+    for (new i = 0; i < ent_info[ei_count]; i++) {
+        new ent = ArrayGetCell(ent_info[ei_indices], i);
+        if (pev_valid(ent)) {
+            if (remove) {
+                RemoveEntity(ent);
+            } else {
+                set_pev(ent, pev_rendermode, kRenderNormal);
+                set_pev(ent, pev_renderamt, 255.0);
+                set_pev(ent, pev_solid, SOLID_BSP);
+            }
+        }
+    }
 }
 
 public RemoveAllEntitiesOfType(const entity_name[]) {
@@ -565,23 +676,30 @@ public load_map_config() {
                 trim(line);
                 
                 if(contain(line, "^"") != -1) {
-                    // Specific entity
                     new class[32], model[32];
                     parse(line, class, 31, model, 31);
                     replace(class, 31, "^"", "");
                     replace(model, 31, "^"", "");
                     
                     if(equali(model, "GLOBAL")) {
-                        // Global entity
-                        for(new i = 0; i < sizeof(ENTITIES); i++) {
-                            if(equali(class, ENTITIES[i])) {
+                        // Global entity (menu2)
+                        for (new i = 0; i < sizeof(ENTITIES); i++) {
+                            if (equali(class, ENTITIES[i])) {
                                 g_remove_entities[i] = true;
                                 break;
                             }
                         }
-                    }
-                    else {
-                        // Specific entity
+                        // Global entity (menu3))
+                        for (new i = 0; i < g_map_entity_type_count; i++) {
+                            new ent_info[EntityInfo];
+                            ArrayGetArray(g_map_entity_types, i, ent_info);
+                            if (equali(class, ent_info[ei_classname])) {
+                                g_remove_map_entities[i] = true;
+                                ApplyMapEntityToggle(i, true); // Apply immediately
+                                break;
+                            }
+                        }
+                    } else {
                         ArrayPushString(g_class, class);
                         ArrayPushString(g_model, model);
                         g_total++;
@@ -601,22 +719,31 @@ public save_map_config() {
     formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
     
     new file = fopen(filepath, "wt");
-    if(file) {
-        // Save global entities
+    if (file) {
+        // Save global entities (menu 2)
         for(new i = 0; i < sizeof(ENTITIES); i++) {
             if(g_remove_entities[i]) {
                 fprintf(file, "^"%s^" ^"GLOBAL^"^n", ENTITIES[i]);
             }
         }
         
-        // Save specific entities
+        // Save specific entities (menu 1)
         for(new i = 0; i < g_total; i++) {
             new class[32], model[32];
             ArrayGetString(g_class, i, class, 31);
             ArrayGetString(g_model, i, model, 31);
-            
             fprintf(file, "^"%s^" ^"%s^"^n", class, model);
         }
+        
+        // Save map entities (menu 3)
+        for (new i = 0; i < g_map_entity_type_count; i++) {
+            new ent_info[EntityInfo];
+            ArrayGetArray(g_map_entity_types, i, ent_info);
+            if (g_remove_map_entities[i]) {
+                fprintf(file, "^"%s^" ^"GLOBAL^"^n", ent_info[ei_classname]);
+            }
+        }
+        
         fclose(file);
     }
 }
