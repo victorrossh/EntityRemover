@@ -227,6 +227,110 @@ public MainMenuHandler(id, menu, item) {
     return PLUGIN_HANDLED;
 }
 
+public OpenAimMenu(id) {
+    new menu = menu_create("\r[FWO] \d- \wRemove Aimed Entity:", "AimMenuHandler");
+
+    menu_additem(menu, "\wRemove", "1");
+    menu_additem(menu, "\wUndo", "2");
+
+    menu_display(id, menu, 0);
+}
+
+public AimMenuHandler(id, menu, item) {
+    if(item == MENU_EXIT) {
+        menu_destroy(menu);
+        return PLUGIN_HANDLED;
+    }
+
+    switch(item) {
+        case 0: {
+            new ent = GetAimAtEnt(id);
+            if(pev_valid(ent)) {
+                new class[32];
+                pev(ent, pev_classname, class, 31);
+                
+                new menu_title[128];
+                formatex(menu_title, 127, "\r[FWO] \d- \wRemove Entity: \y%s?", class);
+                OpenConfirmationMenu(id, ent, class);
+            }
+            else {
+                //client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
+                CC_SendMessage(id, "%L", id, "NO_ENTITY");
+                MainEntityMenu(id, 0, 0);
+            }
+        }
+        case 1: {
+            UndoLastRemoval(id);
+            MainEntityMenu(id, 0, 0);
+        }
+    }
+    return PLUGIN_HANDLED;
+}
+
+public OpenConfirmationMenu(id, ent, const class[]) {
+    new title[128];
+    formatex(title, charsmax(title), "\r[FWO] \d- \wRemove Entity: \y%s?", class);
+    new menu = menu_create(title, "ConfirmationMenuHandler");
+
+    menu_additem(menu, "\wYes", "1");
+    menu_additem(menu, "\wNo", "2");
+    
+    menu_display(id, menu, 0);
+    
+    // Store entity data
+    new ent_data[EntityData];
+    ent_data[ent_index] = ent;
+    pev(ent, pev_solid, ent_data[ent_solid]);
+    pev(ent, pev_rendermode, ent_data[ent_rendermode]);
+    pev(ent, pev_renderamt, ent_data[ent_renderamt]);
+    pev(ent, pev_classname, ent_data[ent_classname], 31);
+    pev(ent, pev_model, ent_data[ent_model], 31);
+    
+    ArrayPushArray(g_undo_stack[id], ent_data);
+    g_undo_size[id] = ArraySize(g_undo_stack[id]);
+}
+
+public ConfirmationMenuHandler(id, menu, item) {
+    if(item == 0) {
+        new ent_data[EntityData];
+        ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
+        
+        if(pev_valid(ent_data[ent_index])) {
+            RemoveEntity(ent_data[ent_index]);
+            SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
+            //client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
+            CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
+        }
+    }
+    MainEntityMenu(id, 0, 0);
+    return PLUGIN_HANDLED;
+}
+
+public UndoLastRemoval(id) {
+    if(g_undo_size[id] > 0) {
+        new ent_data[EntityData];
+        ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
+        ArrayDeleteItem(g_undo_stack[id], g_undo_size[id]-1);
+        g_undo_size[id]--;
+        
+        if(pev_valid(ent_data[ent_index])) {
+            set_pev(ent_data[ent_index], pev_solid, SOLID_BSP);
+            set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
+            set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
+            
+            RemoveSavedEntity(ent_data[ent_model]);
+            //client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
+            CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", ent_data[ent_classname]);
+        }
+    }
+    else {
+        //client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
+        CC_SendMessage(id, "%L", id, "NO_REMOVALS");
+    }
+    MainEntityMenu(id, 0, 0);
+    return PLUGIN_HANDLED;
+}
+
 public ShowMapEntities(id) {
     new menu = menu_create("\r[FWO] \d- \wMap Entities:", "map_entities_handler");
 
@@ -411,132 +515,6 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
             }
         }
     }
-}
-
-public RemoveAllEntitiesOfType(const entity_name[]) {
-    new entity_index = -1;
-    while ((entity_index = find_ent_by_class(entity_index, entity_name))) {
-        RemoveEntity(entity_index);
-    }
-}
-
-public RemoveOneEntityOfType(const entity_name[]) {
-    new entity_index = find_ent_by_class(-1, entity_name);
-    if (entity_index > 0) {
-        RemoveEntity(entity_index);
-    }
-}
-
-public SaveEntityForAutoRemoval(const entity_name[]) {
-    ArrayPushString(g_class, entity_name);
-    ArrayPushString(g_model, "*");
-    g_total++;
-
-    save_map_config();
-}
-
-public OpenAimMenu(id) {
-    new menu = menu_create("\r[FWO] \d- \wRemove Aimed Entity:", "AimMenuHandler");
-
-    menu_additem(menu, "\wRemove", "1");
-    menu_additem(menu, "\wUndo", "2");
-
-    menu_display(id, menu, 0);
-}
-
-public AimMenuHandler(id, menu, item) {
-    if(item == MENU_EXIT) {
-        menu_destroy(menu);
-        return PLUGIN_HANDLED;
-    }
-
-    switch(item) {
-        case 0: {
-            new ent = GetAimAtEnt(id);
-            if(pev_valid(ent)) {
-                new class[32];
-                pev(ent, pev_classname, class, 31);
-                
-                new menu_title[128];
-                formatex(menu_title, 127, "\r[FWO] \d- \wRemove Entity: \y%s?", class);
-                OpenConfirmationMenu(id, ent, class);
-            }
-            else {
-                //client_print_color(id, print_chat, "^4[FWO] ^1No entity found.");
-                CC_SendMessage(id, "%L", id, "NO_ENTITY");
-                MainEntityMenu(id, 0, 0);
-            }
-        }
-        case 1: {
-            UndoLastRemoval(id);
-            MainEntityMenu(id, 0, 0);
-        }
-    }
-    return PLUGIN_HANDLED;
-}
-
-public OpenConfirmationMenu(id, ent, const class[]) {
-    new title[128];
-    formatex(title, charsmax(title), "\r[FWO] \d- \wRemove Entity: \y%s?", class);
-    new menu = menu_create(title, "ConfirmationMenuHandler");
-
-    menu_additem(menu, "\wYes", "1");
-    menu_additem(menu, "\wNo", "2");
-    
-    menu_display(id, menu, 0);
-    
-    // Store entity data
-    new ent_data[EntityData];
-    ent_data[ent_index] = ent;
-    pev(ent, pev_solid, ent_data[ent_solid]);
-    pev(ent, pev_rendermode, ent_data[ent_rendermode]);
-    pev(ent, pev_renderamt, ent_data[ent_renderamt]);
-    pev(ent, pev_classname, ent_data[ent_classname], 31);
-    pev(ent, pev_model, ent_data[ent_model], 31);
-    
-    ArrayPushArray(g_undo_stack[id], ent_data);
-    g_undo_size[id] = ArraySize(g_undo_stack[id]);
-}
-
-public ConfirmationMenuHandler(id, menu, item) {
-    if(item == 0) {
-        new ent_data[EntityData];
-        ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
-        
-        if(pev_valid(ent_data[ent_index])) {
-            RemoveEntity(ent_data[ent_index]);
-            SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
-            //client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
-            CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
-        }
-    }
-    MainEntityMenu(id, 0, 0);
-    return PLUGIN_HANDLED;
-}
-
-public UndoLastRemoval(id) {
-    if(g_undo_size[id] > 0) {
-        new ent_data[EntityData];
-        ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
-        ArrayDeleteItem(g_undo_stack[id], g_undo_size[id]-1);
-        g_undo_size[id]--;
-        
-        if(pev_valid(ent_data[ent_index])) {
-            set_pev(ent_data[ent_index], pev_solid, SOLID_BSP);
-            set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
-            set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
-            
-            RemoveSavedEntity(ent_data[ent_model]);
-            //client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
-            CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", ent_data[ent_classname]);
-        }
-    }
-    else {
-        //client_print_color(id, print_chat, "^4[FWO] ^1No removals to undo.");
-        CC_SendMessage(id, "%L", id, "NO_REMOVALS");
-    }
-    MainEntityMenu(id, 0, 0);
-    return PLUGIN_HANDLED;
 }
 
 public SaveSpecificEntity(const class[], const model[]) {
