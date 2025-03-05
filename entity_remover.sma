@@ -331,6 +331,43 @@ public UndoLastRemoval(id) {
     return PLUGIN_HANDLED;
 }
 
+public OpenEntityMenu(id) {
+    new menu = menu_create("\r[FWO] \d- \wRemove Specific Entities:", "EntityMenuHandler");
+    
+    for(new i = 0; i < sizeof(ENTITIES); i++) {
+        new item[64], status[8];
+        format(status, 7, g_remove_entities[i] ? "\y[ON]" : "\r[OFF]");
+        formatex(item, charsmax(item), "%s %s%s", ENTITIES[i], status, i == sizeof(ENTITIES) - 1 ? "^n" : "");
+        menu_additem(menu, item);
+    }
+    
+    menu_additem(menu, "\wSave", "save");
+    menu_display(id, menu, 0);
+}
+
+public EntityMenuHandler(id, menu, item) {
+    if(item == MENU_EXIT) {
+        menu_destroy(menu);
+        return PLUGIN_HANDLED;
+    }
+
+    if(item == sizeof(ENTITIES)) {
+        save_map_config();
+        //client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
+        CC_SendMessage(id, "%L", id, "SETTINGS_SAVED");
+        MainEntityMenu(id, 0, 0);
+    }
+    else if(item >= 0 && item < sizeof(ENTITIES)) {
+        g_remove_entities[item] = !g_remove_entities[item];
+        ApplyGlobalEntityToggle(item, g_remove_entities[item]);
+        new status[32];
+        formatex(status, charsmax(status), "%L", id, g_remove_entities[item] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
+        CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ENTITIES[item], status);
+        OpenEntityMenu(id);
+    }
+    return PLUGIN_HANDLED;
+}
+
 public ShowMapEntities(id) {
     new menu = menu_create("\r[FWO] \d- \wMap Entities:", "map_entities_handler");
 
@@ -573,42 +610,6 @@ public ResetSettings(id) {
     MainEntityMenu(id, 0, 0);
 }
 
-public OpenEntityMenu(id) {
-    new menu = menu_create("\r[FWO] \d- \wRemove Specific Entities:", "EntityMenuHandler");
-    
-    for(new i = 0; i < sizeof(ENTITIES); i++) {
-        new item[64], status[8];
-        format(status, 7, g_remove_entities[i] ? "\y[ON]" : "\r[OFF]");
-        formatex(item, charsmax(item), "%s %s%s", ENTITIES[i], status, i == sizeof(ENTITIES) - 1 ? "^n" : "");
-        menu_additem(menu, item);
-    }
-    
-    menu_additem(menu, "\wSave", "save");
-    menu_display(id, menu, 0);
-}
-
-public EntityMenuHandler(id, menu, item) {
-    if(item == MENU_EXIT) {
-        menu_destroy(menu);
-        return PLUGIN_HANDLED;
-    }
-
-    if(item == sizeof(ENTITIES)) {
-        save_map_config();
-        //client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
-        CC_SendMessage(id, "%L", id, "SETTINGS_SAVED");
-        MainEntityMenu(id, 0, 0);
-    }
-    else if(item >= 0 && item < sizeof(ENTITIES)) {
-        g_remove_entities[item] = !g_remove_entities[item];
-        ApplyGlobalEntityToggle(item, g_remove_entities[item]);
-        new status[32];
-        formatex(status, charsmax(status), "%L", id, g_remove_entities[item] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
-        CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ENTITIES[item], status);
-        OpenEntityMenu(id);
-    }
-    return PLUGIN_HANDLED;
-}
 
 // Apply ON/OFF toggle instantly
 // Note: If I want to clean up the code and remove this function in the future, I can move its logic into EntityMenuHandler.
