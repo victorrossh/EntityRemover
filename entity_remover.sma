@@ -1,5 +1,6 @@
 #include <amxmodx>
 #include <amxmisc>
+#include <engine>
 #include <xs>
 #include <cromchat2>
 
@@ -9,6 +10,10 @@
 
 // Path to save the configuration files
 new const CONFIG_FOLDER[] = "addons/amxmodx/configs/entity_remover";
+
+// Temporary array to store the map entities
+new Array:g_map_entities;
+new g_map_entity_count;
 
 // We can add more entities that we want to be removed
 // Global Variable
@@ -42,6 +47,10 @@ public plugin_precache() {
     g_class = ArrayCreate(32, 1);
     g_model = ArrayCreate(32, 1);
     g_total = 0;
+
+    // Initializes the temporary array to store the map entities
+    g_map_entities = ArrayCreate(32, 1);
+    g_map_entity_count = 0;
 }
 
 public plugin_init() {
@@ -54,6 +63,7 @@ public plugin_init() {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
     create_config_folder();
+    ScanMapEntities();
     load_map_config();
 
     //Chat prefix
@@ -62,6 +72,35 @@ public plugin_init() {
 
 public plugin_cfg(){
     register_dictionary("entity_remover_ftl.txt");
+}
+
+public ScanMapEntities() {
+    new entity_index = -1;
+    new entity_name[32];
+
+    // Clears the temporary array before scanning
+    ArrayClear(g_map_entities);
+    g_map_entity_count = 0;
+
+    // Scans all the entities on the map
+    while ((entity_index = find_ent_by_class(entity_index, ""))) {
+        pev(entity_index, pev_classname, entity_name, sizeof(entity_name) - 1);
+
+        // Debug: Displays the name of the entity found
+        server_print("[FWO] Entidade encontrada: %s", entity_name);
+
+        // Adds the entity's name to the temporary array
+        ArrayPushString(g_map_entities, entity_name);
+        g_map_entity_count++;
+    }
+
+    // Debug: Displays the number of entities found
+    server_print("[FWO] Total de entidades encontradas no mapa: %d", g_map_entity_count);
+
+        // In case no entity is found
+    if (g_map_entity_count == 0) {
+        server_print("[FWO] Nenhuma entidade encontrada.");
+    }
 }
 
 public FwdSpawn(ent) {
@@ -106,7 +145,8 @@ public MainEntityMenu(id, level, cid) {
 
     menu_additem(menu, "\wRemove Aimed Entity", "1");
     menu_additem(menu, "\wRemove Specific Entities", "2");
-    menu_additem(menu, "\wReset All Settings", "3");
+    menu_additem(menu, "\wMap Entities", "3");
+    menu_additem(menu, "\wReset All Settings", "4");
 
     menu_display(id, menu, 0);
     return PLUGIN_HANDLED;
@@ -121,9 +161,107 @@ public MainMenuHandler(id, menu, item) {
     switch(item) {
         case 0: OpenAimMenu(id);
         case 1: OpenEntityMenu(id);
-        case 2: ResetSettings(id);
+        case 2: ShowMapEntities(id);
+        case 3: ResetSettings(id);
     }
     return PLUGIN_HANDLED;
+}
+
+public ShowMapEntities(id) {
+    new menu = menu_create("\r[FWO] \d- \wMap Entities:", "map_entities_handler");
+
+    if (g_map_entity_count > 0) {
+        new entity_name[32];
+        for (new i = 0; i < g_map_entity_count; i++) {
+            ArrayGetString(g_map_entities, i, entity_name, sizeof(entity_name) - 1);
+            menu_additem(menu, entity_name, "");
+        }
+    } else {
+        menu_additem(menu, "No entities found", "");
+    }
+
+    menu_display(id, menu, 0);
+}
+
+public map_entities_handler(id, menu, item) {
+    if (item == MENU_EXIT) {
+        menu_destroy(menu);
+        return PLUGIN_HANDLED;
+    }
+
+    // Gets the entity's name to display in the menu
+    new entity_name[32];
+    ArrayGetString(g_map_entities, item, entity_name, sizeof(entity_name) - 1);
+
+    // Takes us to the submenu when an entity is selected
+    OpenEntityOptionsMenu(id, entity_name);
+
+    return PLUGIN_HANDLED;
+}
+
+public OpenEntityOptionsMenu(id, const entity_name[]) {
+    new menu = menu_create("\r[FWO] \d- \wEntity Options:", "entity_options_handler");
+
+    menu_additem(menu, "Remove All", entity_name); // Removes all entities of this type
+    menu_additem(menu, "Remove One", entity_name); // Removes only the selected entity
+    menu_additem(menu, "Save for Auto-Removal", entity_name); // Save
+
+    menu_display(id, menu, 0);
+}
+
+public entity_options_handler(id, menu, item) {
+    if (item == MENU_EXIT) {
+        menu_destroy(menu);
+        return;
+    }
+
+    // Gets the name of the selected entity
+    new entity_name[32];
+    menu_item_getinfo(menu, item, _, entity_name, sizeof(entity_name) - 1, _, _, _);
+
+    switch (item) {
+        case 0: {
+            // Removes all entities of this type
+            RemoveAllEntitiesOfType(entity_name);
+            client_print_color(id, print_chat, "^4[FWO] ^1Removed all entities of type: ^4%s.", entity_name);
+        }
+        case 1: {
+            // Removes just one entity of this type
+            RemoveOneEntityOfType(entity_name);
+            client_print_color(id, print_chat, "^4[FWO] ^1Removed one entity of type: ^4%s.", entity_name);
+        }
+        case 2: {
+            // Saves the entity for automatic removal
+            SaveEntityForAutoRemoval(entity_name);
+            client_print_color(id, print_chat, "^4[FWO] ^1Saved entity for auto-removal: ^4%s.", entity_name);
+        }
+    }
+
+    // Updates the entity list after removal
+    ScanMapEntities();
+    return;
+}
+
+public RemoveAllEntitiesOfType(const entity_name[]) {
+    new entity_index = -1;
+    while ((entity_index = find_ent_by_class(entity_index, entity_name))) {
+        RemoveEntity(entity_index);
+    }
+}
+
+public RemoveOneEntityOfType(const entity_name[]) {
+    new entity_index = find_ent_by_class(-1, entity_name);
+    if (entity_index > 0) {
+        RemoveEntity(entity_index);
+    }
+}
+
+public SaveEntityForAutoRemoval(const entity_name[]) {
+    ArrayPushString(g_class, entity_name);
+    ArrayPushString(g_model, "*");
+    g_total++;
+
+    save_map_config();
 }
 
 public OpenAimMenu(id) {
