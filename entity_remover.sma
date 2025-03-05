@@ -118,15 +118,7 @@ public ScanMapEntities() {
             }
 
             // Check if classname already exists
-            new found = -1;
-            for (new i = 0; i < g_map_entity_type_count; i++) {
-                new ent_info[EntityInfo];
-                ArrayGetArray(g_map_entity_types, i, ent_info);
-                if (equali(ent_info[ei_classname], entity_name)) {
-                    found = i;
-                    break;
-                }
-            }
+            new found = ArrayFindString(g_map_entity_types, entity_name);
 
             if (found == -1) {
                 // New classname
@@ -137,7 +129,6 @@ public ScanMapEntities() {
                 ArrayPushCell(ent_info[ei_indices], entity_index);
                 ArrayPushArray(g_map_entity_types, ent_info);
                 g_map_entity_type_count++;
-                found = g_map_entity_type_count - 1;
             } else {
                 // Existing classname, increment count
                 new ent_info[EntityInfo];
