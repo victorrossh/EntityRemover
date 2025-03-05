@@ -10,8 +10,10 @@
 
 // Path to save the configuration files
 new const CONFIG_FOLDER[] = "addons/amxmodx/configs/entity_remover";
+new const IGNORE_CFG[] = "addons/amxmodx/configs/ignored_entities.cfg";
 new const PLASMA_SPRITE[] = "sprites/plasma.spr";
 new g_plasma_sprite;
+new Array:g_ignored_entities;
 
 // Temporary array to store the map entities
 new Array:g_map_entities;
@@ -67,6 +69,7 @@ public plugin_precache() {
     g_map_entity_count = 0;
     g_map_entity_types = ArrayCreate(EntityInfo, 1); // New array unique types
     g_map_entity_type_count = 0;
+    g_ignored_entities = ArrayCreate(32, 1);
 
     g_plasma_sprite = precache_model(PLASMA_SPRITE);
 }
@@ -80,7 +83,7 @@ public plugin_init() {
     for(new i = 1; i <= 32; i++) {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
-    create_config_folder();
+    load_ignored_entities();
     ScanMapEntities();
     load_map_config();
 
@@ -108,9 +111,10 @@ public ScanMapEntities() {
         if (pev_valid(entity_index)) {
             pev(entity_index, pev_classname, entity_name, sizeof(entity_name) - 1);
 
-            // Skip unwanted entities
-            if (equali(entity_name, "player") || equali(entity_name, "worldspawn") || equali(entity_name, "")) {
-                continue;
+            // Check if the entity should be ignored.
+            if (equali(entity_name, "player") || equali(entity_name, "worldspawn") || !entity_name[0] || // Empty string check
+                ArrayFindString(g_ignored_entities, entity_name) != -1) {
+                continue; 
             }
 
             // Check if classname already exists
@@ -753,6 +757,24 @@ public CreateGuideLine(id, ent_id) {
 
 public create_config_folder() {
     mkdir(CONFIG_FOLDER);
+}
+
+public load_ignored_entities() {
+    ArrayClear(g_ignored_entities);
+
+    if (file_exists(IGNORE_CFG)) {
+        new file = fopen(IGNORE_CFG, "rt");
+        if (file) {
+            new line[32];
+            while (fgets(file, line, 31)) {
+                trim(line);
+                if (line[0] && !equali(line, "")) {
+                    ArrayPushString(g_ignored_entities, line);
+                }
+            }
+            fclose(file);
+        }
+    }
 }
 
 public load_map_config() {
