@@ -30,7 +30,10 @@ enum _:EntityData {
 enum _:EntityInfo {
     ei_classname[32],
     ei_count,
-    Array:ei_indices
+    Array:ei_indices,
+    Array:ei_solid,
+    Array:ei_rendermode,
+    Array:ei_renderamt
 };
 
 new Array:g_map_entity_types; // Array of EntityInfo for unique classnames 
@@ -107,19 +110,28 @@ public ScanMapEntities() {
             // Check if the entity should be ignored.
             if (equali(entity_name, "player") || equali(entity_name, "worldspawn") || !entity_name[0] || // Empty string check
                 ArrayFindString(g_ignored_entities, entity_name) != -1) {
-                continue; 
+                continue;
             }
 
             // Check if classname already exists
             new found = ArrayFindString(g_map_entity_types, entity_name);
-
             if (found == -1) {
                 // New classname
                 new ent_info[EntityInfo];
                 copy(ent_info[ei_classname], 31, entity_name);
                 ent_info[ei_count] = 1;
                 ent_info[ei_indices] = ArrayCreate(1, 1);
+                ent_info[ei_solid] = ArrayCreate(1, 1);
+                ent_info[ei_rendermode] = ArrayCreate(1, 1);
+                ent_info[ei_renderamt] = ArrayCreate(1, 1);
+                
                 ArrayPushCell(ent_info[ei_indices], entity_index);
+                ArrayPushCell(ent_info[ei_solid], pev(entity_index, pev_solid));
+                ArrayPushCell(ent_info[ei_rendermode], pev(entity_index, pev_rendermode));
+                new Float:renderamt;
+                pev(entity_index, pev_renderamt, renderamt);
+                ArrayPushCell(ent_info[ei_renderamt], renderamt);
+                
                 ArrayPushArray(g_map_entity_types, ent_info);
                 g_map_entity_type_count++;
             } else {
@@ -128,6 +140,11 @@ public ScanMapEntities() {
                 ArrayGetArray(g_map_entity_types, found, ent_info);
                 ent_info[ei_count]++;
                 ArrayPushCell(ent_info[ei_indices], entity_index);
+                ArrayPushCell(ent_info[ei_solid], pev(entity_index, pev_solid));
+                ArrayPushCell(ent_info[ei_rendermode], pev(entity_index, pev_rendermode));
+                new Float:renderamt;
+                pev(entity_index, pev_renderamt, renderamt);
+                ArrayPushCell(ent_info[ei_renderamt], renderamt);
                 ArraySetArray(g_map_entity_types, found, ent_info);
             }
 
@@ -412,15 +429,22 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
     ArrayGetArray(g_map_entity_types, type_index, ent_info);
     
     new ent = -1;
+    new index = 0;
     while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ent_info[ei_classname])) != 0) {
         if (pev_valid(ent)) {
             if (remove) {
                 RemoveEntity(ent);
             } else {
-                set_pev(ent, pev_rendermode, kRenderNormal);
-                set_pev(ent, pev_renderamt, 255.0);
-                set_pev(ent, pev_solid, SOLID_BSP);
+                // Restore original properties (same transparency, etc.)
+                new solid = ArrayGetCell(ent_info[ei_solid], index);
+                new rendermode = ArrayGetCell(ent_info[ei_rendermode], index);
+                new Float:renderamt = Float:ArrayGetCell(ent_info[ei_renderamt], index);
+                
+                set_pev(ent, pev_rendermode, rendermode);
+                set_pev(ent, pev_renderamt, renderamt);
+                set_pev(ent, pev_solid, solid); // Instead of using SOLID_BSP, we use the stored original value, avoiding becoming opaque
             }
+            index++;
         }
     }
 }
