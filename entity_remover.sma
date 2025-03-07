@@ -455,19 +455,54 @@ public RemoveSavedEntity(const model[]) {
 }
 
 public ResetSettings(id) {
+    // Reset global entities (menu 2)
     for(new i = 0; i < g_map_entity_type_count; i++) {
-    if(g_remove_map_entities[i]) {
-        g_remove_map_entities[i] = false;
-        ApplyMapEntityToggle(i, false);
+        if(g_remove_map_entities[i]) {
+            g_remove_map_entities[i] = false;
+            ApplyMapEntityToggle(i, false);
         }
     }
     
+    // Reset specific entities (menu 1)
+    if(g_total > 0) {
+        new ent = 0;
+        new class[32], model[32];
+        new max_entities = engfunc(EngFunc_NumberOfEntities);
+        
+        // Scan all entities in the map
+        for(ent = 1; ent < max_entities; ent++) {
+            if(pev_valid(ent)) {
+                pev(ent, pev_classname, class, 31);
+                pev(ent, pev_model, model, 31);
+                
+                // Check if this entity matches any saved specific removal
+                for(new i = 0; i < g_total; i++) {
+                    new saved_class[32], saved_model[32];
+                    ArrayGetString(g_class, i, saved_class, 31);
+                    ArrayGetString(g_model, i, saved_model, 31);
+                    
+                    if(equali(class, saved_class) && equali(model, saved_model)) {
+                        // Restore the entity
+                        set_pev(ent, pev_rendermode, kRenderNormal);
+                        set_pev(ent, pev_renderamt, 255.0);
+                        set_pev(ent, pev_solid, SOLID_BSP);
+                        break; // Move to next entity once matched
+                    }
+                }
+            }
+        }
+        
+        // Clear specific entity arrays
+        ArrayClear(g_class);
+        ArrayClear(g_model);
+        g_total = 0;
+    }
+    
+    // Delete config file
     new map[32];
     get_mapname(map, 31);
-    
     new filepath[256];
     formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
-    
     if(file_exists(filepath)) {
         delete_file(filepath);
     }
