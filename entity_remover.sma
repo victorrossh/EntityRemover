@@ -38,7 +38,7 @@ new Array:g_map_entity_types; // Array of EntityInfo for unique classnames
 new g_map_entity_type_count;  // Count of unique types
 new bool:g_remove_map_entities[4096];
 
-new bool:g_noclip_enabled[33]; 
+new bool:g_noclip_enabled[33];
 
 new Array:g_undo_stack[33];
 new g_undo_size[33];
@@ -72,6 +72,7 @@ public plugin_init() {
     for(new i = 1; i <= 32; i++) {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
+    create_config_folder();
     load_ignored_entities();
     ScanMapEntities();
     load_map_config();
@@ -348,7 +349,7 @@ public OpenEntityOptionsMenu(id, type_index) {
     formatex(item, sizeof(item) - 1, "%s %s", ent_info[ei_classname], status);
     menu_additem(menu, item, fmt("%d", type_index));
     
-    // Uniques entites 
+    // Uniques entities 
     for (new i = 0; i < ent_info[ei_count]; i++) {
         new item_name[32];
         formatex(item_name, sizeof(item_name) - 1, "Entity #%d", i + 1);
@@ -472,9 +473,9 @@ public SaveMapEntityState(type_index) {
 public ApplyMapEntityToggle(type_index, bool:remove) {
     new ent_info[EntityInfo];
     ArrayGetArray(g_map_entity_types, type_index, ent_info);
-
-    for (new i = 0; i < ent_info[ei_count]; i++) {
-        new ent = ArrayGetCell(ent_info[ei_indices], i);
+    
+    new ent = -1;
+    while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ent_info[ei_classname])) != 0) {
         if (pev_valid(ent)) {
             if (remove) {
                 RemoveEntity(ent);
@@ -521,6 +522,13 @@ public RemoveSavedEntity(const model[]) {
 }
 
 public ResetSettings(id) {
+    for(new i = 0; i < g_map_entity_type_count; i++) {
+    if(g_remove_map_entities[i]) {
+        g_remove_map_entities[i] = false;
+        ApplyMapEntityToggle(i, false);
+        }
+    }
+    
     new map[32];
     get_mapname(map, 31);
     
@@ -680,7 +688,7 @@ public load_map_config() {
                     replace(model, 31, "^"", "");
                     
                     if(equali(model, "GLOBAL")) {
-                        // Global entity (menu3)
+                        // Global entity (menu2)
                         for (new i = 0; i < g_map_entity_type_count; i++) {
                             new ent_info[EntityInfo];
                             ArrayGetArray(g_map_entity_types, i, ent_info);
@@ -720,7 +728,7 @@ public save_map_config() {
             fprintf(file, "^"%s^" ^"%s^"^n", class, model);
         }
         
-        // Save map entities (menu 3)
+        // Save map entities (menu 2)
         for (new i = 0; i < g_map_entity_type_count; i++) {
             new ent_info[EntityInfo];
             ArrayGetArray(g_map_entity_types, i, ent_info);
