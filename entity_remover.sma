@@ -271,7 +271,10 @@ public ConfirmationMenuHandler(id, menu, item) {
         
         if(pev_valid(ent_data[ent_index])) {
             RemoveEntity(ent_data[ent_index]);
-            SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
+            ArrayPushString(g_class, ent_data[ent_classname]);
+            ArrayPushString(g_model, ent_data[ent_model]);
+            g_total++;
+            save_map_config();
             //client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
             CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
         }
@@ -422,24 +425,6 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
                 set_pev(ent, pev_solid, SOLID_BSP);
             }
         }
-    }
-}
-
-public SaveSpecificEntity(const class[], const model[]) {
-    ArrayPushString(g_class, class);
-    ArrayPushString(g_model, model);
-    g_total++;
-    
-    new map[32];
-    get_mapname(map, 31);
-    
-    new filepath[256];
-    formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
-    
-    new file = fopen(filepath, "at");
-    if(file) {
-        fprintf(file, "^"%s^" ^"%s^"^n", class, model);
-        fclose(file);
     }
 }
 
@@ -729,7 +714,7 @@ public save_map_config() {
     new filepath[256];
     formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
     
-    new file = fopen(filepath, "wt");
+    new file = fopen(filepath, "at");
     if (file) {
         // Save map entities (menu 2)
         //We should use the "for" from menu 2 first, so all global entities are saved at the top of the .txt file
