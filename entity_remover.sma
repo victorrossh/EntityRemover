@@ -68,6 +68,10 @@ public plugin_init() {
     register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
     register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 
+    register_event("HLTV", "EventNewRound", "a", "1=0", "2=0");
+    register_logevent("EventNewRound", 2, "1=Round_Start");
+    register_logevent("EventNewRound", 2, "1=Round_End");
+
     for(new i = 1; i <= 32; i++) {
         g_undo_stack[i] = ArrayCreate(EntityData, 1);
     }
@@ -610,6 +614,45 @@ public CreateGuideLine(id, ent_id) {
         
         // Update the starting point for the next segment
         segment_start = segment_end;
+    }
+}
+
+public EventNewRound() {
+    // Reapplies the global removals from Menu 2 (GLOBAL ENTITIES) at the beginning of each round
+    if (g_map_entity_type_count > 0) {
+        for (new i = 0; i < g_map_entity_type_count; i++) {
+            if (g_remove_map_entities[i]) {
+                new ent_info[EntityInfo];
+                ArrayGetArray(g_map_entity_types, i, ent_info);
+                new ent = -1;
+                while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ent_info[ei_classname])) != 0) {
+                    if (pev_valid(ent)) {
+                        RemoveEntity(ent);
+                    }
+                }
+            }
+        }
+    }
+
+    // Reapplies the specific removals from Menu 1(Aim Menu) at the beginning of each round
+    if (g_total > 0) {
+        new ent, model[32];
+        new saved_class[32], saved_model[32];
+        for (new i = 0; i < g_total; i++) {
+            ArrayGetString(g_class, i, saved_class, 31);
+            ArrayGetString(g_model, i, saved_model, 31);
+            
+            ent = 0;
+            while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", saved_class)) != 0) {
+                if (pev_valid(ent)) {
+                    pev(ent, pev_model, model, 31);
+                    if (equali(model, saved_model)) {
+                        RemoveEntity(ent);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 
