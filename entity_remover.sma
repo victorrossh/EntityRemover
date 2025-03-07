@@ -19,16 +19,6 @@ new Array:g_ignored_entities;
 new Array:g_map_entities;
 new g_map_entity_count;
 
-// We can add more entities that we want to be removed
-// Global Variable
-new const ENTITIES[][] = {
-    "func_door",
-    "func_button",
-    "func_door_rotating",
-    "func_breakable",
-    "cycler"
-};
-
 enum _:EntityData {
     ent_index,
     ent_solid,
@@ -50,7 +40,6 @@ new bool:g_remove_map_entities[4096];
 
 new bool:g_noclip_enabled[33]; 
 
-new bool:g_remove_entities[sizeof(ENTITIES)];
 new Array:g_undo_stack[33];
 new g_undo_size[33];
 new Array:g_class;
@@ -67,7 +56,7 @@ public plugin_precache() {
     // Initializes the temporary arrays
     g_map_entities = ArrayCreate(32, 1);
     g_map_entity_count = 0;
-    g_map_entity_types = ArrayCreate(EntityInfo, 1); // New array unique types
+    g_map_entity_types = ArrayCreate(EntityInfo, 1);
     g_map_entity_type_count = 0;
     g_ignored_entities = ArrayCreate(32, 1);
 
@@ -162,14 +151,6 @@ public TaskDelayedCheck(ent) {
     pev(ent, pev_classname, class, 31);
     pev(ent, pev_model, model, 31);
     
-    // Check global entities
-    for(new i = 0; i < sizeof(ENTITIES); i++) {
-        if(g_remove_entities[i] && equali(class, ENTITIES[i])) {
-            RemoveEntity(ent);
-            return;
-        }
-    }
-    
     // Check specific entities
     for(new i = 0; i < g_total; i++) {
         new saved_class[32], saved_model[32];
@@ -191,12 +172,11 @@ public MainEntityMenu(id, level, cid) {
     new item_text[64];
 
     menu_additem(menu, "\wRemove Aimed Entity", "1");
-    menu_additem(menu, "\wRemove Specific Entities", "2");
-    menu_additem(menu, "\wMap Entities", "3");
-    menu_additem(menu, "\wReset All Settings^n", "4");
+    menu_additem(menu, "\wMap Entities", "2");
+    menu_additem(menu, "\wReset All Settings^n", "3");
 
     formatex(item_text, sizeof(item_text) - 1, "\wNoclip %s", g_noclip_enabled[id]?"\y[ON]^n":"\r[OFF]^n");
-    menu_additem(menu, item_text, "5");
+    menu_additem(menu, item_text, "4");
 
     menu_display(id, menu, 0);
     return PLUGIN_HANDLED;
@@ -210,10 +190,9 @@ public MainMenuHandler(id, menu, item) {
 
     switch(item) {
         case 0: OpenAimMenu(id);
-        case 1: OpenEntityMenu(id);
-        case 2: ShowMapEntities(id);
-        case 3: ResetSettings(id);
-        case 4: ToggleNoclip(id);
+        case 1: ShowMapEntities(id);
+        case 2: ResetSettings(id);
+        case 3: ToggleNoclip(id);
     }
     return PLUGIN_HANDLED;
 }
@@ -319,43 +298,6 @@ public UndoLastRemoval(id) {
         CC_SendMessage(id, "%L", id, "NO_REMOVALS");
     }
     MainEntityMenu(id, 0, 0);
-    return PLUGIN_HANDLED;
-}
-
-public OpenEntityMenu(id) {
-    new menu = menu_create("\r[FWO] \d- \wRemove Specific Entities:", "EntityMenuHandler");
-    
-    for(new i = 0; i < sizeof(ENTITIES); i++) {
-        new item[64], status[8];
-        format(status, 7, g_remove_entities[i] ? "\y[ON]" : "\r[OFF]");
-        formatex(item, charsmax(item), "%s %s%s", ENTITIES[i], status, i == sizeof(ENTITIES) - 1 ? "^n" : "");
-        menu_additem(menu, item);
-    }
-    
-    menu_additem(menu, "\wSave", "save");
-    menu_display(id, menu, 0);
-}
-
-public EntityMenuHandler(id, menu, item) {
-    if(item == MENU_EXIT) {
-        menu_destroy(menu);
-        return PLUGIN_HANDLED;
-    }
-
-    if(item == sizeof(ENTITIES)) {
-        save_map_config();
-        //client_print_color(id, print_chat, "^4[FWO] ^1Settings saved.");
-        CC_SendMessage(id, "%L", id, "SETTINGS_SAVED");
-        MainEntityMenu(id, 0, 0);
-    }
-    else if(item >= 0 && item < sizeof(ENTITIES)) {
-        g_remove_entities[item] = !g_remove_entities[item];
-        ApplyGlobalEntityToggle(item, g_remove_entities[item]);
-        new status[32];
-        formatex(status, charsmax(status), "%L", id, g_remove_entities[item] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
-        CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ENTITIES[item], status);
-        OpenEntityMenu(id);
-    }
     return PLUGIN_HANDLED;
 }
 
@@ -579,13 +521,6 @@ public RemoveSavedEntity(const model[]) {
 }
 
 public ResetSettings(id) {
-    for(new i = 0; i < sizeof(ENTITIES); i++) {
-        if(g_remove_entities[i]) {
-            g_remove_entities[i] = false;
-            ApplyGlobalEntityToggle(i, false); // Restore entities when resetting
-        }
-    }
-    
     new map[32];
     get_mapname(map, 31);
     
@@ -599,24 +534,6 @@ public ResetSettings(id) {
     //client_print_color(id, print_chat, "^4[FWO] ^1All settings have been reset.");
     CC_SendMessage(id, "%L", id, "ALL_SETTINGS_RESET");
     MainEntityMenu(id, 0, 0);
-}
-
-
-// Apply ON/OFF toggle instantly
-// Note: If I want to clean up the code and remove this function in the future, I can move its logic into EntityMenuHandler.
-public ApplyGlobalEntityToggle(entity_idx, bool:remove) {
-    new ent = -1;
-    while((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ENTITIES[entity_idx])) != 0) {
-        if(pev_valid(ent)) {
-            if(remove) {
-                RemoveEntity(ent);
-            } else {
-                set_pev(ent, pev_rendermode, kRenderNormal);
-                set_pev(ent, pev_renderamt, 255.0);
-                set_pev(ent, pev_solid, SOLID_BSP);
-            }
-        }
-    }
 }
 
 public RemoveEntity(ent) {
@@ -763,14 +680,7 @@ public load_map_config() {
                     replace(model, 31, "^"", "");
                     
                     if(equali(model, "GLOBAL")) {
-                        // Global entity (menu2)
-                        for (new i = 0; i < sizeof(ENTITIES); i++) {
-                            if (equali(class, ENTITIES[i])) {
-                                g_remove_entities[i] = true;
-                                break;
-                            }
-                        }
-                        // Global entity (menu3))
+                        // Global entity (menu3)
                         for (new i = 0; i < g_map_entity_type_count; i++) {
                             new ent_info[EntityInfo];
                             ArrayGetArray(g_map_entity_types, i, ent_info);
@@ -781,6 +691,7 @@ public load_map_config() {
                             }
                         }
                     } else {
+                        // Specific entity
                         ArrayPushString(g_class, class);
                         ArrayPushString(g_model, model);
                         g_total++;
@@ -801,13 +712,6 @@ public save_map_config() {
     
     new file = fopen(filepath, "wt");
     if (file) {
-        // Save global entities (menu 2)
-        for(new i = 0; i < sizeof(ENTITIES); i++) {
-            if(g_remove_entities[i]) {
-                fprintf(file, "^"%s^" ^"GLOBAL^"^n", ENTITIES[i]);
-            }
-        }
-        
         // Save specific entities (menu 1)
         for(new i = 0; i < g_total; i++) {
             new class[32], model[32];
