@@ -342,7 +342,7 @@ public OpenEntityOptionsMenu(id, type_index) {
     
     new menu_title[64];
     formatex(menu_title, sizeof(menu_title) - 1, "\r[FWO] \d- \w%s Options:", ent_info[ei_classname]);
-    new menu = menu_create(menu_title, "entity_options_handler");
+    new menu = menu_create(menu_title, "EntityOptionsHandler");
 
     new item[64], status[8];
     format(status, 7, g_remove_map_entities[type_index] ? "\y[ON]" : "\r[OFF]");
@@ -359,7 +359,7 @@ public OpenEntityOptionsMenu(id, type_index) {
     menu_display(id, menu, 0);
 }
 
-public entity_options_handler(id, menu, item) {
+public EntityOptionsHandler(id, menu, item) {
     if (item == MENU_EXIT) {
         menu_destroy(menu);
         ShowMapEntities(id);
@@ -380,7 +380,7 @@ public entity_options_handler(id, menu, item) {
             new status[32];
             formatex(status, charsmax(status), "%L", id, g_remove_map_entities[type_index] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
             CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
-            SaveMapEntityState(type_index); // Saves directly to the .txt
+            save_map_config(); // Saves directly to the .txt
             OpenEntityOptionsMenu(id, type_index);
         } else if (item >= 1) { 
             new ent_array_index = item - 1;
@@ -402,72 +402,6 @@ public entity_options_handler(id, menu, item) {
 
     menu_destroy(menu);
     return PLUGIN_HANDLED;
-}
-
-public SaveMapEntityState(type_index) {
-    new map[32];
-    get_mapname(map, 31);
-    
-    new filepath[256];
-    formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
-    
-    new temp_filepath[256];
-    formatex(temp_filepath, 255, "%s/%s_temp.txt", CONFIG_FOLDER, map);
-    
-    new ent_info[EntityInfo];
-    ArrayGetArray(g_map_entity_types, type_index, ent_info);
-    new classname[32];
-    copy(classname, 31, ent_info[ei_classname]);
-
-    // Read the current file and rewrite it, adding or removing the entry
-    new file = fopen(filepath, "rt");
-    new temp_file = fopen(temp_filepath, "wt");
-    
-    if (file && temp_file) {
-        new line[128], found = 0;
-        while (fgets(file, line, 127)) {
-            trim(line);
-            if (contain(line, "^"") != -1) {
-                new class[32], model[32];
-                parse(line, class, 31, model, 31);
-                replace(class, 31, "^"", "");
-                replace(model, 31, "^"", "");
-                
-                // Do not copy the line if it is the entity we are modifying
-                if (equali(class, classname) && equali(model, "GLOBAL")) {
-                    found = 1;
-                    if (g_remove_map_entities[type_index]) {
-                        fprintf(temp_file, "^"%s^" ^"GLOBAL^"^n", classname);
-                    }
-                    continue;
-                }
-                fprintf(temp_file, "%s^n", line);
-            }
-        }
-        
-        // If not found and it is ON, add the entry
-        if (!found && g_remove_map_entities[type_index]) {
-            fprintf(temp_file, "^"%s^" ^"GLOBAL^"^n", classname);
-        }
-        
-        fclose(file);
-        fclose(temp_file);
-        
-        delete_file(filepath);
-        rename_file(temp_filepath, filepath, 1);
-    } else {
-        if (temp_file) fclose(temp_file);
-        if (file) fclose(file);
-        
-        // If the file doesn't exist, create a new one
-        file = fopen(filepath, "wt");
-        if (file) {
-            if (g_remove_map_entities[type_index]) {
-                fprintf(file, "^"%s^" ^"GLOBAL^"^n", classname);
-            }
-            fclose(file);
-        }
-    }
 }
 
 public ApplyMapEntityToggle(type_index, bool:remove) {
@@ -720,21 +654,22 @@ public save_map_config() {
     
     new file = fopen(filepath, "wt");
     if (file) {
-        // Save specific entities (menu 1)
-        for(new i = 0; i < g_total; i++) {
-            new class[32], model[32];
-            ArrayGetString(g_class, i, class, 31);
-            ArrayGetString(g_model, i, model, 31);
-            fprintf(file, "^"%s^" ^"%s^"^n", class, model);
-        }
-        
         // Save map entities (menu 2)
+        //We should use the "for" from menu 2 first, so all global entities are saved at the top of the .txt file
         for (new i = 0; i < g_map_entity_type_count; i++) {
             new ent_info[EntityInfo];
             ArrayGetArray(g_map_entity_types, i, ent_info);
             if (g_remove_map_entities[i]) {
                 fprintf(file, "^"%s^" ^"GLOBAL^"^n", ent_info[ei_classname]);
             }
+        }
+        
+        // Save specific entities (menu 1)
+        for(new i = 0; i < g_total; i++) {
+            new class[32], model[32];
+            ArrayGetString(g_class, i, class, 31);
+            ArrayGetString(g_model, i, model, 31);
+            fprintf(file, "^"%s^" ^"%s^"^n", class, model);
         }
         
         fclose(file);
