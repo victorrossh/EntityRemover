@@ -21,4 +21,5 @@ tasks.json
 
 # End of https://www.toptal.com/developers/gitignore/api/pawn
 
-entity_remover_versions_without_ScanMap.sma
+entity_remover_version_without_ScanMap.sma
+entity_remover_version_with_enum_and_scan.sma
