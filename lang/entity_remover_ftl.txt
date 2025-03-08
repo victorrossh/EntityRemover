@@ -1,59 +1,349 @@
 [en]
 
-FOLLOW_PLASMA = Follow the plasma line to the entity.
-ENTITY_INVALID = Entity no longer valid.
 NO_ENTITY = No entity found.
 ENTITY_REMOVED = Entity removed: &x04%s
 LAST_REMOVAL_UNDONE = Last removal undone: &x04%s
 NO_REMOVALS = No removals to undo.
-ALL_SETTINGS_RESET = All settings have been reset.
-SETTINGS_SAVED = Settings saved.
 GLOBAL_ENTITY_TOGGLED = Global entity &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removed&x01.
 MSG_GLOBAL_RESTORED = &x06restored&x01.
+FOLLOW_PLASMA = Follow the plasma line to the entity.
+ENTITY_INVALID = Entity no longer valid.
+ALL_SETTINGS_RESET = All settings have been reset.
 NOCLIP_TO_PLASMA = Noclip &x06activated&x01, follow the plasma to visualize the desired entity.
 
 [bp]
 
-FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
-ENTITY_INVALID = Entidade não válida.
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
 NO_REMOVALS = Nenhuma remoção para desfazer.
-ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
-SETTINGS_SAVED = Configurações salvas.
 GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removida&x01.
 MSG_GLOBAL_RESTORED = &x06restaurada&x01.
+FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
+ENTITY_INVALID = Entidade não válida.
+ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
 
 [ro]
 
-FOLLOW_PLASMA = Urmează linia de plasma până la entitate.
-ENTITY_INVALID = Entitate nevalidă.
 NO_ENTITY = Nicio entitate găsită.
 ENTITY_REMOVED = Entitate eliminată: &x04%s
 LAST_REMOVAL_UNDONE = Ultima eliminare anullată: &x04%s
 NO_REMOVALS = Nicio eliminare de anulat.
-ALL_SETTINGS_RESET = Toate setările au fost resetate.
-SETTINGS_SAVED = Setările au fost salvate.
 GLOBAL_ENTITY_TOGGLED = Entitate globală &x04%s %s
 MSG_GLOBAL_REMOVED = &x07eliminat&x01.
 MSG_GLOBAL_RESTORED = &x06restaurat&x01.
+FOLLOW_PLASMA = Urmează linia de plasma până la entitate.
+ENTITY_INVALID = Entitate nevalidă.
+ALL_SETTINGS_RESET = Toate setările au fost resetate.
 NOCLIP_TO_PLASMA = Noclip &x06activat&x01, urmează plasma pentru a vizualiza entitatea dorită.
 
 [pt]
 
-FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
-ENTITY_INVALID = Entidade não válida.
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
 NO_REMOVALS = Nenhuma remoção para desfazer.
-ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
-SETTINGS_SAVED = Configurações salvas.
 GLOBAL_ENTITY_TOGGLED = Entidade global &x04%s %s
 MSG_GLOBAL_REMOVED = &x07removida&x01.
 MSG_GLOBAL_RESTORED = &x06restaurada&x01.
+FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
+ENTITY_INVALID = Entidade não válida.
+ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
+
+[es]
+
+NO_ENTITY = No se encontró entidad.
+ENTITY_REMOVED = Entidad eliminada: &x04%s
+LAST_REMOVAL_UNDONE = Última eliminación deshecha: &x04%s
+NO_REMOVALS = No hay eliminaciones para deshacer.
+GLOBAL_ENTITY_TOGGLED = Entidad global &x04%s %s
+MSG_GLOBAL_REMOVED = &x07eliminada&x01.
+MSG_GLOBAL_RESTORED = &x06restaurada&x01.
+FOLLOW_PLASMA = Sigue la línea de plasma hasta la entidad.
+ENTITY_INVALID = La entidad ya no es válida.
+ALL_SETTINGS_RESET = Todas las configuraciones han sido restablecidas.
+NOCLIP_TO_PLASMA = Noclip &x06activado&x01, sigue el plasma para visualizar la entidad deseada.
+
+[de]
+
+NO_ENTITY = Keine Entität gefunden.
+ENTITY_REMOVED = Entität entfernt: &x04%s
+LAST_REMOVAL_UNDONE = Letzte Entfernung rückgängig gemacht: &x04%s
+NO_REMOVALS = Keine Entfernungen rückgängig zu machen.
+GLOBAL_ENTITY_TOGGLED = Globale Entität &x04%s %s
+MSG_GLOBAL_REMOVED = &x07entfernt&x01.
+MSG_GLOBAL_RESTORED = &x06wiederhergestellt&x01.
+FOLLOW_PLASMA = Folge der Plasma-Linie zur Entität.
+ENTITY_INVALID = Entität ist nicht mehr gültig.
+ALL_SETTINGS_RESET = Alle Einstellungen wurden zurückgesetzt.
+NOCLIP_TO_PLASMA = Noclip &x06aktiviert&x01, folge dem Plasma, um die gewünschte Entität zu visualisieren.
+
+[sr]
+
+NO_ENTITY = Nema entiteta.
+ENTITY_REMOVED = Entitet uklonjen: &x04%s
+LAST_REMOVAL_UNDONE = Poslednje uklanjanje poništeno: &x04%s
+NO_REMOVALS = Nema uklanjanja za poništavanje.
+GLOBAL_ENTITY_TOGGLED = Globalni entitet &x04%s %s
+MSG_GLOBAL_REMOVED = &x07uklonjeno&x01.
+MSG_GLOBAL_RESTORED = &x06vraćeno&x01.
+FOLLOW_PLASMA = Pratite plazma liniju do entiteta.
+ENTITY_INVALID = Entitet više nije validan.
+ALL_SETTINGS_RESET = Svi parametri su resetovani.
+NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, pratite plazmu da biste vizualizovali željeni entitet.
+
+[tr]
+
+NO_ENTITY = Varlık bulunamadı.
+ENTITY_REMOVED = Varlık kaldırıldı: &x04%s
+LAST_REMOVAL_UNDONE = Son kaldırma geri alındı: &x04%s
+NO_REMOVALS = Geri alınacak kaldırma yok.
+GLOBAL_ENTITY_TOGGLED = Global varlık &x04%s %s
+MSG_GLOBAL_REMOVED = &x07kaldırıldı&x01.
+MSG_GLOBAL_RESTORED = &x06geri yüklenmiş&x01.
+FOLLOW_PLASMA = Varlığa gitmek için plazma hattını takip et.
+ENTITY_INVALID = Varlık artık geçerli değil.
+ALL_SETTINGS_RESET = Tüm ayarlar sıfırlandı.
+NOCLIP_TO_PLASMA = Noclip &x06etkinleştirildi&x01, istediğiniz varlığı görselleştirmek için plazmayı takip edin.
+
+[fr]
+
+NO_ENTITY = Aucune entité trouvée.
+ENTITY_REMOVED = Entité supprimée : &x04%s
+LAST_REMOVAL_UNDONE = Dernière suppression annulée : &x04%s
+NO_REMOVALS = Aucune suppression à annuler.
+GLOBAL_ENTITY_TOGGLED = Entité globale &x04%s %s
+MSG_GLOBAL_REMOVED = &x07supprimée&x01.
+MSG_GLOBAL_RESTORED = &x06restaurée&x01.
+FOLLOW_PLASMA = Suivez la ligne de plasma vers l'entité.
+ENTITY_INVALID = L'entité n'est plus valide.
+ALL_SETTINGS_RESET = Toutes les configurations ont été réinitialisées.
+NOCLIP_TO_PLASMA = Noclip &x06activé&x01, suivez le plasma pour visualiser l'entité souhaitée.
+
+[sv]
+
+NO_ENTITY = Ingen entitet hittades.
+ENTITY_REMOVED = Entitet borttagen: &x04%s
+LAST_REMOVAL_UNDONE = Senaste borttagning ångrad: &x04%s
+NO_REMOVALS = Inga borttagningar att ångra.
+GLOBAL_ENTITY_TOGGLED = Global entitet &x04%s %s
+MSG_GLOBAL_REMOVED = &x07borttagen&x01.
+MSG_GLOBAL_RESTORED = &x06återställd&x01.
+FOLLOW_PLASMA = Följ plasma-linjen till entiteten.
+ENTITY_INVALID = Entiteten är inte längre giltig.
+ALL_SETTINGS_RESET = Alla inställningar har återställts.
+NOCLIP_TO_PLASMA = Noclip &x06aktiverat&x01, följ plasma för att visualisera önskad entitet.
+
+[da]
+
+NO_ENTITY = Ingen enhed fundet.
+ENTITY_REMOVED = Enhed fjernet: &x04%s
+LAST_REMOVAL_UNDONE = Sidste fjernelse fortrydt: &x04%s
+NO_REMOVALS = Ingen fjernelser at fortryde.
+GLOBAL_ENTITY_TOGGLED = Global enhed &x04%s %s
+MSG_GLOBAL_REMOVED = &x07fjernet&x01.
+MSG_GLOBAL_RESTORED = &x06gendannet&x01.
+FOLLOW_PLASMA = Følg plasma-linjen til enheden.
+ENTITY_INVALID = Enheden er ikke længere gyldig.
+ALL_SETTINGS_RESET = Alle indstillinger er blevet nulstillet.
+NOCLIP_TO_PLASMA = Noclip &x06aktiveret&x01, følg plasmaen for at visualisere den ønskede enhed.
+
+[pl]
+
+NO_ENTITY = Brak jednostki.
+ENTITY_REMOVED = Jednostka usunięta: &x04%s
+LAST_REMOVAL_UNDONE = Ostatnie usunięcie cofnięte: &x04%s
+NO_REMOVALS = Brak usunięć do cofnięcia.
+GLOBAL_ENTITY_TOGGLED = Globalna jednostka &x04%s %s
+MSG_GLOBAL_REMOVED = &x07usunięto&x01.
+MSG_GLOBAL_RESTORED = &x06przywrócono&x01.
+FOLLOW_PLASMA = Śledź linię plazmy do jednostki.
+ENTITY_INVALID = Jednostka już nie jest ważna.
+ALL_SETTINGS_RESET = Wszystkie ustawienia zostały zresetowane.
+NOCLIP_TO_PLASMA = Noclip &x06włączony&x01, śledź plazmę, aby zobaczyć wybraną jednostkę.
+
+[nl]
+
+NO_ENTITY = Geen entiteit gevonden.
+ENTITY_REMOVED = Entiteit verwijderd: &x04%s
+LAST_REMOVAL_UNDONE = Laatste verwijdering ongedaan gemaakt: &x04%s
+NO_REMOVALS = Geen verwijderingen om ongedaan te maken.
+GLOBAL_ENTITY_TOGGLED = Globale entiteit &x04%s %s
+MSG_GLOBAL_REMOVED = &x07verwijderd&x01.
+MSG_GLOBAL_RESTORED = &x06hersteld&x01.
+FOLLOW_PLASMA = Volg de plasma-lijn naar de entiteit.
+ENTITY_INVALID = Entiteit is niet meer geldig.
+ALL_SETTINGS_RESET = Alle instellingen zijn gereset.
+NOCLIP_TO_PLASMA = Noclip &x06geactiveerd&x01, volg het plasma om de gewenste entiteit te visualiseren.
+
+[cz]
+
+NO_ENTITY = Entita nenalezena.
+ENTITY_REMOVED = Entita odstraněna: &x04%s
+LAST_REMOVAL_UNDONE = Poslední odstranění vráceno: &x04%s
+NO_REMOVALS = Žádné odstranění k vrácení.
+GLOBAL_ENTITY_TOGGLED = Globální entita &x04%s %s
+MSG_GLOBAL_REMOVED = &x07odstraněno&x01.
+MSG_GLOBAL_RESTORED = &x06obnovené&x01.
+FOLLOW_PLASMA = Sledujte plazmovou čáru k entitě.
+ENTITY_INVALID = Entita již není platná.
+ALL_SETTINGS_RESET = Všechna nastavení byla resetována.
+NOCLIP_TO_PLASMA = Noclip &x06aktivováno&x01, sledujte plazmu, abyste vizualizovali požadovanou entitu.
+
+[fi]
+
+NO_ENTITY = Entiteettiä ei löytynyt.
+ENTITY_REMOVED = Entiteetti poistettu: &x04%s
+LAST_REMOVAL_UNDONE = Viimeinen poisto peruutettu: &x04%s
+NO_REMOVALS = Ei poistoja peruutettavaksi.
+GLOBAL_ENTITY_TOGGLED = Globaali entiteetti &x04%s %s
+MSG_GLOBAL_REMOVED = &x07poistettu&x01.
+MSG_GLOBAL_RESTORED = &x06palautettu&x01.
+FOLLOW_PLASMA = Seuraa plasma-linjaa entiteettiin.
+ENTITY_INVALID = Entiteetti ei ole enää voimassa.
+ALL_SETTINGS_RESET = Kaikki asetukset on nollattu.
+NOCLIP_TO_PLASMA = Noclip &x06aktivoitu&x01, seuraa plasmaa visualisoidaksesi halutun entiteetin.
+
+[bg]
+
+NO_ENTITY = Няма намерена ентитет.
+ENTITY_REMOVED = Ентитет премахнат: &x04%s
+LAST_REMOVAL_UNDONE = Последното премахване отменено: &x04%s
+NO_REMOVALS = Няма премахвания за отменяне.
+GLOBAL_ENTITY_TOGGLED = Глобален ентитет &x04%s %s
+MSG_GLOBAL_REMOVED = &x07премахнат&x01.
+MSG_GLOBAL_RESTORED = &x06възстановен&x01.
+FOLLOW_PLASMA = Следвай линията на плазмата към ентитета.
+ENTITY_INVALID = Ентитетът вече не е валиден.
+ALL_SETTINGS_RESET = Всички настройки бяха възстановени.
+NOCLIP_TO_PLASMA = Noclip &x06активиран&x01, следвай плазмата, за да визуализираш желания ентитет.
+
+[hu]
+
+NO_ENTITY = Nincs entitás találva.
+ENTITY_REMOVED = Entitás eltávolítva: &x04%s
+LAST_REMOVAL_UNDONE = Utolsó eltávolítás visszavonva: &x04%s
+NO_REMOVALS = Nincs eltávolítás, amit visszavonhatnánk.
+GLOBAL_ENTITY_TOGGLED = Globális entitás &x04%s %s
+MSG_GLOBAL_REMOVED = &x07eltávolítva&x01.
+MSG_GLOBAL_RESTORED = &x06visszaállítva&x01.
+FOLLOW_PLASMA = Kövesd a plazma vonalat az entitásig.
+ENTITY_INVALID = Az entitás már nem érvényes.
+ALL_SETTINGS_RESET = Minden beállítás visszaállítva.
+NOCLIP_TO_PLASMA = Noclip &x06aktiválva&x01, kövesd a plazmát a kívánt entitás megjelenítéséhez.
+
+[lt]
+
+NO_ENTITY = Entitetas nerastas.
+ENTITY_REMOVED = Entitetas pašalintas: &x04%s
+LAST_REMOVAL_UNDONE = Paskutinė pašalinimas atšauktas: &x04%s
+NO_REMOVALS = Nėra pašalinimų, kuriuos galima atšaukti.
+GLOBAL_ENTITY_TOGGLED = Globalus entitetas &x04%s %s
+MSG_GLOBAL_REMOVED = &x07pašalintas&x01.
+MSG_GLOBAL_RESTORED = &x06atstatytas&x01.
+FOLLOW_PLASMA = Sekite plazmos liniją link entiteto.
+ENTITY_INVALID = Entitetas jau nebegalioja.
+ALL_SETTINGS_RESET = Visos nustatytos reikšmės buvo atstatytos.
+NOCLIP_TO_PLASMA = Noclip &x06įjungtas&x01, sekite plazmą norėdami pamatyti norimą entitetą.
+
+[sk]
+
+NO_ENTITY = Entita nenájdená.
+ENTITY_REMOVED = Entita odstránená: &x04%s
+LAST_REMOVAL_UNDONE = Posledné odstránenie zrušené: &x04%s
+NO_REMOVALS = Žiadne odstránenia na zrušenie.
+GLOBAL_ENTITY_TOGGLED = Globálna entita &x04%s %s
+MSG_GLOBAL_REMOVED = &x07odstránené&x01.
+MSG_GLOBAL_RESTORED = &x06obnovené&x01.
+FOLLOW_PLASMA = Sledujte plazmovú čiaru k entite.
+ENTITY_INVALID = Entita už nie je platná.
+ALL_SETTINGS_RESET = Všetky nastavenia boli obnovené.
+NOCLIP_TO_PLASMA = Noclip &x06aktivované&x01, sledujte plazmu, aby ste vizualizovali požadovanú entitu.
+
+[mk]
+
+NO_ENTITY = Не е пронајдена ентитет.
+ENTITY_REMOVED = Ентитет отстранет: &x04%s
+LAST_REMOVAL_UNDONE = Последното отстранување е поништено: &x04%s
+NO_REMOVALS = Нема отстранувања за поништување.
+GLOBAL_ENTITY_TOGGLED = Глобален ентитет &x04%s %s
+MSG_GLOBAL_REMOVED = &x07отстрането&x01.
+MSG_GLOBAL_RESTORED = &x06вратено&x01.
+FOLLOW_PLASMA = Следете ја плазматската линија до ентитетот.
+ENTITY_INVALID = Ентитетот повеќе не е валиден.
+ALL_SETTINGS_RESET = Сите поставки се ресетирани.
+NOCLIP_TO_PLASMA = Noclip &x06активирано&x01, следете ја плазмата за да ја визуелизирате посакуваната ентитет.
+
+[hr]
+
+NO_ENTITY = Entitet nije pronađen.
+ENTITY_REMOVED = Entitet uklonjen: &x04%s
+LAST_REMOVAL_UNDONE = Posljednje uklanjanje poništeno: &x04%s
+NO_REMOVALS = Nema uklanjanja za poništiti.
+GLOBAL_ENTITY_TOGGLED = Globalni entitet &x04%s %s
+MSG_GLOBAL_REMOVED = &x07uklonjeno&x01.
+MSG_GLOBAL_RESTORED = &x06obnovljeno&x01.
+FOLLOW_PLASMA = Slijedite liniju plazme do entiteta.
+ENTITY_INVALID = Entitet više nije važeći.
+ALL_SETTINGS_RESET = Svi postavke su resetirane.
+NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
+
+[bs]
+
+NO_ENTITY = Entitet nije pronađen.
+ENTITY_REMOVED = Entitet uklonjen: &x04%s
+LAST_REMOVAL_UNDONE = Posljednje uklanjanje poništeno: &x04%s
+NO_REMOVALS = Nema uklanjanja za poništiti.
+GLOBAL_ENTITY_TOGGLED = Globalni entitet &x04%s %s
+MSG_GLOBAL_REMOVED = &x07uklonjeno&x01.
+MSG_GLOBAL_RESTORED = &x06obnovljeno&x01.
+FOLLOW_PLASMA = Slijedite liniju plazme do entiteta.
+ENTITY_INVALID = Entitet više nije važeći.
+ALL_SETTINGS_RESET = Svi postavke su resetirane.
+NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
+
+[ru]
+
+NO_ENTITY = Сущность не найдена.
+ENTITY_REMOVED = Сущность удалена: &x04%s
+LAST_REMOVAL_UNDONE = Последнее удаление отменено: &x04%s
+NO_REMOVALS = Нет удалений для отмены.
+GLOBAL_ENTITY_TOGGLED = Глобальная сущность &x04%s %s
+MSG_GLOBAL_REMOVED = &x07удалено&x01.
+MSG_GLOBAL_RESTORED = &x06восстановлено&x01.
+FOLLOW_PLASMA = Следуйте по линии плазмы к сущности.
+ENTITY_INVALID = Сущность больше не действительна.
+ALL_SETTINGS_RESET = Все настройки были сброшены.
+NOCLIP_TO_PLASMA = Noclip &x06включен&x01, следуйте за плазмой, чтобы визуализировать требуемую сущность.
+
+[cn]
+
+NO_ENTITY = 未找到实体.
+ENTITY_REMOVED = 实体已移除: &x04%s
+LAST_REMOVAL_UNDONE = 最后一次移除已撤销: &x04%s
+NO_REMOVALS = 没有可撤销的移除.
+GLOBAL_ENTITY_TOGGLED = 全局实体 &x04%s %s
+MSG_GLOBAL_REMOVED = &x07已移除&x01.
+MSG_GLOBAL_RESTORED = &x06已恢复&x01.
+FOLLOW_PLASMA = 跟随等离子体线到实体.
+ENTITY_INVALID = 实体不再有效.
+ALL_SETTINGS_RESET = 所有设置已重置.
+NOCLIP_TO_PLASMA = Noclip &x06已启用&x01, 跟随等离子体来可视化所需的实体.
+
+[al]
+
+NO_ENTITY = Asgjë nuk u gjet.
+ENTITY_REMOVED = Entiteti u hoq: &x04%s
+LAST_REMOVAL_UNDONE = Heqja e fundit është anuluar: &x04%s
+NO_REMOVALS = Nuk ka asnjë heqje për të anuluar.
+GLOBAL_ENTITY_TOGGLED = Entiteti global &x04%s %s
+MSG_GLOBAL_REMOVED = &x07hequr&x01.
+MSG_GLOBAL_RESTORED = &x06restauruar&x01.
+FOLLOW_PLASMA = Ndjekni linjën e plazmës për te entiteti.
+ENTITY_INVALID = Entiteti nuk është më i vlefshëm.
+ALL_SETTINGS_RESET = Të gjitha cilësimet janë rikthyer në gjendjen e mëparshme.
+NOCLIP_TO_PLASMA = Noclip &x06aktivizuar&x01, ndjekni plazmën për të vizualizuar entitetin e dëshiruar.
