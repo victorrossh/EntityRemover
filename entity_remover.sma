@@ -1,5 +1,6 @@
 #include <amxmodx>
 #include <amxmisc>
+#include <engine>
 #include <xs>
 #include <cromchat2>
 
@@ -239,9 +240,7 @@ public AimMenuHandler(id, menu, item) {
             if(pev_valid(ent)) {
                 new class[32];
                 pev(ent, pev_classname, class, 31);
-                
-                new menu_title[128];
-                formatex(menu_title, 127, "\r[FWO] \d- \wRemove Entity: \y%s?", class);
+            
                 OpenConfirmationMenu(id, ent, class);
             }
             else {
@@ -263,31 +262,37 @@ public OpenConfirmationMenu(id, ent, const class[]) {
     formatex(title, charsmax(title), "\r[FWO] \d- \wRemove Entity: \y%s?", class);
     new menu = menu_create(title, "ConfirmationMenuHandler");
 
-    menu_additem(menu, "\wYes", "1");
+    menu_additem(menu, "\wYes", fmt("%d", ent));
     menu_additem(menu, "\wNo", "2");
     
     menu_display(id, menu, 0);
     
-    // Store entity data
-    new ent_data[EntityData];
-    ent_data[ent_index] = ent;
-    pev(ent, pev_solid, ent_data[ent_solid]);
-    pev(ent, pev_rendermode, ent_data[ent_rendermode]);
-    pev(ent, pev_renderamt, ent_data[ent_renderamt]);
-    pev(ent, pev_classname, ent_data[ent_classname], 31);
-    pev(ent, pev_model, ent_data[ent_model], 31);
     
-    ArrayPushArray(g_undo_stack[id], ent_data);
-    g_undo_size[id] = ArraySize(g_undo_stack[id]);
 }
+
+// Store entity data
+    
 
 public ConfirmationMenuHandler(id, menu, item) {
     if(item == 0) {
-        new ent_data[EntityData];
-        ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
+
+        new info[8], dummy;
+        menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
+        new ent = str_to_num(info);
         
-        if(pev_valid(ent_data[ent_index])) {
-            RemoveEntity(ent_data[ent_index]);
+        if(pev_valid(ent)) {
+            new ent_data[EntityData];
+            ent_data[ent_index] = ent;
+            pev(ent, pev_solid, ent_data[ent_solid]);
+            pev(ent, pev_rendermode, ent_data[ent_rendermode]);
+            pev(ent, pev_renderamt, ent_data[ent_renderamt]);
+            pev(ent, pev_classname, ent_data[ent_classname], 31);
+            pev(ent, pev_model, ent_data[ent_model], 31);
+
+            ArrayPushArray(g_undo_stack[id], ent_data);
+            g_undo_size[id] = ArraySize(g_undo_stack[id]);
+
+            RemoveEntity(ent);
             SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
             //client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
             CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
@@ -373,7 +378,8 @@ public OpenEntityOptionsMenu(id, type_index) {
     for (new i = 0; i < ent_info[ei_count]; i++) {
         new item_name[32];
         formatex(item_name, sizeof(item_name) - 1, "Entity #%d", i + 1);
-        menu_additem(menu, item_name, fmt("%d %d", type_index, ArrayGetCell(ent_info[ei_indices], i)));
+        //menu_additem(menu, item_name, fmt("%d %d", type_index, ArrayGetCell(ent_info[ei_indices], i)));
+        menu_additem(menu, item_name, fmt("%d", type_index));
     }
 
     menu_display(id, menu, 0);
@@ -407,6 +413,7 @@ public EntityOptionsHandler(id, menu, item) {
             if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
                 new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
                 if (pev_valid(ent_id)) {
+                    TeleportPlayerToEnt(id, ent_id);
                     CreateGuideLine(id, ent_id);
                     OpenAimMenu(id);
                     //CC_SendMessage(id, "Follow the plasma line to the entity.");
@@ -572,11 +579,39 @@ public GetAimAtEnt(id) {
     return 0;
 }
 
+
 public ToggleNoclip(id) {
     g_noclip_enabled[id] = !g_noclip_enabled[id];
     
     set_pev(id, pev_movetype, g_noclip_enabled[id] ? MOVETYPE_NOCLIP : MOVETYPE_WALK);
     MainEntityMenu(id, ADMIN_IMMUNITY, 0);
+}
+
+public TeleportPlayerToEnt(id, ent_id)
+{
+    new const Float:dist_to_ent = 250.0;
+    new Float:player_origin[3], Float:ent_origin[3];
+    new Float:vec_dir[3];
+    new Float:player_angles[3];
+    pev(id, pev_origin, player_origin);
+    get_brush_entity_origin(ent_id,  ent_origin);
+
+    xs_vec_sub(ent_origin, player_origin, vec_dir);
+    xs_vec_normalize(vec_dir, vec_dir);
+
+    engfunc(EngFunc_VecToAngles, vec_dir, player_angles);
+
+    xs_vec_neg(vec_dir, vec_dir);
+    xs_vec_add_scaled(ent_origin, vec_dir, dist_to_ent, player_origin);
+    
+    set_pev(id, pev_origin, player_origin);
+    SetUserAgl(id, player_angles);
+}
+
+stock SetUserAgl(id, Float:agl[3])
+{
+	entity_set_vector(id, EV_VEC_angles, agl);
+	entity_set_int(id, EV_INT_fixangle, 1);
 }
 
 public CreateGuideLine(id, ent_id) {
@@ -587,7 +622,7 @@ public CreateGuideLine(id, ent_id) {
     player_origin[2] += 10.0; // Adjust the line to be created at the player's eye level
     
     // Get the entity's position
-    pev(ent_id, pev_origin, ent_origin);
+    get_brush_entity_origin(ent_id,  ent_origin);
     
     if (!g_noclip_enabled[id]) { 
         g_noclip_enabled[id] = true;
@@ -596,49 +631,27 @@ public CreateGuideLine(id, ent_id) {
         CC_SendMessage(id, "%L", id, "NOCLIP_TO_PLASMA");
     }
     
-    // Calculate the distance between the player and the entity
-    new Float:distance = vector_distance(player_origin, ent_origin);
-    
-    // The maximum range the line can reach (For example: If the player is too far from the entity, the plasma will travel across the map to the entity)
-    new Float:max_segment_length = 9999999.0;
-    
-    // Calculate the number of segments needed
-    new num_segments = floatround(distance / max_segment_length, floatround_ceil);
-    
-    new Float:segment_start[3], Float:segment_end[3];
-    segment_start = player_origin; // Start at the player
-    
-    for (new i = 1; i <= num_segments; i++) {
-        // Calculate the end point of the current segment
-        for (new j = 0; j < 3; j++) {
-            segment_end[j] = player_origin[j] + (ent_origin[j] - player_origin[j]) * (float(i) / float(num_segments));
-        }
-        
-        // Create the beam between segment_start and segment_end
-        message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
-        write_byte(TE_BEAMPOINTS);                          // Temporary entity type: line between two points
-        engfunc(EngFunc_WriteCoord, segment_start[0]);      // Origin X
-        engfunc(EngFunc_WriteCoord, segment_start[1]);      // Origin Y
-        engfunc(EngFunc_WriteCoord, segment_start[2]);      // Origin Z
-        engfunc(EngFunc_WriteCoord, segment_end[0]);        // Destination X
-        engfunc(EngFunc_WriteCoord, segment_end[1]);        // Destination Y
-        engfunc(EngFunc_WriteCoord, segment_end[2]);        // Destination Z
-        write_short(g_plasma_sprite);                       // Precached sprite index
-        write_byte(0);                                      // Frame start
-        write_byte(0);                                      // Frame rate
-        write_byte(200);                                    // Time the line remains active (set_task in frames), 20 seconds = 200
-        write_byte(20);                                     // Line width
-        write_byte(0);                                      // Noise
-        write_byte(255);                                    // Color R (red)
-        write_byte(0);                                      // Color G (green)
-        write_byte(0);                                      // Color B (blue)
-        write_byte(200);                                    // Brightness
-        write_byte(0);                                      // Scroll speed
-        message_end();
-        
-        // Update the starting point for the next segment
-        segment_start = segment_end;
-    }
+    // Create the beam between segment_start and segment_end
+    message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
+    write_byte(TE_BEAMPOINTS);                          // Temporary entity type: line between two points
+    engfunc(EngFunc_WriteCoord, player_origin[0]);      // Origin X
+    engfunc(EngFunc_WriteCoord, player_origin[1]);      // Origin Y
+    engfunc(EngFunc_WriteCoord, player_origin[2]);      // Origin Z
+    engfunc(EngFunc_WriteCoord, ent_origin[0]);        // Destination X
+    engfunc(EngFunc_WriteCoord, ent_origin[1]);        // Destination Y
+    engfunc(EngFunc_WriteCoord, ent_origin[2]);        // Destination Z
+    write_short(g_plasma_sprite);                       // Precached sprite index
+    write_byte(0);                                      // Frame start
+    write_byte(0);                                      // Frame rate
+    write_byte(200);                                    // Time the line remains active (set_task in frames), 20 seconds = 200
+    write_byte(20);                                     // Line width
+    write_byte(0);                                      // Noise
+    write_byte(255);                                    // Color R (red)
+    write_byte(0);                                      // Color G (green)
+    write_byte(0);                                      // Color B (blue)
+    write_byte(200);                                    // Brightness
+    write_byte(0);                                      // Scroll speed
+    message_end();
 }
 
 public EventNewRound() {

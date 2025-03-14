@@ -10,6 +10,7 @@
 
 # Vendor directory for dependencies
 dependencies/
+bin/
 
 # Dependency versions lockfile
 pawn.lock
