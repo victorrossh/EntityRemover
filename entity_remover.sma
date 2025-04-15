@@ -415,7 +415,9 @@ public EntityOptionsHandler(id, menu, item) {
 				if (pev_valid(ent_id)) {
 					TeleportPlayerToEnt(id, ent_id);
 					CreateGuideLine(id, ent_id);
-					OpenEntityOptionsMenu(id, 0);
+					new class[32];
+					pev(ent_id, pev_classname, class, 31);
+					OpenConfirmationMenu(id, ent_id, class);
 					//CC_SendMessage(id, "Follow the plasma line to the entity.");
 					CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
 				} else {
