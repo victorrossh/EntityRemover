@@ -376,8 +376,29 @@ public OpenEntityOptionsMenu(id, type_index) {
 	
 	// Uniques entities 
 	for (new i = 0; i < ent_info[ei_count]; i++) {
-		new item_name[32];
-		formatex(item_name, sizeof(item_name) - 1, "Entity #%d", i + 1);
+		new item_name[64];
+		new ent_id = ArrayGetCell(ent_info[ei_indices], i);
+		
+		if (pev_valid(ent_id)) {
+			new class[32], model[32];
+			pev(ent_id, pev_classname, class, 31);
+			pev(ent_id, pev_model, model, 31);
+			
+			new bool:is_removed = false;
+			for(new i = 0; i < g_total; i++) {
+				new saved_class[32], saved_model[32];
+				ArrayGetString(g_class, i, saved_class, 31);
+				ArrayGetString(g_model, i, saved_model, 31);
+				
+				if(equali(class, saved_class) && equali(model, saved_model)) {
+					is_removed = true;
+					break;
+				}
+			}
+			
+			formatex(item_name, sizeof(item_name) - 1, "Entity #%d %s", i + 1, is_removed ? "\r[Removed]" : "");
+		}
+
 		//menu_additem(menu, item_name, fmt("%d %d", type_index, ArrayGetCell(ent_info[ei_indices], i)));
 		menu_additem(menu, item_name, fmt("%d", type_index));
 	}
