@@ -10,6 +10,8 @@ The **Entity Remover** plugin for AMX Mod X is a powerful tool designed to help 
 - **Aim and Remove:** Remove specific entities by aiming at them.
 - **Undo Functionality:** Revert the last entity removal action.
 - **Global Entity Removal:** Toggle the removal of all instances of a specific entity type across the map.
+- **Individual Entity Removal:** Remove specific instances of entities directly from the global menu.
+- **Removed Entity Indicators:** Visual indication of which entities have been removed.
 - **Persistent Configurations:** Save entity removal settings for specific maps.
 - **Dynamic Menu:** Automatically detects and lists available entities for removal.
 - **Noclip Assistance:** Automatically enables noclip to help users locate entities.
@@ -56,7 +58,9 @@ The plugin will save the entity's properties (e.g., classname, model) for future
 This menu lists all detected entities on the map, grouped by their classname.
 
 - You can toggle the removal of all instances of a specific entity type (e.g., all `func_door` entities).
+- Each individual entity in the list shows its current status (removed or not) with a visual indicator.
 - Selecting an individual entity will create a plasma line to guide you to its location.
+- You can remove specific instances of entities directly from this menu, giving you precise control over which entities to remove.
 
 ### **Undo Last Removal**
 Use the "Undo" option in the menu to revert the last entity removal action.
