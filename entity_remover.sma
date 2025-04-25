@@ -48,6 +48,7 @@ new g_undo_size[33];
 new Array:g_class;
 new Array:g_model;
 new g_total;
+new g_unique_id_counter = 1;
 
 public plugin_precache() {
 	register_forward(FM_Spawn, "FwdSpawn", 0);
@@ -266,13 +267,9 @@ public OpenConfirmationMenu(id, ent, const class[]) {
 	menu_additem(menu, "\wNo", "2");
 	
 	menu_display(id, menu, 0);
-	
-	
 }
 
 // Store entity data
-	
-
 public ConfirmationMenuHandler(id, menu, item) {
 	if(item == 0) {
 
@@ -480,27 +477,55 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
 }
 
 public SaveSpecificEntity(const class[], const model[]) {
-	ArrayPushString(g_class, class);
-	ArrayPushString(g_model, model);
-	g_total++;
+	new save_str[64];
 	
-	new map[32];
-	get_mapname(map, 31);
-	
-	new filepath[256];
-	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
-	
-	new file = fopen(filepath, "at");
-	if(file) {
-		fprintf(file, "^"%s^" ^"%s^"^n", class, model);
-		fclose(file);
+	// Check if the model is .mdl
+	if(containi(model, ".mdl") != -1) {
+		formatex(save_str, sizeof(save_str) - 1, "%s *%d", model, g_unique_id_counter);
+		ArrayPushString(g_class, class);
+		ArrayPushString(g_model, save_str);
+		g_total++;
+		
+		new map[32];
+		get_mapname(map, 31);
+		
+		new filepath[256];
+		formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+		
+		new file = fopen(filepath, "at");
+		if(file) {
+			fprintf(file, "^"%s^" ^"%s^" ^"*%d^"^n", class, model, g_unique_id_counter);
+			fclose(file);
+		}
+		
+		g_unique_id_counter++;
+	} else {
+		copy(save_str, sizeof(save_str) - 1, model);
+		ArrayPushString(g_class, class);
+		ArrayPushString(g_model, save_str);
+		g_total++;
+		
+		new map[32];
+		get_mapname(map, 31);
+		
+		new filepath[256];
+		formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+		
+		new file = fopen(filepath, "at");
+		if(file) {
+			fprintf(file, "^"%s^" ^"%s^"^n", class, model);
+			fclose(file);
+		}
 	}
 }
 
 public RemoveSavedEntity(const model[]) {
 	for(new i = 0; i < g_total; i++) {
-		new saved_model[32];
-		ArrayGetString(g_model, i, saved_model, 31);
+		new saved_str[64];
+		ArrayGetString(g_model, i, saved_str, 63);
+		
+		new saved_model[64], unique_id[16];
+		parse(saved_str, saved_model, 63, unique_id, 15);
 		
 		if(equali(model, saved_model)) {
 			ArrayDeleteItem(g_class, i);
@@ -748,15 +773,16 @@ public load_map_config() {
 	if(file_exists(filepath)) {
 		new file = fopen(filepath, "rt");
 		if(file) {
-			new line[128];
-			while(fgets(file, line, 127)) {
+			new line[256];
+			while(fgets(file, line, 255)) {
 				trim(line);
 				
 				if(contain(line, "^"") != -1) {
-					new class[32], model[32];
-					parse(line, class, 31, model, 31);
+					new class[32], model[64], unique_id[16];
+					parse(line, class, 31, model, 63, unique_id, 15);
 					replace(class, 31, "^"", "");
-					replace(model, 31, "^"", "");
+					replace(model, 63, "^"", "");
+					replace(unique_id, 15, "^"", "");
 					
 					if(equali(model, "GLOBAL")) {
 						// Global entity (menu2)
@@ -771,8 +797,20 @@ public load_map_config() {
 						}
 					} else {
 						// Specific entity
+						new save_str[64];
+						if(unique_id[0]) {
+							formatex(save_str, sizeof(save_str) - 1, "%s %s", model, unique_id);
+							// Update g_unique_id_counter
+							new id_num = str_to_num(unique_id[1]); // Remove the "*"
+
+							if (id_num >= g_unique_id_counter) {
+								g_unique_id_counter = id_num + 1;
+							}
+						} else {
+							copy(save_str, sizeof(save_str) - 1, model);
+						}
 						ArrayPushString(g_class, class);
-						ArrayPushString(g_model, model);
+						ArrayPushString(g_model, save_str);
 						g_total++;
 					}
 				}
@@ -801,12 +839,20 @@ public save_map_config() {
 			}
 		}
 		
-		// Save specific entities (menu 1)
+		// Save specific entities (menu 1 and menu 2 unique)
 		for(new i = 0; i < g_total; i++) {
-			new class[32], model[32];
+			new class[32], save_str[64];
 			ArrayGetString(g_class, i, class, 31);
-			ArrayGetString(g_model, i, model, 31);
-			fprintf(file, "^"%s^" ^"%s^"^n", class, model);
+			ArrayGetString(g_model, i, save_str, 63);
+			
+			new model[64], unique_id[16];
+			parse(save_str, model, 63, unique_id, 15);
+			
+			if(unique_id[0]) {
+				fprintf(file, "^"%s^" ^"%s^" ^"%s^"^n", class, model, unique_id);
+			} else {
+				fprintf(file, "^"%s^" ^"%s^"^n", class, save_str);
+			}
 		}
 		
 		fclose(file);
