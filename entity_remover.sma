@@ -479,8 +479,8 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
 public SaveSpecificEntity(const class[], const model[]) {
 	new save_str[64];
 	
-	// Check if the model is .mdl
-	if(containi(model, ".mdl") != -1) {
+	// Check if the model is .mdl or .spr
+	if(containi(model, ".mdl") != -1 || containi(model, ".spr") != -1) {
 		formatex(save_str, sizeof(save_str) - 1, "%s *%d", model, g_unique_id_counter);
 		ArrayPushString(g_class, class);
 		ArrayPushString(g_model, save_str);
