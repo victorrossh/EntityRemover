@@ -50,6 +50,7 @@ new Array:g_model;
 new g_total;
 new g_unique_id_counter = 1;
 new Trie:g_unique_id_used;
+new Trie:g_removed_entities;
 
 public plugin_precache() {
 	register_forward(FM_Spawn, "FwdSpawn", 0);
@@ -68,7 +69,9 @@ public plugin_precache() {
 	g_plasma_sprite = precache_model(PLASMA_SPRITE);
 
 	g_unique_id_used = TrieCreate();
+	g_removed_entities = TrieCreate();
 	TrieClear(g_unique_id_used);
+	TrieClear(g_removed_entities);
 }
 
 public plugin_init() {
@@ -187,11 +190,11 @@ public TaskDelayedCheck(ent) {
 		parse(saved_model, model_part, 63, unique_id, 15);
 		
 		if(equali(class, saved_class) && equali(model, model_part)) {
-			if (unique_id[0]) {
-				// Remove only if the unique_id has not been used yet
-				if (!TrieKeyExists(g_unique_id_used, unique_id)) {
+			if(unique_id[0]) {
+				// Check if this ent_id matches the saved ent_id for this unique_id
+				new removed_ent_id;
+				if(TrieGetCell(g_removed_entities, unique_id, removed_ent_id) && removed_ent_id == ent) {
 					RemoveEntity(ent);
-					TrieSetCell(g_unique_id_used, unique_id, 1);
 					break;
 				}
 			} else {
@@ -305,12 +308,12 @@ public ConfirmationMenuHandler(id, menu, item) {
 			ArrayPushArray(g_undo_stack[id], ent_data);
 			g_undo_size[id] = ArraySize(g_undo_stack[id]);
 
-			RemoveEntity(ent);
-			SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model]);
+			SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model], ent);
 			//client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
 			CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
 		}
 	}
+	menu_destroy(menu);
 	MainEntityMenu(id, 0, 0);
 	return PLUGIN_HANDLED;
 }
@@ -327,7 +330,7 @@ public UndoLastRemoval(id) {
 			set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
 			set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
 			
-			RemoveSavedEntity(ent_data[ent_model]);
+			RemoveSavedEntity(ent_data[ent_model], ent_data[ent_index]);
 			//client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
 			CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", ent_data[ent_classname]);
 		}
@@ -399,20 +402,31 @@ public OpenEntityOptionsMenu(id, type_index) {
 			
 			new bool:is_removed = false;
 			for(new i = 0; i < g_total; i++) {
-				new saved_class[32], saved_model[32];
+				new saved_class[32], saved_model[64], model_part[64], unique_id[16];
 				ArrayGetString(g_class, i, saved_class, 31);
-				ArrayGetString(g_model, i, saved_model, 31);
+				ArrayGetString(g_model, i, saved_model, 63);
 				
-				if(equali(class, saved_class) && equali(model, saved_model)) {
-					is_removed = true;
-					break;
+				parse(saved_model, model_part, 63, unique_id, 15);
+				
+				if(equali(class, saved_class) && equali(model, model_part)) {
+					if(unique_id[0]) {
+						// Check if this specific ent_id was removed with this unique_id
+						new removed_ent_id;
+						if(TrieGetCell(g_removed_entities, unique_id, removed_ent_id) && removed_ent_id == ent_id) {
+							is_removed = true;
+							break;
+						}
+					} else {
+						// For models without unique_id, mark as removed if class and model match
+						is_removed = true;
+						break;
+					}
 				}
 			}
 			
 			formatex(item_name, sizeof(item_name) - 1, "Entity #%d %s", i + 1, is_removed ? "\r[Removed]" : "");
 		}
 
-		//menu_additem(menu, item_name, fmt("%d %d", type_index, ArrayGetCell(ent_info[ei_indices], i)));
 		menu_additem(menu, item_name, fmt("%d", type_index));
 	}
 
@@ -492,7 +506,7 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
 	}
 }
 
-public SaveSpecificEntity(const class[], const model[]) {
+public SaveSpecificEntity(const class[], const model[], ent) {
 	new save_str[64];
 	
 	// Checks if the model contains a dot (.), indicating that it's a file with an extension
@@ -510,8 +524,17 @@ public SaveSpecificEntity(const class[], const model[]) {
 		
 		new file = fopen(filepath, "at");
 		if(file) {
-			fprintf(file, "^"%s^" ^"%s^" ^"*%d^"^n", class, model, g_unique_id_counter);
+			fprintf(file, "^"%s^" ^"%s^" ^"*%d^" ^"%d^"^n", class, model, g_unique_id_counter, ent);
 			fclose(file);
+		}
+		
+		// Apply removal immediately if ent is valid
+		if(ent > 0 && pev_valid(ent)) {
+			RemoveEntity(ent);
+			new unique_id[16];
+			formatex(unique_id, sizeof(unique_id) - 1, "*%d", g_unique_id_counter);
+			TrieSetCell(g_unique_id_used, unique_id, 1);
+			TrieSetCell(g_removed_entities, unique_id, ent);
 		}
 		
 		g_unique_id_counter++;
@@ -532,10 +555,15 @@ public SaveSpecificEntity(const class[], const model[]) {
 			fprintf(file, "^"%s^" ^"%s^"^n", class, model);
 			fclose(file);
 		}
+		
+		// Apply removal immediately if ent is valid
+		if(ent > 0 && pev_valid(ent)) {
+			RemoveEntity(ent);
+		}
 	}
 }
 
-public RemoveSavedEntity(const model[]) {
+public RemoveSavedEntity(const model[], ent_id) {
 	for(new i = 0; i < g_total; i++) {
 		new saved_str[64];
 		ArrayGetString(g_model, i, saved_str, 63);
@@ -547,6 +575,10 @@ public RemoveSavedEntity(const model[]) {
 			ArrayDeleteItem(g_class, i);
 			ArrayDeleteItem(g_model, i);
 			g_total--;
+			if(unique_id[0]) {
+				TrieDeleteKey(g_unique_id_used, unique_id);
+				TrieDeleteKey(g_removed_entities, unique_id);
+			}
 			save_map_config();
 			break;
 		}
@@ -599,6 +631,7 @@ public ResetSettings(id) {
 		g_total = 0;
 	}
 	TrieClear(g_unique_id_used);
+	TrieClear(g_removed_entities);
 	
 	// Delete config file
 	new map[32];
@@ -754,9 +787,9 @@ public EventNewRound() {
 					pev(ent, pev_model, model, 31);
 					if(equali(model, model_part)) {
 						if(unique_id[0]) {
-							if (!TrieKeyExists(g_unique_id_used, unique_id)) {
+							new removed_ent_id;
+							if(TrieGetCell(g_removed_entities, unique_id, removed_ent_id) && removed_ent_id == ent) {
 								RemoveEntity(ent);
-								TrieSetCell(g_unique_id_used, unique_id, 1);
 								break;
 							}
 						} else {
@@ -796,6 +829,7 @@ public load_map_config() {
 	new map[32];
 	get_mapname(map, 31);
 	TrieClear(g_unique_id_used);
+	TrieClear(g_removed_entities);
 	
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
@@ -808,11 +842,12 @@ public load_map_config() {
 				trim(line);
 				
 				if(contain(line, "^"") != -1) {
-					new class[32], model[64], unique_id[16];
-					parse(line, class, 31, model, 63, unique_id, 15);
+					new class[32], model[64], unique_id[16], ent_id_str[16];
+					new parsed = parse(line, class, 31, model, 63, unique_id, 15, ent_id_str, 15);
 					replace(class, 31, "^"", "");
 					replace(model, 63, "^"", "");
 					replace(unique_id, 15, "^"", "");
+					replace(ent_id_str, 15, "^"", "");
 					
 					if(equali(model, "GLOBAL")) {
 						// Global entity (menu2)
@@ -828,15 +863,23 @@ public load_map_config() {
 					} else {
 						// Specific entity
 						new save_str[64];
-						if(unique_id[0]) {
+						if(parsed >= 3 && unique_id[0]) {
+							// New format with unique_id and ent_id (for dot models)
 							formatex(save_str, sizeof(save_str) - 1, "%s %s", model, unique_id);
-							// Update g_unique_id_counter
 							new id_num = str_to_num(unique_id[1]); // Remove the "*"
-
 							if (id_num >= g_unique_id_counter) {
 								g_unique_id_counter = id_num + 1;
 							}
+							new ent_id = str_to_num(ent_id_str);
+							if(ent_id > 0) {
+								TrieSetCell(g_removed_entities, unique_id, ent_id);
+								TrieSetCell(g_unique_id_used, unique_id, 1);
+								if(pev_valid(ent_id)) {
+									RemoveEntity(ent_id);
+								}
+							}
 						} else {
+							// Old format without unique_id (for non-dot models)
 							copy(save_str, sizeof(save_str) - 1, model);
 						}
 						ArrayPushString(g_class, class);
