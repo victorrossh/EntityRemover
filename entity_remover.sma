@@ -576,11 +576,13 @@ public ResetSettings(id) {
 				
 				// Check if this entity matches any saved specific removal
 				for(new i = 0; i < g_total; i++) {
-					new saved_class[32], saved_model[32];
+					new saved_class[32], saved_model[64], model_part[64], unique_id[16];
 					ArrayGetString(g_class, i, saved_class, 31);
-					ArrayGetString(g_model, i, saved_model, 31);
+					ArrayGetString(g_model, i, saved_model, 63);
 					
-					if(equali(class, saved_class) && equali(model, saved_model)) {
+					parse(saved_model, model_part, 63, unique_id, 15);
+					
+					if(equali(class, saved_class) && equali(model, model_part)) {
 						// Restore the entity
 						set_pev(ent, pev_rendermode, kRenderNormal);
 						set_pev(ent, pev_renderamt, 255.0);
@@ -758,7 +760,6 @@ public EventNewRound() {
 								break;
 							}
 						} else {
-							// Modelos sem unique_id são removidos diretamente
 							RemoveEntity(ent);
 							break;
 						}
