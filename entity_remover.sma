@@ -49,6 +49,7 @@ new Array:g_class;
 new Array:g_model;
 new g_total;
 new g_unique_id_counter = 1;
+new Trie:g_unique_id_used;
 
 public plugin_precache() {
 	register_forward(FM_Spawn, "FwdSpawn", 0);
@@ -65,6 +66,9 @@ public plugin_precache() {
 	g_ignored_entities = ArrayCreate(32, 1);
 
 	g_plasma_sprite = precache_model(PLASMA_SPRITE);
+
+	g_unique_id_used = TrieCreate();
+	TrieClear(g_unique_id_used);
 }
 
 public plugin_init() {
@@ -176,13 +180,25 @@ public TaskDelayedCheck(ent) {
 	
 	// Check specific entities
 	for(new i = 0; i < g_total; i++) {
-		new saved_class[32], saved_model[32];
+		new saved_class[32], saved_model[64], model_part[64], unique_id[16];
 		ArrayGetString(g_class, i, saved_class, 31);
-		ArrayGetString(g_model, i, saved_model, 31);
+		ArrayGetString(g_model, i, saved_model, 63);
 		
-		if(equali(class, saved_class) && equali(model, saved_model)) {
-			RemoveEntity(ent);
-			return;
+		parse(saved_model, model_part, 63, unique_id, 15);
+		
+		if(equali(class, saved_class) && equali(model, model_part)) {
+			if (unique_id[0]) {
+				// Remove only if the unique_id has not been used yet
+				if (!TrieKeyExists(g_unique_id_used, unique_id)) {
+					RemoveEntity(ent);
+					TrieSetCell(g_unique_id_used, unique_id, 1);
+					break;
+				}
+			} else {
+				// Models without unique_id are removed directly
+				RemoveEntity(ent);
+				break;
+			}
 		}
 	}
 }
@@ -580,6 +596,7 @@ public ResetSettings(id) {
 		ArrayClear(g_model);
 		g_total = 0;
 	}
+	TrieClear(g_unique_id_used);
 	
 	// Delete config file
 	new map[32];
@@ -722,18 +739,29 @@ public EventNewRound() {
 	// Reapplies the specific removals from Menu 1(Aim Menu) at the beginning of each round
 	if (g_total > 0) {
 		new ent, model[32];
-		new saved_class[32], saved_model[32];
+		new saved_class[32], saved_model[64], model_part[64], unique_id[16];
 		for (new i = 0; i < g_total; i++) {
 			ArrayGetString(g_class, i, saved_class, 31);
-			ArrayGetString(g_model, i, saved_model, 31);
+			ArrayGetString(g_model, i, saved_model, 63);
+			
+			parse(saved_model, model_part, 63, unique_id, 15);
 			
 			ent = 0;
 			while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", saved_class)) != 0) {
 				if (pev_valid(ent)) {
 					pev(ent, pev_model, model, 31);
-					if (equali(model, saved_model)) {
-						RemoveEntity(ent);
-						break;
+					if(equali(model, model_part)) {
+						if(unique_id[0]) {
+							if (!TrieKeyExists(g_unique_id_used, unique_id)) {
+								RemoveEntity(ent);
+								TrieSetCell(g_unique_id_used, unique_id, 1);
+								break;
+							}
+						} else {
+							// Modelos sem unique_id são removidos diretamente
+							RemoveEntity(ent);
+							break;
+						}
 					}
 				}
 			}
@@ -766,6 +794,7 @@ public load_ignored_entities() {
 public load_map_config() {
 	new map[32];
 	get_mapname(map, 31);
+	TrieClear(g_unique_id_used);
 	
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
