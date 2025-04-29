@@ -375,9 +375,8 @@ public OpenEntityOptionsMenu(id, type_index) {
 			new bool:is_removed = TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
 			
 			formatex(item_name, sizeof(item_name) - 1, "Entity #%d %s", i + 1, is_removed ? "\r[Removed]" : "");
+			menu_additem(menu, item_name, fmt("%d", type_index * 1000 + i));
 		}
-
-		menu_additem(menu, item_name, fmt("%d", type_index));
 	}
 
 	menu_display(id, menu, 0);
@@ -392,37 +391,40 @@ public EntityOptionsHandler(id, menu, item) {
 
 	new info[16], dummy;
 	menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
-	new type_index = str_to_num(info);
 
-	if (item >= 0 && item < g_map_entity_type_count) {
-		new ent_info[EntityInfo];
+	new ent_info[EntityInfo];
+	new type_index, ent_array_index;
+
+	if (item == 0) { // Toggle Remove All
+		type_index = str_to_num(info);
 		ArrayGetArray(g_map_entity_types, type_index, ent_info);
-		
-		if (item == 0) { // Toggle Remove All
-			g_remove_map_entities[type_index] = !g_remove_map_entities[type_index];
-			ApplyMapEntityToggle(type_index, g_remove_map_entities[type_index]);
-			new status[32];
-			formatex(status, charsmax(status), "%L", id, g_remove_map_entities[type_index] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
-			CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
-			save_map_config(); // Saves directly to the .txt
-			OpenEntityOptionsMenu(id, type_index);
-		} else if (item >= 1) { 
-			new ent_array_index = item - 1;
-			if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
-				new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
-				if (pev_valid(ent_id)) {
-					TeleportPlayerToEnt(id, ent_id);
-					CreateGuideLine(id, ent_id);
-					new class[32];
-					pev(ent_id, pev_classname, class, 31);
-					OpenConfirmationMenu(id, ent_id, class);
-					//CC_SendMessage(id, "Follow the plasma line to the entity.");
-					CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
-				} else {
-					//CC_SendMessage(id, "Entity no longer valid.");
-					CC_SendMessage(id, "%L", id, "ENTITY_INVALID");
-					OpenEntityOptionsMenu(id, type_index);
-				}
+		g_remove_map_entities[type_index] = !g_remove_map_entities[type_index];
+		ApplyMapEntityToggle(type_index, g_remove_map_entities[type_index]);
+		new status[32]
+		formatex(status, charsmax(status), "%L", id, g_remove_map_entities[type_index] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
+		CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
+		save_map_config(); // Saves directly to the .txt
+		OpenEntityOptionsMenu(id, type_index);
+	} else if (item >= 1) { 
+		new info_num = str_to_num(info);
+		type_index = info_num / 1000;
+		ent_array_index = info_num % 1000;
+
+		ArrayGetArray(g_map_entity_types, type_index, ent_info);
+		if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
+			new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
+			if (pev_valid(ent_id)) {
+				TeleportPlayerToEnt(id, ent_id);
+				CreateGuideLine(id, ent_id);
+				new class[32];
+				pev(ent_id, pev_classname, class, 31);
+				OpenConfirmationMenu(id, ent_id, class);
+				//CC_SendMessage(id, "Follow the plasma line to the entity.");
+				CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
+			} else {
+				//CC_SendMessage(id, "Entity no longer valid.");
+				CC_SendMessage(id, "%L", id, "ENTITY_INVALID");
+				OpenEntityOptionsMenu(id, type_index);
 			}
 		}
 	}
