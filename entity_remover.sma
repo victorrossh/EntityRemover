@@ -414,13 +414,18 @@ public EntityOptionsHandler(id, menu, item) {
 		if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
 			new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
 			if (pev_valid(ent_id)) {
-				TeleportPlayerToEnt(id, ent_id);
-				CreateGuideLine(id, ent_id);
-				new class[32];
-				pev(ent_id, pev_classname, class, 31);
-				OpenConfirmationMenu(id, ent_id, class);
-				//CC_SendMessage(id, "Follow the plasma line to the entity.");
-				CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
+				if (TrieKeyExists(g_removed_entities, fmt("%d", ent_id))) {
+					CC_SendMessage(id, "%L", id, "ENTITY_ALREADY_REMOVED");
+					OpenEntityOptionsMenu(id, type_index);
+				} else {
+					TeleportPlayerToEnt(id, ent_id);
+					CreateGuideLine(id, ent_id);
+					new class[32];
+					pev(ent_id, pev_classname, class, 31);
+					OpenConfirmationMenu(id, ent_id, class);
+					//CC_SendMessage(id, "Follow the plasma line to the entity.");
+					CC_SendMessage(id, "%L", id, "FOLLOW_PLASMA");
+				}
 			} else {
 				//CC_SendMessage(id, "Entity no longer valid.");
 				CC_SendMessage(id, "%L", id, "ENTITY_INVALID");

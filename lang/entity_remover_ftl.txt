@@ -11,6 +11,7 @@ FOLLOW_PLASMA = Follow the plasma line to the entity.
 ENTITY_INVALID = Entity no longer valid.
 ALL_SETTINGS_RESET = All settings have been reset.
 NOCLIP_TO_PLASMA = Noclip &x06activated&x01, follow the plasma to visualize the desired entity.
+ENTITY_ALREADY_REMOVED = Cannot remove an entity that was already removed.
 
 [bp]
 
@@ -25,6 +26,7 @@ FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
 ENTITY_INVALID = Entidade não válida.
 ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
+ENTITY_ALREADY_REMOVED = Não é possível remover uma entidade já removida anteriormente.
 
 [ro]
 
@@ -39,6 +41,7 @@ FOLLOW_PLASMA = Urmează linia de plasma până la entitate.
 ENTITY_INVALID = Entitate nevalidă.
 ALL_SETTINGS_RESET = Toate setările au fost resetate.
 NOCLIP_TO_PLASMA = Noclip &x06activat&x01, urmează plasma pentru a vizualiza entitatea dorită.
+ENTITY_ALREADY_REMOVED = Nu se poate elimina o entitate care a fost deja eliminată.
 
 [pt]
 
@@ -53,6 +56,7 @@ FOLLOW_PLASMA = Siga a linha de plasma até a entidade.
 ENTITY_INVALID = Entidade não válida.
 ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
+ENTITY_ALREADY_REMOVED = Não é possível remover uma entidade já removida anteriormente.
 
 [es]
 
@@ -67,6 +71,7 @@ FOLLOW_PLASMA = Sigue la línea de plasma hasta la entidad.
 ENTITY_INVALID = La entidad ya no es válida.
 ALL_SETTINGS_RESET = Todas las configuraciones han sido restablecidas.
 NOCLIP_TO_PLASMA = Noclip &x06activado&x01, sigue el plasma para visualizar la entidad deseada.
+ENTITY_ALREADY_REMOVED = No se puede eliminar una entidad que ya fue eliminada.
 
 [de]
 
@@ -81,6 +86,7 @@ FOLLOW_PLASMA = Folge der Plasma-Linie zur Entität.
 ENTITY_INVALID = Entität ist nicht mehr gültig.
 ALL_SETTINGS_RESET = Alle Einstellungen wurden zurückgesetzt.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviert&x01, folge dem Plasma, um die gewünschte Entität zu visualisieren.
+ENTITY_ALREADY_REMOVED = Eine bereits entfernte Entität kann nicht erneut entfernt werden.
 
 [sr]
 
@@ -95,6 +101,7 @@ FOLLOW_PLASMA = Pratite plazma liniju do entiteta.
 ENTITY_INVALID = Entitet više nije validan.
 ALL_SETTINGS_RESET = Svi parametri su resetovani.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, pratite plazmu da biste vizualizovali željeni entitet.
+ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 
 [tr]
 
@@ -109,6 +116,7 @@ FOLLOW_PLASMA = Varlığa gitmek için plazma hattını takip et.
 ENTITY_INVALID = Varlık artık geçerli değil.
 ALL_SETTINGS_RESET = Tüm ayarlar sıfırlandı.
 NOCLIP_TO_PLASMA = Noclip &x06etkinleştirildi&x01, istediğiniz varlığı görselleştirmek için plazmayı takip edin.
+ENTITY_ALREADY_REMOVED = Zaten kaldırılmış bir varlık yeniden kaldırılamaz.
 
 [fr]
 
@@ -123,6 +131,7 @@ FOLLOW_PLASMA = Suivez la ligne de plasma vers l'entité.
 ENTITY_INVALID = L'entité n'est plus valide.
 ALL_SETTINGS_RESET = Toutes les configurations ont été réinitialisées.
 NOCLIP_TO_PLASMA = Noclip &x06activé&x01, suivez le plasma pour visualiser l'entité souhaitée.
+ENTITY_ALREADY_REMOVED = Impossible de supprimer une entité déjà supprimée.
 
 [sv]
 
@@ -137,6 +146,7 @@ FOLLOW_PLASMA = Följ plasma-linjen till entiteten.
 ENTITY_INVALID = Entiteten är inte längre giltig.
 ALL_SETTINGS_RESET = Alla inställningar har återställts.
 NOCLIP_TO_PLASMA = Noclip &x06aktiverat&x01, följ plasma för att visualisera önskad entitet.
+ENTITY_ALREADY_REMOVED = Kan inte ta bort en entitet som redan är borttagen.
 
 [da]
 
@@ -151,6 +161,7 @@ FOLLOW_PLASMA = Følg plasma-linjen til enheden.
 ENTITY_INVALID = Enheden er ikke længere gyldig.
 ALL_SETTINGS_RESET = Alle indstillinger er blevet nulstillet.
 NOCLIP_TO_PLASMA = Noclip &x06aktiveret&x01, følg plasmaen for at visualisere den ønskede enhed.
+ENTITY_ALREADY_REMOVED = Kan ikke fjerne en enhed, der allerede er fjernet.
 
 [pl]
 
@@ -165,6 +176,7 @@ FOLLOW_PLASMA = Śledź linię plazmy do jednostki.
 ENTITY_INVALID = Jednostka już nie jest ważna.
 ALL_SETTINGS_RESET = Wszystkie ustawienia zostały zresetowane.
 NOCLIP_TO_PLASMA = Noclip &x06włączony&x01, śledź plazmę, aby zobaczyć wybraną jednostkę.
+ENTITY_ALREADY_REMOVED = Nie można usunąć jednostki już wcześniej usuniętej.
 
 [nl]
 
@@ -179,6 +191,7 @@ FOLLOW_PLASMA = Volg de plasma-lijn naar de entiteit.
 ENTITY_INVALID = Entiteit is niet meer geldig.
 ALL_SETTINGS_RESET = Alle instellingen zijn gereset.
 NOCLIP_TO_PLASMA = Noclip &x06geactiveerd&x01, volg het plasma om de gewenste entiteit te visualiseren.
+ENTITY_ALREADY_REMOVED = Kan een entiteit die al verwijderd is niet opnieuw verwijderen.
 
 [cz]
 
@@ -193,6 +206,7 @@ FOLLOW_PLASMA = Sledujte plazmovou čáru k entitě.
 ENTITY_INVALID = Entita již není platná.
 ALL_SETTINGS_RESET = Všechna nastavení byla resetována.
 NOCLIP_TO_PLASMA = Noclip &x06aktivováno&x01, sledujte plazmu, abyste vizualizovali požadovanou entitu.
+ENTITY_ALREADY_REMOVED = Nelze odstranit entitu, která již byla odstraněna.
 
 [fi]
 
@@ -207,6 +221,7 @@ FOLLOW_PLASMA = Seuraa plasma-linjaa entiteettiin.
 ENTITY_INVALID = Entiteetti ei ole enää voimassa.
 ALL_SETTINGS_RESET = Kaikki asetukset on nollattu.
 NOCLIP_TO_PLASMA = Noclip &x06aktivoitu&x01, seuraa plasmaa visualisoidaksesi halutun entiteetin.
+ENTITY_ALREADY_REMOVED = Ei voida poistaa entiteettiä, joka on jo poistettu.
 
 [bg]
 
@@ -221,6 +236,7 @@ FOLLOW_PLASMA = Следвай линията на плазмата към ен�
 ENTITY_INVALID = Ентитетът вече не е валиден.
 ALL_SETTINGS_RESET = Всички настройки бяха възстановени.
 NOCLIP_TO_PLASMA = Noclip &x06активиран&x01, следвай плазмата, за да визуализираш желания ентитет.
+ENTITY_ALREADY_REMOVED = Не може да се премахне ентитет, който вече е премахнат.
 
 [hu]
 
@@ -235,6 +251,7 @@ FOLLOW_PLASMA = Kövesd a plazma vonalat az entitásig.
 ENTITY_INVALID = Az entitás már nem érvényes.
 ALL_SETTINGS_RESET = Minden beállítás visszaállítva.
 NOCLIP_TO_PLASMA = Noclip &x06aktiválva&x01, kövesd a plazmát a kívánt entitás megjelenítéséhez.
+ENTITY_ALREADY_REMOVED = Nem lehet eltávolítani egy már eltávolított entitást.
 
 [lt]
 
@@ -249,6 +266,7 @@ FOLLOW_PLASMA = Sekite plazmos liniją link entiteto.
 ENTITY_INVALID = Entitetas jau nebegalioja.
 ALL_SETTINGS_RESET = Visos nustatytos reikšmės buvo atstatytos.
 NOCLIP_TO_PLASMA = Noclip &x06įjungtas&x01, sekite plazmą norėdami pamatyti norimą entitetą.
+ENTITY_ALREADY_REMOVED = Negalima pašalinti entiteto, kuris jau buvo pašalintas.
 
 [sk]
 
@@ -263,6 +281,7 @@ FOLLOW_PLASMA = Sledujte plazmovú čiaru k entite.
 ENTITY_INVALID = Entita už nie je platná.
 ALL_SETTINGS_RESET = Všetky nastavenia boli obnovené.
 NOCLIP_TO_PLASMA = Noclip &x06aktivované&x01, sledujte plazmu, aby ste vizualizovali požadovanú entitu.
+ENTITY_ALREADY_REMOVED = Nie je možné odstrániť entitu, ktorá už bola odstránená.
 
 [mk]
 
@@ -277,6 +296,7 @@ FOLLOW_PLASMA = Следете ја плазматската линија до �
 ENTITY_INVALID = Ентитетот повеќе не е валиден.
 ALL_SETTINGS_RESET = Сите поставки се ресетирани.
 NOCLIP_TO_PLASMA = Noclip &x06активирано&x01, следете ја плазмата за да ја визуелизирате посакуваната ентитет.
+ENTITY_ALREADY_REMOVED = Не може да се отстрани ентитет кој веѣе е отстранет.
 
 [hr]
 
@@ -291,6 +311,7 @@ FOLLOW_PLASMA = Slijedite liniju plazme do entiteta.
 ENTITY_INVALID = Entitet više nije važeći.
 ALL_SETTINGS_RESET = Svi postavke su resetirane.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
+ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 
 [bs]
 
@@ -305,6 +326,7 @@ FOLLOW_PLASMA = Slijedite liniju plazme do entiteta.
 ENTITY_INVALID = Entitet više nije važeći.
 ALL_SETTINGS_RESET = Svi postavke su resetirane.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
+ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 
 [ru]
 
@@ -319,6 +341,7 @@ FOLLOW_PLASMA = Следуйте по линии плазмы к сущност�
 ENTITY_INVALID = Сущность больше не действительна.
 ALL_SETTINGS_RESET = Все настройки были сброшены.
 NOCLIP_TO_PLASMA = Noclip &x06включен&x01, следуйте за плазмой, чтобы визуализировать требуемую сущность.
+ENTITY_ALREADY_REMOVED = Нельзя удалить сущность, которая уже была удалена.
 
 [cn]
 
@@ -333,6 +356,7 @@ FOLLOW_PLASMA = 跟随等离子体线到实体.
 ENTITY_INVALID = 实体不再有效.
 ALL_SETTINGS_RESET = 所有设置已重置.
 NOCLIP_TO_PLASMA = Noclip &x06已启用&x01, 跟随等离子体来可视化所需的实体.
+ENTITY_ALREADY_REMOVED = 无法移除已移除的实体。
 
 [al]
 
@@ -347,3 +371,4 @@ FOLLOW_PLASMA = Ndjekni linjën e plazmës për te entiteti.
 ENTITY_INVALID = Entiteti nuk është më i vlefshëm.
 ALL_SETTINGS_RESET = Të gjitha cilësimet janë rikthyer në gjendjen e mëparshme.
 NOCLIP_TO_PLASMA = Noclip &x06aktivizuar&x01, ndjekni plazmën për të vizualizuar entitetin e dëshiruar.
+ENTITY_ALREADY_REMOVED = Nuk mund të hiqet një entitet që është hequr tashmë.
