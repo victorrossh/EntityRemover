@@ -202,6 +202,12 @@ public MainEntityMenu(id, level, cid) {
 }
 
 public MainMenuHandler(id, menu, item) {
+	if(!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+
 	if(item == MENU_EXIT) {
 		menu_destroy(menu);
 		return PLUGIN_HANDLED;
@@ -226,6 +232,12 @@ public OpenAimMenu(id) {
 }
 
 public AimMenuHandler(id, menu, item) {
+	if (!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+
 	if(item == MENU_EXIT) {
 		menu_destroy(menu);
 		return PLUGIN_HANDLED;
@@ -267,6 +279,12 @@ public OpenConfirmationMenu(id, ent, const class[]) {
 
 // Store entity data
 public ConfirmationMenuHandler(id, menu, item) {
+	if (!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+
 	if(item == 0) {
 
 		new info[8], dummy;
@@ -339,6 +357,12 @@ public ShowMapEntities(id) {
 }
 
 public map_entities_handler(id, menu, item) {
+	if (!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+
 	if (item == MENU_EXIT) {
 		menu_destroy(menu);
 		return PLUGIN_HANDLED;
@@ -388,6 +412,12 @@ public OpenEntityOptionsMenu(id, type_index) {
 }
 
 public EntityOptionsHandler(id, menu, item) {
+	if (!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+
 	if (item == MENU_EXIT) {
 		menu_destroy(menu);
 		ShowMapEntities(id);
