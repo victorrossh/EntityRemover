@@ -13,6 +13,7 @@ ALL_SETTINGS_RESET = All settings have been reset.
 NOCLIP_TO_PLASMA = Noclip &x06activated&x01, follow the plasma to visualize the desired entity.
 ENTITY_ALREADY_REMOVED = Cannot remove an entity that was already removed.
 MUST_BE_ALIVE = You must be alive to access the entity menu.
+ENTITY_GLOBALLY_REMOVED = This entity is globally removed.
 
 [bp]
 
@@ -29,6 +30,7 @@ ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
 ENTITY_ALREADY_REMOVED = Não é possível remover uma entidade já removida anteriormente.
 MUST_BE_ALIVE = Você precisa estar vivo para acessar o menu de entidades.
+ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [ro]
 
@@ -45,6 +47,7 @@ ALL_SETTINGS_RESET = Toate setările au fost resetate.
 NOCLIP_TO_PLASMA = Noclip &x06activat&x01, urmează plasma pentru a vizualiza entitatea dorită.
 ENTITY_ALREADY_REMOVED = Nu se poate elimina o entitate care a fost deja eliminată.
 MUST_BE_ALIVE = Trebuie să fii în viață pentru a accesa meniul de entități.
+ENTITY_GLOBALLY_REMOVED = Această entitate este eliminată global.
 
 [pt]
 
@@ -61,6 +64,7 @@ ALL_SETTINGS_RESET = Todas as configurações foram redefinidas.
 NOCLIP_TO_PLASMA = Noclip &x06ativado&x01, siga o plasma para visualizar a entidade desejada.
 ENTITY_ALREADY_REMOVED = Não é possível remover uma entidade já removida anteriormente.
 MUST_BE_ALIVE = Você precisa estar vivo para acessar o menu de entidades.
+ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [es]
 
@@ -77,6 +81,7 @@ ALL_SETTINGS_RESET = Todas las configuraciones han sido restablecidas.
 NOCLIP_TO_PLASMA = Noclip &x06activado&x01, sigue el plasma para visualizar la entidad deseada.
 ENTITY_ALREADY_REMOVED = No se puede eliminar una entidad que ya fue eliminada.
 MUST_BE_ALIVE = Debes estar vivo para acceder al menú de entidades.
+ENTITY_GLOBALLY_REMOVED = Esta entidad está eliminada globalmente.
 
 [de]
 
@@ -93,6 +98,7 @@ ALL_SETTINGS_RESET = Alle Einstellungen wurden zurückgesetzt.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviert&x01, folge dem Plasma, um die gewünschte Entität zu visualisieren.
 ENTITY_ALREADY_REMOVED = Eine bereits entfernte Entität kann nicht erneut entfernt werden.
 MUST_BE_ALIVE = Du musst am Leben sein, um das Entitätenmenü zu öffnen.
+ENTITY_GLOBALLY_REMOVED = Diese Entität ist global entfernt.
 
 [sr]
 
@@ -109,6 +115,7 @@ ALL_SETTINGS_RESET = Svi parametri su resetovani.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, pratite plazmu da biste vizualizovali željeni entitet.
 ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 MUST_BE_ALIVE = Morate biti živi da biste pristupili meniju entiteta.
+ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [tr]
 
@@ -125,6 +132,7 @@ ALL_SETTINGS_RESET = Tüm ayarlar sıfırlandı.
 NOCLIP_TO_PLASMA = Noclip &x06etkinleştirildi&x01, istediğiniz varlığı görselleştirmek için plazmayı takip edin.
 ENTITY_ALREADY_REMOVED = Zaten kaldırılmış bir varlık yeniden kaldırılamaz.
 MUST_BE_ALIVE = Varlık menüsüne erişmek için hayatta olmalısınız.
+ENTITY_GLOBALLY_REMOVED = Bu varlık global olarak kaldırılmıştır.
 
 [fr]
 
@@ -141,6 +149,7 @@ ALL_SETTINGS_RESET = Toutes les configurations ont été réinitialisées.
 NOCLIP_TO_PLASMA = Noclip &x06activé&x01, suivez le plasma pour visualiser l'entité souhaitée.
 ENTITY_ALREADY_REMOVED = Impossible de supprimer une entité déjà supprimée.
 MUST_BE_ALIVE = Vous devez être en vie pour accéder au menu des entités.
+ENTITY_GLOBALLY_REMOVED = Cette entité est supprimée globalement.
 
 [sv]
 
@@ -157,6 +166,7 @@ ALL_SETTINGS_RESET = Alla inställningar har återställts.
 NOCLIP_TO_PLASMA = Noclip &x06aktiverat&x01, följ plasma för att visualisera önskad entitet.
 ENTITY_ALREADY_REMOVED = Kan inte ta bort en entitet som redan är borttagen.
 MUST_BE_ALIVE = Du måste vara vid liv för att öppna entitetsmenyn.
+ENTITY_GLOBALLY_REMOVED = Denna entitet är globalt borttagen.
 
 [da]
 
@@ -173,6 +183,7 @@ ALL_SETTINGS_RESET = Alle indstillinger er blevet nulstillet.
 NOCLIP_TO_PLASMA = Noclip &x06aktiveret&x01, følg plasmaen for at visualisere den ønskede enhed.
 ENTITY_ALREADY_REMOVED = Kan ikke fjerne en enhed, der allerede er fjernet.
 MUST_BE_ALIVE = Du skal være i live for at få adgang til enhedsmenuen.
+ENTITY_GLOBALLY_REMOVED = Denne enhed er globalt fjernet.
 
 [pl]
 
@@ -189,6 +200,7 @@ ALL_SETTINGS_RESET = Wszystkie ustawienia zostały zresetowane.
 NOCLIP_TO_PLASMA = Noclip &x06włączony&x01, śledź plazmę, aby zobaczyć wybraną jednostkę.
 ENTITY_ALREADY_REMOVED = Nie można usunąć jednostki już wcześniej usuniętej.
 MUST_BE_ALIVE = Musisz być żywy, aby otworzyć menu jednostek.
+ENTITY_GLOBALLY_REMOVED = Ta jednostka jest globalnie usunięta.
 
 [nl]
 
@@ -205,6 +217,7 @@ ALL_SETTINGS_RESET = Alle instellingen zijn gereset.
 NOCLIP_TO_PLASMA = Noclip &x06geactiveerd&x01, volg het plasma om de gewenste entiteit te visualiseren.
 ENTITY_ALREADY_REMOVED = Kan een entiteit die al verwijderd is niet opnieuw verwijderen.
 MUST_BE_ALIVE = Je moet in leven zijn om het entiteitenmenu te openen.
+ENTITY_GLOBALLY_REMOVED = Deze entiteit is globaal verwijderd.
 
 [cz]
 
@@ -221,6 +234,7 @@ ALL_SETTINGS_RESET = Všechna nastavení byla resetována.
 NOCLIP_TO_PLASMA = Noclip &x06aktivováno&x01, sledujte plazmu, abyste vizualizovali požadovanou entitu.
 ENTITY_ALREADY_REMOVED = Nelze odstranit entitu, která již byla odstraněna.
 MUST_BE_ALIVE = Musíte být naživu, abyste otevřeli menu entit.
+ENTITY_GLOBALLY_REMOVED = Tato entita je globálně odstraněna.
 
 [fi]
 
@@ -237,6 +251,7 @@ ALL_SETTINGS_RESET = Kaikki asetukset on nollattu.
 NOCLIP_TO_PLASMA = Noclip &x06aktivoitu&x01, seuraa plasmaa visualisoidaksesi halutun entiteetin.
 ENTITY_ALREADY_REMOVED = Ei voida poistaa entiteettiä, joka on jo poistettu.
 MUST_BE_ALIVE = Sinun täytyy olla elossa avataksesi entiteettivalikon.
+ENTITY_GLOBALLY_REMOVED = Tämä entiteetti on poistettu globaalisti.
 
 [bg]
 
@@ -253,6 +268,7 @@ ALL_SETTINGS_RESET = Всички настройки бяха възстанов
 NOCLIP_TO_PLASMA = Noclip &x06активиран&x01, следвай плазмата, за да визуализираш желания ентитет.
 ENTITY_ALREADY_REMOVED = Не може да се премахне ентитет, който вече е премахнат.
 MUST_BE_ALIVE = Трябва да си жив, за да отвориш менюто за ентитети.
+ENTITY_GLOBALLY_REMOVED = Този ентитет е премахнат глобално.
 
 [hu]
 
@@ -269,6 +285,7 @@ ALL_SETTINGS_RESET = Minden beállítás visszaállítva.
 NOCLIP_TO_PLASMA = Noclip &x06aktiválva&x01, kövesd a plazmát a kívánt entitás megjelenítéséhez.
 ENTITY_ALREADY_REMOVED = Nem lehet eltávolítani egy már eltávolított entitást.
 MUST_BE_ALIVE = Értékesnek kell lenned, hogy megnyisd az entitás menüt.
+ENTITY_GLOBALLY_REMOVED = Ez az entitás globálisan eltávolítva.
 
 [lt]
 
@@ -285,6 +302,7 @@ ALL_SETTINGS_RESET = Visos nustatytos reikšmės buvo atstatytos.
 NOCLIP_TO_PLASMA = Noclip &x06įjungtas&x01, sekite plazmą norėdami pamatyti norimą entitetą.
 ENTITY_ALREADY_REMOVED = Negalima pašalinti entiteto, kuris jau buvo pašalintas.
 MUST_BE_ALIVE = Turite būti gyvas, kad atidarytumėte entitetų meniu.
+ENTITY_GLOBALLY_REMOVED = Šis entitetas yra pašalintas globaliai.
 
 [sk]
 
@@ -301,6 +319,7 @@ ALL_SETTINGS_RESET = Všetky nastavenia boli obnovené.
 NOCLIP_TO_PLASMA = Noclip &x06aktivované&x01, sledujte plazmu, aby ste vizualizovali požadovanú entitu.
 ENTITY_ALREADY_REMOVED = Nie je možné odstrániť entitu, ktorá už bola odstránená.
 MUST_BE_ALIVE = Musíte byť nažive, aby ste otvorili menu entít.
+ENTITY_GLOBALLY_REMOVED = Táto entita je globálne odstránená.
 
 [mk]
 
@@ -317,6 +336,7 @@ ALL_SETTINGS_RESET = Сите поставки се ресетирани.
 NOCLIP_TO_PLASMA = Noclip &x06активирано&x01, следете ја плазмата за да ја визуелизирате посакуваната ентитет.
 ENTITY_ALREADY_REMOVED = Не може да се отстрани ентитет кој веѣе е отстранет.
 MUST_BE_ALIVE = Мора да бидете живи за да го отворите менито за ентитети.
+ENTITY_GLOBALLY_REMOVED = Овој ентитет е глобално отстранет.
 
 [hr]
 
@@ -333,6 +353,7 @@ ALL_SETTINGS_RESET = Svi postavke su resetirane.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
 ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 MUST_BE_ALIVE = Morate biti živi da biste otvorili meni entiteta.
+ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [bs]
 
@@ -349,6 +370,7 @@ ALL_SETTINGS_RESET = Svi postavke su resetirane.
 NOCLIP_TO_PLASMA = Noclip &x06aktiviran&x01, slijedite plazmu kako biste vizualizirali željeni entitet.
 ENTITY_ALREADY_REMOVED = Nije moguće ukloniti entitet koji je već uklonjen.
 MUST_BE_ALIVE = Morate biti živi da biste otvorili meni entiteta.
+ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [ru]
 
@@ -365,6 +387,7 @@ ALL_SETTINGS_RESET = Все настройки были сброшены.
 NOCLIP_TO_PLASMA = Noclip &x06включен&x01, следуйте за плазмой, чтобы визуализировать требуемую сущность.
 ENTITY_ALREADY_REMOVED = Нельзя удалить сущность, которая уже была удалена.
 MUST_BE_ALIVE = Вы должны быть живы, чтобы открыть меню сущностей.
+ENTITY_GLOBALLY_REMOVED = Эта сущность глобально удалена.
 
 [cn]
 
@@ -381,6 +404,7 @@ ALL_SETTINGS_RESET = 所有设置已重置.
 NOCLIP_TO_PLASMA = Noclip &x06已启用&x01, 跟随等离子体来可视化所需的实体.
 ENTITY_ALREADY_REMOVED = 无法移除已移除的实体。
 MUST_BE_ALIVE = 你必须活着才能打开实体菜单。
+ENTITY_GLOBALLY_REMOVED = 此实体已被全局移除。
 
 [al]
 
@@ -397,3 +421,4 @@ ALL_SETTINGS_RESET = Të gjitha cilësimet janë rikthyer në gjendjen e mëpars
 NOCLIP_TO_PLASMA = Noclip &x06aktivizuar&x01, ndjekni plazmën për të vizualizuar entitetin e dëshiruar.
 ENTITY_ALREADY_REMOVED = Nuk mund të hiqet një entitet që është hequr tashmë.
 MUST_BE_ALIVE = Duhet të jesh gjallë për të hapur menunë e entiteteve.
+ENTITY_GLOBALLY_REMOVED = Ky entitet është hequr globalisht.

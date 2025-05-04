@@ -401,7 +401,8 @@ public OpenEntityOptionsMenu(id, type_index) {
 			pev(ent_id, pev_classname, class, 31);
 			pev(ent_id, pev_model, model, 31);
 			
-			new bool:is_removed = TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
+			// Mark as removed if global removal is ON or entity is individually removed
+			new bool:is_removed = g_remove_map_entities[type_index] || TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
 			
 			formatex(item_name, sizeof(item_name) - 1, "Entity #%d %s", i + 1, is_removed ? "\r[Removed]" : "");
 			menu_additem(menu, item_name, fmt("%d", type_index * 1000 + i));
@@ -449,7 +450,10 @@ public EntityOptionsHandler(id, menu, item) {
 		if (ent_array_index >= 0 && ent_array_index < ent_info[ei_count]) {
 			new ent_id = ArrayGetCell(ent_info[ei_indices], ent_array_index);
 			if (pev_valid(ent_id)) {
-				if (TrieKeyExists(g_removed_entities, fmt("%d", ent_id))) {
+				if (g_remove_map_entities[type_index]) {
+					CC_SendMessage(id, "%L", id, "ENTITY_GLOBALLY_REMOVED");
+					OpenEntityOptionsMenu(id, type_index);
+				} else if (TrieKeyExists(g_removed_entities, fmt("%d", ent_id))) {
 					CC_SendMessage(id, "%L", id, "ENTITY_ALREADY_REMOVED");
 					OpenEntityOptionsMenu(id, type_index);
 				} else {
