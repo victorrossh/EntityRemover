@@ -182,6 +182,11 @@ public MainEntityMenu(id, level, cid) {
 	if (!cmd_access(id, level, cid, 1))
 		return PLUGIN_HANDLED;
 
+	if (!is_user_alive(id)) {
+		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
+		return PLUGIN_HANDLED;
+	}
+
 	new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
 	new item_text[64];
 
