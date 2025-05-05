@@ -3,52 +3,16 @@
 #include <engine>
 #include <xs>
 #include <cromchat2>
+#include <sqlx>
+#include <entity_remover_globals>
+#include <entity_remover_db>
 
 #define PLUGIN "Entity Remover"
 #define VERSION "2.0"
 #define AUTHOR "ftl~"
 
-// Path to save the configuration files
-new const CONFIG_FOLDER[] = "addons/amxmodx/configs/entity_remover";
-new const IGNORE_CFG[] = "addons/amxmodx/configs/ignored_entities.cfg";
-new const PLASMA_SPRITE[] = "sprites/plasma.spr";
-new g_plasma_sprite;
-new Array:g_ignored_entities;
-
-// Temporary array to store the map entities
-new Array:g_map_entities;
-new g_map_entity_count;
-
-enum _:EntityData {
-	ent_index,
-	ent_solid,
-	ent_rendermode,
-	Float:ent_renderamt,
-	ent_classname[32],
-	ent_model[32]
-};
-
-enum _:EntityInfo {
-	ei_classname[32],
-	ei_count,
-	Array:ei_indices,
-	Array:ei_solid,
-	Array:ei_rendermode,
-	Array:ei_renderamt
-};
-
-new Array:g_map_entity_types; // Array of EntityInfo for unique classnames 
-new g_map_entity_type_count;  // Count of unique types
-new bool:g_remove_map_entities[4096];
-
-new bool:g_noclip_enabled[33];
-
-new Array:g_undo_stack[33];
-new g_undo_size[33];
-new Array:g_class;
-new Array:g_model;
-new g_total;
-new Trie:g_removed_entities;
+// Set the data saving mode: use 1 for MySQL or 0 for .txt file
+#define USE_SQL 1
 
 public plugin_precache() {
 	register_forward(FM_Spawn, "FwdSpawn", 0);
@@ -86,7 +50,19 @@ public plugin_init() {
 	create_config_folder();
 	load_ignored_entities();
 	ScanMapEntities();
-	load_map_config();
+
+	LOAD_SETTINGS();
+	#if USE_SQL
+		mysql_init();
+	#endif
+
+	#if USE_SQL
+		DB_LoadMapConfig();
+	#else
+		load_map_config();
+	#endif
+	
+	g_fwdDBLoaded = CreateMultiForward("entity_remover_db_loaded", ET_IGNORE);
 
 	//Chat prefix
 	CC_SetPrefix("&x04[FWO]");
@@ -94,6 +70,53 @@ public plugin_init() {
 
 public plugin_cfg(){
 	register_dictionary("entity_remover_ftl.txt");
+}
+
+public LOAD_SETTINGS() {
+	new szFilename[256];
+	get_configsdir(szFilename, charsmax(szFilename));
+	add(szFilename, charsmax(szFilename), "/entity_remover.cfg");
+	new iFilePointer = fopen(szFilename, "rt");
+	new szData[256], szKey[32], szValue[256];
+
+	if (iFilePointer) {
+		while (!feof(iFilePointer)) {
+			fgets(iFilePointer, szData, charsmax(szData));
+			trim(szData);
+
+			switch (szData[0]) {
+				case EOS, '#', ';': continue;
+			}
+
+			strtok(szData, szKey, charsmax(szKey), szValue, charsmax(szValue), '=');
+			trim(szKey); trim(szValue);
+
+			if (equal(szKey, "SQL_TYPE")) {
+				format(g_eSettings[SQL_TYPE], charsmax(g_eSettings[SQL_TYPE]), szValue);
+			}
+			if (equal(szKey, "SQL_HOST")) {
+				format(g_eSettings[SQL_HOST], charsmax(g_eSettings[SQL_HOST]), szValue);
+			}
+			if (equal(szKey, "SQL_USER")) {
+				format(g_eSettings[SQL_USER], charsmax(g_eSettings[SQL_USER]), szValue);
+			}
+			if (equal(szKey, "SQL_PASSWORD")) {
+				format(g_eSettings[SQL_PASSWORD], charsmax(g_eSettings[SQL_PASSWORD]), szValue);
+			}
+			if (equal(szKey, "SQL_DATABASE")) {
+				format(g_eSettings[SQL_DATABASE], charsmax(g_eSettings[SQL_DATABASE]), szValue);
+			}
+		}
+		fclose(iFilePointer);
+	}
+}
+
+public plugin_end() {
+	#if USE_SQL
+		if (g_iSqlTuple != Empty_Handle) {
+			SQL_FreeHandle(g_iSqlTuple);
+		}
+	#endif
 }
 
 public ScanMapEntities() {
@@ -216,7 +239,13 @@ public MainMenuHandler(id, menu, item) {
 	switch(item) {
 		case 0: OpenAimMenu(id);
 		case 1: ShowMapEntities(id);
-		case 2: ResetSettings(id);
+		case 2: {
+			#if USE_SQL
+				DB_ResetSettings(id);
+			#else
+				ResetSettings(id);
+			#endif
+		}
 		case 3: ToggleNoclip(id);
 	}
 	return PLUGIN_HANDLED;
@@ -303,7 +332,11 @@ public ConfirmationMenuHandler(id, menu, item) {
 			ArrayPushArray(g_undo_stack[id], ent_data);
 			g_undo_size[id] = ArraySize(g_undo_stack[id]);
 
-			SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model], ent);
+			#if USE_SQL
+				DB_SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model], ent);
+			#else
+				SaveSpecificEntity(ent_data[ent_classname], ent_data[ent_model], ent);
+			#endif
 			//client_print_color(id, print_chat, "^4[FWO] ^1Entity removed: ^3%s", ent_data[ent_classname]);
 			CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", ent_data[ent_classname]);
 		}
@@ -325,7 +358,11 @@ public UndoLastRemoval(id) {
 			set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
 			set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
 			
-			RemoveSavedEntity(ent_data[ent_model], ent_data[ent_index]);
+			#if USE_SQL
+				DB_RemoveSavedEntity(ent_data[ent_model], ent_data[ent_index]);
+			#else
+				RemoveSavedEntity(ent_data[ent_model], ent_data[ent_index]);
+			#endif
 			//client_print_color(id, print_chat, "^4[FWO] ^1Last removal undone: ^3%s", ent_data[ent_classname]);
 			CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", ent_data[ent_classname]);
 		}
@@ -439,7 +476,11 @@ public EntityOptionsHandler(id, menu, item) {
 		new status[32]
 		formatex(status, charsmax(status), "%L", id, g_remove_map_entities[type_index] ? "MSG_GLOBAL_REMOVED" : "MSG_GLOBAL_RESTORED");
 		CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", ent_info[ei_classname], status);
-		save_map_config(); // Saves directly to the .txt
+		#if USE_SQL
+			DB_SaveMapConfig();
+		#else
+			save_map_config(); // Saves directly to the .txt
+		#endif
 		OpenEntityOptionsMenu(id, type_index);
 	} else if (item >= 1) { 
 		new info_num = str_to_num(info);
@@ -836,6 +877,9 @@ public load_map_config() {
 			fclose(file);
 		}
 	}
+
+	static iReturn;
+	ExecuteForward(g_fwdDBLoaded, iReturn);
 }
 
 public save_map_config() {
