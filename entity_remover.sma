@@ -62,13 +62,13 @@ public plugin_init() {
 	//Chat prefix
 	CC_SetPrefix("&x04[FWO]");
 
+	g_fwdDBLoaded = CreateMultiForward("entity_remover_db_loaded", ET_IGNORE);
+
 	#if USE_SQL
 		DB_LoadMapConfig();
 	#else
 		load_map_config();
 	#endif
-	
-	g_fwdDBLoaded = CreateMultiForward("entity_remover_db_loaded", ET_IGNORE);
 }
 
 public plugin_cfg(){
