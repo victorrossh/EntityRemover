@@ -16,6 +16,9 @@ new Array:g_ignored_entities;
 new Array:g_map_entities;
 new g_map_entity_count;
 
+// Array to store the map name
+new g_szMapName[32];
+
 enum _:EntityData {
 	ent_index,
 	ent_solid,

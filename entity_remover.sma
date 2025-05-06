@@ -37,6 +37,9 @@ public plugin_precache() {
 public plugin_init() {
 	register_plugin(PLUGIN, VERSION, AUTHOR);
 
+	get_mapname(g_szMapName, sizeof(g_szMapName) - 1);
+	strtolower(g_szMapName);
+
 	register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 	register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 
@@ -550,11 +553,8 @@ public SaveSpecificEntity(const class[], const model[], ent) {
 	ArrayPushString(g_model, save_str);
 	g_total++;
 	
-	new map[32];
-	get_mapname(map, 31);
-	
 	new filepath[256];
-	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
 	
 	new file = fopen(filepath, "at");
 	if(file) {
@@ -625,10 +625,8 @@ public ResetSettings(id) {
 	TrieClear(g_removed_entities);
 	
 	// Delete config file
-	new map[32];
-	get_mapname(map, 31);
 	new filepath[256];
-	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
 	if(file_exists(filepath)) {
 		delete_file(filepath);
 	}
@@ -669,7 +667,6 @@ public GetAimAtEnt(id) {
 	}
 	return 0;
 }
-
 
 public ToggleNoclip(id) {
 	g_noclip_enabled[id] = !g_noclip_enabled[id];
@@ -805,12 +802,10 @@ public load_ignored_entities() {
 }
 
 public load_map_config() {
-	new map[32];
-	get_mapname(map, 31);
 	TrieClear(g_removed_entities);
 	
 	new filepath[256];
-	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
 	
 	if(file_exists(filepath)) {
 		new file = fopen(filepath, "rt");
@@ -883,11 +878,8 @@ public load_map_config() {
 }
 
 public save_map_config() {
-	new map[32];
-	get_mapname(map, 31);
-	
 	new filepath[256];
-	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, map);
+	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
 	
 	new file = fopen(filepath, "wt");
 	if (file) {

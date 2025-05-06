@@ -35,12 +35,9 @@ public DB_LoadMapConfig() {
 		ExecuteForward(g_fwdDBLoaded, iReturn);
 		return;
 	}
-
-	new map[32];
-	get_mapname(map, sizeof(map) - 1);
 	
 	new szQuery[128];
-	formatex(szQuery, charsmax(szQuery), "SELECT classname, model, ent_id, is_global FROM entity_remover WHERE map = '%s'", map);
+	formatex(szQuery, charsmax(szQuery), "SELECT classname, model, ent_id, is_global FROM entity_remover WHERE map = '%s'", g_szMapName);
 	SQL_ThreadQuery(g_iSqlTuple, "QueryLoadMapConfigHandler", szQuery);
 }
 
@@ -108,12 +105,9 @@ public DB_SaveMapConfig() {
 		#endif
 		return;
 	}
-
-	new map[32];
-	get_mapname(map, sizeof(map) - 1);
 	
 	new szQuery[128];
-	formatex(szQuery, charsmax(szQuery), "DELETE FROM entity_remover WHERE map = '%s'", map);
+	formatex(szQuery, charsmax(szQuery), "DELETE FROM entity_remover WHERE map = '%s'", g_szMapName);
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 
 	for (new i = 0; i < g_map_entity_type_count; i++) {
@@ -126,7 +120,7 @@ public DB_SaveMapConfig() {
 			
 			formatex(szQuery, sizeof(szQuery) - 1,
 				"INSERT INTO entity_remover (map, classname, model, ent_id, is_global) VALUES ('%s', '%s', 'GLOBAL', 0, 1)",
-				map, escaped_classname);
+				g_szMapName, escaped_classname);
 			SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 		}
 	}
@@ -162,7 +156,7 @@ public DB_SaveMapConfig() {
 		
 		formatex(szQuery, sizeof(szQuery) - 1,
 			"INSERT INTO entity_remover (map, classname, model, ent_id, is_global) VALUES ('%s', '%s', '%s', %d, 0)",
-			map, escaped_class, escaped_model, ent_id);
+			g_szMapName, escaped_class, escaped_model, ent_id);
 		SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 	}
 }
@@ -185,9 +179,6 @@ public DB_SaveSpecificEntity(const class[], const model[], ent) {
 		RemoveEntity(ent);
 		TrieSetCell(g_removed_entities, fmt("%d", ent), 1);
 	}
-
-	new map[32];
-	get_mapname(map, sizeof(map) - 1);
 	
 	new escaped_class[64], escaped_model[128];
 	SQL_QuoteString(Empty_Handle, escaped_class, sizeof(escaped_class) - 1, class);
@@ -195,8 +186,7 @@ public DB_SaveSpecificEntity(const class[], const model[], ent) {
 	
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"INSERT INTO entity_remover (map, classname, model, ent_id, is_global) VALUES ('%s', '%s', '%s', %d, 0)",
-		map, escaped_class, escaped_model, ent);
+		"INSERT INTO entity_remover (map, classname, model, ent_id, is_global) VALUES ('%s', '%s', '%s', %d, 0)", g_szMapName, escaped_class, escaped_model, ent);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
@@ -221,17 +211,13 @@ public DB_RemoveSavedEntity(const model[], ent_id) {
 			break;
 		}
 	}
-
-	new map[32];
-	get_mapname(map, sizeof(map) - 1);
 	
 	new escaped_model[128];
 	SQL_QuoteString(Empty_Handle, escaped_model, sizeof(escaped_model) - 1, model);
 	
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"DELETE FROM entity_remover WHERE map = '%s' AND model = '%s' AND ent_id = %d AND is_global = 0",
-		map, escaped_model, ent_id);
+		"DELETE FROM entity_remover WHERE map = '%s' AND model = '%s' AND ent_id = %d AND is_global = 0", g_szMapName, escaped_model, ent_id);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
@@ -275,13 +261,9 @@ public DB_ResetSettings(id) {
 	}
 	TrieClear(g_removed_entities);
 	
-	new map[32];
-	get_mapname(map, sizeof(map) - 1);
-	
 	new szQuery[128];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"DELETE FROM entity_remover WHERE map = '%s'",
-		map);
+		"DELETE FROM entity_remover WHERE map = '%s'", g_szMapName);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
