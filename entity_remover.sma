@@ -58,6 +58,9 @@ public plugin_init() {
 	#if USE_SQL
 		mysql_init();
 	#endif
+	
+	//Chat prefix
+	CC_SetPrefix("&x04[FWO]");
 
 	#if USE_SQL
 		DB_LoadMapConfig();
@@ -66,9 +69,6 @@ public plugin_init() {
 	#endif
 	
 	g_fwdDBLoaded = CreateMultiForward("entity_remover_db_loaded", ET_IGNORE);
-
-	//Chat prefix
-	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_cfg(){
