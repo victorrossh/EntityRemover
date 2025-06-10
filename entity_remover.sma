@@ -1,6 +1,7 @@
 #include <amxmodx>
 #include <amxmisc>
 #include <engine>
+#include <fun>
 #include <xs>
 #include <cromchat2>
 #include <sqlx>
@@ -212,6 +213,8 @@ public MainEntityMenu(id, level, cid) {
 		CC_SendMessage(id, "%L", id, "MUST_BE_ALIVE");
 		return PLUGIN_HANDLED;
 	}
+
+	g_noclip_enabled[id] = get_user_noclip(id);
 
 	new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
 	new item_text[64];
