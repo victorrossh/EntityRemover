@@ -214,7 +214,7 @@ public MainEntityMenu(id, level, cid) {
 		return PLUGIN_HANDLED;
 	}
 
-	g_noclip_enabled[id] = get_user_noclip(id);
+	g_noclip_enabled[id] = bool:get_user_noclip(id);
 
 	new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
 	new item_text[64];
