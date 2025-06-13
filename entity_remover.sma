@@ -266,10 +266,17 @@ public MainMenuHandler(id, menu, item) {
 }
 
 public OpenAimMenu(id) {
-	new menu = menu_create("\r[FWO] \d- \wRemove Aimed Entity:", "AimMenuHandler");
+	new szTitle[128];
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_AIM_TITLE");
 
-	menu_additem(menu, "\wRemove", "1");
-	menu_additem(menu, "\wUndo", "2");
+	new menu = menu_create(szTitle, "AimMenuHandler");
+	new szItem[64];
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_REMOVE");
+	menu_additem(menu, szItem, "1");
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_UNDO");
+	menu_additem(menu, szItem, "2");
 
 	menu_display(id, menu, 0);
 }
@@ -310,12 +317,17 @@ public AimMenuHandler(id, menu, item) {
 }
 
 public OpenConfirmationMenu(id, ent, const class[]) {
-	new title[128];
-	formatex(title, charsmax(title), "\r[FWO] \d- \wRemove Entity: \y%s?", class);
-	new menu = menu_create(title, "ConfirmationMenuHandler");
+	new szTitle[128];
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_CONFIRM_TITLE", class);
 
-	menu_additem(menu, "\wYes", fmt("%d", ent));
-	menu_additem(menu, "\wNo", "2");
+	new menu = menu_create(szTitle, "ConfirmationMenuHandler");
+	new szItem[64];
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_YES");
+	menu_additem(menu, szItem, fmt("%d", ent));
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_NO");
+	menu_additem(menu, szItem, "2");
 	
 	menu_display(id, menu, 0);
 }
@@ -390,7 +402,11 @@ public UndoLastRemoval(id) {
 }
 
 public ShowMapEntities(id) {
-	new menu = menu_create("\r[FWO] \d- \wMap Entities:", "map_entities_handler");
+	new szTitle[128];
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAP_TITLE");
+
+	new menu = menu_create(szTitle, "map_entities_handler");
+	new szItem[64];
 
 	if (g_map_entity_type_count > 0) {
 		new entity_item[64];
@@ -401,7 +417,8 @@ public ShowMapEntities(id) {
 			menu_additem(menu, entity_item, fmt("%d", i));
 		}
 	} else {
-		menu_additem(menu, "No entities found", "");
+		formatex(szItem, charsmax(szItem), "%L", id, "MENU_NO_ENTITIES");
+		menu_additem(menu, szItem, "");
 	}
 
 	menu_display(id, menu, 0);
@@ -433,14 +450,14 @@ public OpenEntityOptionsMenu(id, type_index) {
 	new ent_info[EntityInfo];
 	ArrayGetArray(g_map_entity_types, type_index, ent_info);
 	
-	new menu_title[64];
-	formatex(menu_title, sizeof(menu_title) - 1, "\r[FWO] \d- \w%s Options:", ent_info[ei_classname]);
-	new menu = menu_create(menu_title, "EntityOptionsHandler");
+	new szTitle[64];
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_OPTIONS_TITLE", ent_info[ei_classname]);
+	new menu = menu_create(szTitle, "EntityOptionsHandler");
 
-	new item[64], status[8];
+	new szItem[64], status[8];
 	format(status, 7, g_remove_map_entities[type_index] ? "\y[ON]" : "\r[OFF]");
-	formatex(item, sizeof(item) - 1, "%s %s", ent_info[ei_classname], status);
-	menu_additem(menu, item, fmt("%d", type_index));
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_TOGGLE", ent_info[ei_classname], status);
+	menu_additem(menu, szItem, fmt("%d", type_index));
 	
 	// Uniques entities 
 	for (new i = 0; i < ent_info[ei_count]; i++) {
@@ -455,7 +472,7 @@ public OpenEntityOptionsMenu(id, type_index) {
 			// Mark as removed if global removal is ON or entity is individually removed
 			new bool:is_removed = g_remove_map_entities[type_index] || TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
 			
-			formatex(item_name, sizeof(item_name) - 1, "Entity #%d %s", i + 1, is_removed ? "\r[Removed]" : "");
+			formatex(item_name, charsmax(item_name), "%L", id, "MENU_OPTION_ENTITY", i + 1, is_removed ? "%L" : "", id, "MENU_STATUS_REMOVED");
 			menu_additem(menu, item_name, fmt("%d", type_index * 1000 + i));
 		}
 	}
