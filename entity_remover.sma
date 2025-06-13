@@ -216,15 +216,23 @@ public MainEntityMenu(id, level, cid) {
 
 	g_noclip_enabled[id] = bool:get_user_noclip(id);
 
-	new menu = menu_create("\r[FWO] \d- \wEntity Menu:", "MainMenuHandler");
-	new item_text[64];
+	new szTitle[128];
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAIN_TITLE");
 
-	menu_additem(menu, "\wRemove Aimed Entity", "1");
-	menu_additem(menu, "\wMap Entities", "2");
-	menu_additem(menu, "\wReset All Settings^n", "3");
+	new menu = menu_create(szTitle, "MainMenuHandler");
+	new szItem[64];
 
-	formatex(item_text, sizeof(item_text) - 1, "\wNoclip %s", g_noclip_enabled[id]?"\y[ON]^n":"\r[OFF]^n");
-	menu_additem(menu, item_text, "4");
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_REMOVE_AIMED");
+	menu_additem(menu, szItem, "1");
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_MAP_ENTITIES");
+	menu_additem(menu, szItem, "2");
+
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_RESET_SETTINGS");
+	menu_additem(menu, szItem, "3");
+
+	formatex(szItem, sizeof(szItem) - 1, "\wNoclip %s", g_noclip_enabled[id]?"\y[ON]^n":"\r[OFF]^n");
+	menu_additem(menu, szItem, "4");
 
 	menu_display(id, menu, 0);
 	return PLUGIN_HANDLED;
