@@ -472,7 +472,7 @@ public OpenEntityOptionsMenu(id, type_index) {
 			// Mark as removed if global removal is ON or entity is individually removed
 			new bool:is_removed = g_remove_map_entities[type_index] || TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
 			
-			formatex(item_name, charsmax(item_name), "%L", id, "MENU_OPTION_ENTITY", i + 1, is_removed ? "%L" : "", id, "MENU_STATUS_REMOVED");
+			formatex(item_name, sizeof(item_name) - 1, is_removed ? "%L %L" : "%L" , LANG_PLAYER, "MENU_OPTION_ENTITY", i + 1, LANG_PLAYER, "MENU_STATUS_REMOVED");
 			menu_additem(menu, item_name, fmt("%d", type_index * 1000 + i));
 		}
 	}

@@ -22,7 +22,7 @@ MENU_OPTION_NO = \wNo
 
 ; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
-MENU_OPTION_ENTITY = \wEntity #%d %s
+MENU_OPTION_ENTITY = \wEntity #%d
 MENU_STATUS_REMOVED = \r[Removed]
 
 ; Additional Menu Messages
