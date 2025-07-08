@@ -68,7 +68,7 @@ MENU_OPTION_NO = \wNão
 
 ; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
-MENU_OPTION_ENTITY = \wEntidade #%d %s
+MENU_OPTION_ENTITY = \wEntidade #%d
 MENU_STATUS_REMOVED = \r[Removida]
 
 ; Additional Menu Messages
@@ -160,7 +160,7 @@ MENU_OPTION_NO = \wNão
 
 ; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
-MENU_OPTION_ENTITY = \wEntidade #%d %s
+MENU_OPTION_ENTITY = \wEntidade #%d
 MENU_STATUS_REMOVED = \r[Removida]
 
 ; Additional Menu Messages
