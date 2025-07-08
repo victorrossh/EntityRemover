@@ -109,6 +109,35 @@ ENTITY_GLOBALLY_REMOVED = Această entitate este eliminată global.
 
 [pt]
 
+; Menu Titles
+MENU_MAIN_TITLE = \r[FWO] \d- \wMenu de Entidades:
+MENU_AIM_TITLE = \r[FWO] \d- \wRemover Entidade:
+MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemover Entidade: \y%s?
+MENU_MAP_TITLE = \r[FWO] \d- \wEntidades do Mapa:
+MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpções de %s:
+
+; Main Menu Options
+MENU_OPTION_REMOVE_AIMED = \wRemover Entidade Mirando
+MENU_OPTION_MAP_ENTITIES = \wEntidades do Mapa
+MENU_OPTION_RESET_SETTINGS = \wRedefinir Todas as Configurações^n
+
+; Aim Menu Options
+MENU_OPTION_REMOVE = \wRemover
+MENU_OPTION_UNDO = \wDesfazer
+
+; Confirmation Menu Options
+MENU_OPTION_YES = \wSim
+MENU_OPTION_NO = \wNão
+
+; Entity Options Menu
+MENU_OPTION_TOGGLE = %s %s
+MENU_OPTION_ENTITY = \wEntidade #%d %s
+MENU_STATUS_REMOVED = \r[Removida]
+
+; Additional Menu Messages
+MENU_NO_ENTITIES = \wNenhuma entidade encontrada
+
+; Existing Messages
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
