@@ -1,34 +1,21 @@
 [en]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntity Menu:
 MENU_AIM_TITLE = \r[FWO] \d- \wRemove Aimed Entity:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemove Entity: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wMap Entities:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Options:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wRemove Aimed Entity
 MENU_OPTION_MAP_ENTITIES = \wMap Entities
 MENU_OPTION_RESET_SETTINGS = \wReset All Settings^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wRemove
 MENU_OPTION_UNDO = \wUndo
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wYes
 MENU_OPTION_NO = \wNo
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntity #%d
 MENU_STATUS_REMOVED = \r[Removed]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNo entities found
-
-; Existing Messages
 NO_ENTITY = No entity found.
 ENTITY_REMOVED = Entity removed: &x04%s
 LAST_REMOVAL_UNDONE = Last removal undone: &x04%s
@@ -46,35 +33,22 @@ ENTITY_GLOBALLY_REMOVED = This entity is globally removed.
 
 [bp]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu de Entidades:
 MENU_AIM_TITLE = \r[FWO] \d- \wRemover Entidade:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemover Entidade: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntidades do Mapa:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpções de %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wRemover Entidade Mirando
 MENU_OPTION_MAP_ENTITIES = \wEntidades do Mapa
 MENU_OPTION_RESET_SETTINGS = \wRedefinir Todas as Configurações^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wRemover
 MENU_OPTION_UNDO = \wDesfazer
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wSim
 MENU_OPTION_NO = \wNão
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntidade #%d
 MENU_STATUS_REMOVED = \r[Removida]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNenhuma entidade encontrada
-
-; Existing Messages
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
@@ -92,35 +66,22 @@ ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [ro]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMeniu Entități:
 MENU_AIM_TITLE = \r[FWO] \d- \wElimină Entitate Vizată:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wElimină Entitate: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntități Hartă:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpțiuni pentru %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wElimină Entitate Vizată
 MENU_OPTION_MAP_ENTITIES = \wEntități Hartă
 MENU_OPTION_RESET_SETTINGS = \wResetează Toate Setările^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wElimină
 MENU_OPTION_UNDO = \wAnulează
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wDa
 MENU_OPTION_NO = \wNu
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitate #%d
 MENU_STATUS_REMOVED = \r[Eliminată]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNicio entitate găsită
-
-; Existing Messages
 NO_ENTITY = Nicio entitate găsită.
 ENTITY_REMOVED = Entitate eliminată: &x04%s
 LAST_REMOVAL_UNDONE = Ultima eliminare anullată: &x04%s
@@ -138,35 +99,22 @@ ENTITY_GLOBALLY_REMOVED = Această entitate este eliminată global.
 
 [pt]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu de Entidades:
 MENU_AIM_TITLE = \r[FWO] \d- \wRemover Entidade:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemover Entidade: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntidades do Mapa:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpções de %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wRemover Entidade Mirando
 MENU_OPTION_MAP_ENTITIES = \wEntidades do Mapa
 MENU_OPTION_RESET_SETTINGS = \wRedefinir Todas as Configurações^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wRemover
 MENU_OPTION_UNDO = \wDesfazer
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wSim
 MENU_OPTION_NO = \wNão
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntidade #%d
 MENU_STATUS_REMOVED = \r[Removida]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNenhuma entidade encontrada
-
-; Existing Messages
 NO_ENTITY = Nenhuma entidade encontrada.
 ENTITY_REMOVED = Entidade removida: &x04%s
 LAST_REMOVAL_UNDONE = Última remoção desfeita: &x04%s
@@ -184,35 +132,22 @@ ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [es]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenú de Entidades:
 MENU_AIM_TITLE = \r[FWO] \d- \wEliminar Entidad Apuntada:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wEliminar Entidad: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntidades del Mapa:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpciones de %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wEliminar Entidad Apuntada
 MENU_OPTION_MAP_ENTITIES = \wEntidades del Mapa
 MENU_OPTION_RESET_SETTINGS = \wRestablecer Todos los Ajustes^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wEliminar
 MENU_OPTION_UNDO = \wDeshacer
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wSí
 MENU_OPTION_NO = \wNo
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntidad #%d
 MENU_STATUS_REMOVED = \r[Eliminada]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNo se encontraron entidades
-
-; Existing Messages
 NO_ENTITY = No se encontró entidad.
 ENTITY_REMOVED = Entidad eliminada: &x04%s
 LAST_REMOVAL_UNDONE = Última eliminación deshecha: &x04%s
@@ -230,35 +165,22 @@ ENTITY_GLOBALLY_REMOVED = Esta entidad está eliminada globalmente.
 
 [de]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntitäten-Menü:
 MENU_AIM_TITLE = \r[FWO] \d- \wEntität Entfernen:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wEntität Entfernen: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wKarten-Entitäten:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOptionen für %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wEntität Entfernen
 MENU_OPTION_MAP_ENTITIES = \wKarten-Entitäten
 MENU_OPTION_RESET_SETTINGS = \wAlle Einstellungen Zurücksetzen^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wEntfernen
 MENU_OPTION_UNDO = \wRückgängig
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wJa
 MENU_OPTION_NO = \wNein
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntität #%d
 MENU_STATUS_REMOVED = \r[Entfernt]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wKeine Entitäten gefunden
-
-; Existing Messages
 NO_ENTITY = Keine Entität gefunden.
 ENTITY_REMOVED = Entität entfernt: &x04%s
 LAST_REMOVAL_UNDONE = Letzte Entfernung rückgängig gemacht: &x04%s
@@ -276,35 +198,22 @@ ENTITY_GLOBALLY_REMOVED = Diese Entität ist global entfernt.
 
 [sr]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMeni Entiteta:
 MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Entitet:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Mape:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Mape
 MENU_OPTION_RESET_SETTINGS = \wResetuj Sva Podešavanja^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wUkloni
 MENU_OPTION_UNDO = \wPoništi
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wDa
 MENU_OPTION_NO = \wNe
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitet #%d
 MENU_STATUS_REMOVED = \r[Uklonjen]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNema entiteta
-
-; Existing Messages
 NO_ENTITY = Nema entiteta.
 ENTITY_REMOVED = Entitet uklonjen: &x04%s
 LAST_REMOVAL_UNDONE = Poslednje uklanjanje poništeno: &x04%s
@@ -322,35 +231,22 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [tr]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wVarlık Menüsü:
 MENU_AIM_TITLE = \r[FWO] \d- \wHedeflenen Varlığı Kaldır:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wVarlığı Kaldır: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wHarita Varlıkları:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Seçenekleri:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wHedeflenen Varlığı Kaldır
 MENU_OPTION_MAP_ENTITIES = \wHarita Varlıkları
 MENU_OPTION_RESET_SETTINGS = \wTüm Ayarları Sıfırla^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wKaldır
 MENU_OPTION_UNDO = \wGeri Al
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wEvet
 MENU_OPTION_NO = \wHayır
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wVarlık #%d
 MENU_STATUS_REMOVED = \r[Kaldırıldı]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wVarlık bulunamadı
-
-; Existing Messages
 NO_ENTITY = Varlık bulunamadı.
 ENTITY_REMOVED = Varlık kaldırıldı: &x04%s
 LAST_REMOVAL_UNDONE = Son kaldırma geri alındı: &x04%s
@@ -368,35 +264,22 @@ ENTITY_GLOBALLY_REMOVED = Bu varlık global olarak kaldırılmıştır.
 
 [fr]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu des Entités:
 MENU_AIM_TITLE = \r[FWO] \d- \wSupprimer l'Entité Ciblée:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wSupprimer l'Entité: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntités de la Carte:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOptions de %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wSupprimer l'Entité Ciblée
 MENU_OPTION_MAP_ENTITIES = \wEntités de la Carte
 MENU_OPTION_RESET_SETTINGS = \wRéinitialiser Tous les Paramètres^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wSupprimer
 MENU_OPTION_UNDO = \wAnnuler
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wOui
 MENU_OPTION_NO = \wNon
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntité #%d
 MENU_STATUS_REMOVED = \r[Supprimée]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wAucune entité trouvée
-
-; Existing Messages
 NO_ENTITY = Aucune entité trouvée.
 ENTITY_REMOVED = Entité supprimée : &x04%s
 LAST_REMOVAL_UNDONE = Dernière suppression annulée : &x04%s
@@ -414,35 +297,22 @@ ENTITY_GLOBALLY_REMOVED = Cette entité est supprimée globalement.
 
 [sv]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntitetsmeny:
 MENU_AIM_TITLE = \r[FWO] \d- \wTa Bort Målad Entitet:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wTa Bort Entitet: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wKartentiteter:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wAlternativ för %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wTa Bort Målad Entitet
 MENU_OPTION_MAP_ENTITIES = \wKartentiteter
 MENU_OPTION_RESET_SETTINGS = \wÅterställ Alla Inställningar^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wTa Bort
 MENU_OPTION_UNDO = \wÅngra
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wJa
 MENU_OPTION_NO = \wNej
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitet #%d
 MENU_STATUS_REMOVED = \r[Borttagen]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wIngen entitet hittades
-
-; Existing Messages
 NO_ENTITY = Ingen entitet hittades.
 ENTITY_REMOVED = Entitet borttagen: &x04%s
 LAST_REMOVAL_UNDONE = Senaste borttagning ångrad: &x04%s
@@ -460,35 +330,22 @@ ENTITY_GLOBALLY_REMOVED = Denna entitet är globalt borttagen.
 
 [da]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEnheds Menu:
 MENU_AIM_TITLE = \r[FWO] \d- \wFjern Målt Enhed:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wFjern Enhed: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wKort Enheder:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wIndstillinger for %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wFjern Målt Enhed
 MENU_OPTION_MAP_ENTITIES = \wKort Enheder
 MENU_OPTION_RESET_SETTINGS = \wNulstil Alle Indstillinger^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wFjern
 MENU_OPTION_UNDO = \wFortryd
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wJa
 MENU_OPTION_NO = \wNej
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEnhed #%d
 MENU_STATUS_REMOVED = \r[Fjernet]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wIngen enheder fundet
-
-; Existing Messages
 NO_ENTITY = Ingen enhed fundet.
 ENTITY_REMOVED = Enhed fjernet: &x04%s
 LAST_REMOVAL_UNDONE = Sidste fjernelse fortrydt: &x04%s
@@ -506,35 +363,22 @@ ENTITY_GLOBALLY_REMOVED = Denne enhed er globalt fjernet.
 
 [pl]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Jednostek:
 MENU_AIM_TITLE = \r[FWO] \d- \wUsuń Celowaną Jednostkę:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wUsuń Jednostkę: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wJednostki Mapy:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcje dla %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wUsuń Celowaną Jednostkę
 MENU_OPTION_MAP_ENTITIES = \wJednostki Mapy
 MENU_OPTION_RESET_SETTINGS = \wZresetuj Wszystkie Ustawienia^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wUsuń
 MENU_OPTION_UNDO = \wCofnij
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wTak
 MENU_OPTION_NO = \wNie
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wJednostka #%d
 MENU_STATUS_REMOVED = \r[Usunięta]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNie znaleziono jednostek
-
-; Existing Messages
 NO_ENTITY = Brak jednostki.
 ENTITY_REMOVED = Jednostka usunięta: &x04%s
 LAST_REMOVAL_UNDONE = Ostatnie usunięcie cofnięte: &x04%s
@@ -552,35 +396,22 @@ ENTITY_GLOBALLY_REMOVED = Ta jednostka jest globalnie usunięta.
 
 [nl]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntiteitenmenu:
 MENU_AIM_TITLE = \r[FWO] \d- \wVerwijder Gerichte Entiteit:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wVerwijder Entiteit: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wKaartentiteiten:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpties voor %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wVerwijder Gerichte Entiteit
 MENU_OPTION_MAP_ENTITIES = \wKaartentiteiten
 MENU_OPTION_RESET_SETTINGS = \wHerstel Alle Instellingen^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wVerwijder
 MENU_OPTION_UNDO = \wOngedaan Maken
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wJa
 MENU_OPTION_NO = \wNee
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntiteit #%d
 MENU_STATUS_REMOVED = \r[Verwijderd]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wGeen entiteiten gevonden
-
-; Existing Messages
 NO_ENTITY = Geen entiteit gevonden.
 ENTITY_REMOVED = Entiteit verwijderd: &x04%s
 LAST_REMOVAL_UNDONE = Laatste verwijdering ongedaan gemaakt: &x04%s
@@ -598,35 +429,22 @@ ENTITY_GLOBALLY_REMOVED = Deze entiteit is globaal verwijderd.
 
 [cz]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Entit:
 MENU_AIM_TITLE = \r[FWO] \d- \wOdstraň Zaměřenou Entitu:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wOdstraň Entitu: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntit Map:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wMožnosti pro %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wOdstraň Zaměřenou Entitu
 MENU_OPTION_MAP_ENTITIES = \wEntit Map
 MENU_OPTION_RESET_SETTINGS = \wObnovit Všechna Nastavení^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wOdstraň
 MENU_OPTION_UNDO = \wVrátit
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wAno
 MENU_OPTION_NO = \wNe
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntita #%d
 MENU_STATUS_REMOVED = \r[Odstraněna]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wŽádné entit nenalezeny
-
-; Existing Messages
 NO_ENTITY = Entita nenalezena.
 ENTITY_REMOVED = Entita odstraněna: &x04%s
 LAST_REMOVAL_UNDONE = Poslední odstranění vráceno: &x04%s
@@ -644,35 +462,22 @@ ENTITY_GLOBALLY_REMOVED = Tato entita je globálně odstraněna.
 
 [fi]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntiteettivalikko:
 MENU_AIM_TITLE = \r[FWO] \d- \wPoista Kohdistettu Entiteetti:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wPoista Entiteetti: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wKartta-Entiteetit:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wVaihtoehdot %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wPoista Kohdistettu Entiteetti
 MENU_OPTION_MAP_ENTITIES = \wKartta-Entiteetit
 MENU_OPTION_RESET_SETTINGS = \wNollaa Kaikki Asetukset^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wPoista
 MENU_OPTION_UNDO = \wKumoa
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wKyllä
 MENU_OPTION_NO = \wEi
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntiteetti #%d
 MENU_STATUS_REMOVED = \r[Poistettu]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wEntiteettejä ei löydy
-
-; Existing Messages
 NO_ENTITY = Entiteettiä ei löytynyt.
 ENTITY_REMOVED = Entiteetti poistettu: &x04%s
 LAST_REMOVAL_UNDONE = Viimeinen poisto peruutettu: &x04%s
@@ -690,35 +495,22 @@ ENTITY_GLOBALLY_REMOVED = Tämä entiteetti on poistettu globaalisti.
 
 [bg]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wМеню на Ентитети:
 MENU_AIM_TITLE = \r[FWO] \d- \wПремахни Насочен Ентитет:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wПремахни Ентитет: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wЕнтитети на Картата:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции за %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wПремахни Насочен Ентитет
 MENU_OPTION_MAP_ENTITIES = \wЕнтитети на Картата
 MENU_OPTION_RESET_SETTINGS = \wНулиране на Всички Настройки^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wПремахни
 MENU_OPTION_UNDO = \wОтмени
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wДа
 MENU_OPTION_NO = \wНе
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wЕнтитет #%d
 MENU_STATUS_REMOVED = \r[Премахнат]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wНяма намерени ентитети
-
-; Existing Messages
 NO_ENTITY = Няма намерена ентитет.
 ENTITY_REMOVED = Ентитет премахнат: &x04%s
 LAST_REMOVAL_UNDONE = Последното премахване отменено: &x04%s
@@ -736,35 +528,22 @@ ENTITY_GLOBALLY_REMOVED = Този ентитет е премахнат глоб
 
 [hu]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntitás Menü:
 MENU_AIM_TITLE = \r[FWO] \d- \wCélzott Entitás Eltávolítása:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wEntitás Eltávolítása: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wTérkép Entitásai:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Beállítások:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wCélzott Entitás Eltávolítása
 MENU_OPTION_MAP_ENTITIES = \wTérkép Entitásai
 MENU_OPTION_RESET_SETTINGS = \wMinden Beállítás Visszaállítása^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wEltávolítás
 MENU_OPTION_UNDO = \wVisszavonás
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wIgen
 MENU_OPTION_NO = \wNem
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitás #%d
 MENU_STATUS_REMOVED = \r[Eltávolítva]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNincs entitás találva
-
-; Existing Messages
 NO_ENTITY = Nincs entitás találva.
 ENTITY_REMOVED = Entitás eltávolítva: &x04%s
 LAST_REMOVAL_UNDONE = Utolsó eltávolítás visszavonva: &x04%s
@@ -782,35 +561,22 @@ ENTITY_GLOBALLY_REMOVED = Ez az entitás globálisan eltávolítva.
 
 [lt]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wEntitetų Meniu:
 MENU_AIM_TITLE = \r[FWO] \d- \wPašalinti Nukreiptą Entitetą:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wPašalinti Entitetą: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wŽemėlapio Entitetai:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wParinktys %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wPašalinti Nukreiptą Entitetą
 MENU_OPTION_MAP_ENTITIES = \wŽemėlapio Entitetai
 MENU_OPTION_RESET_SETTINGS = \wAtstatyti Visus Nustatymus^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wPašalinti
 MENU_OPTION_UNDO = \wAtšaukti
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wTaip
 MENU_OPTION_NO = \wNe
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitetas #%d
 MENU_STATUS_REMOVED = \r[Pašalintas]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wEntitetų nerasta
-
-; Existing Messages
 NO_ENTITY = Entitetas nerastas.
 ENTITY_REMOVED = Entitetas pašalintas: &x04%s
 LAST_REMOVAL_UNDONE = Paskutinė pašalinimas atšauktas: &x04%s
@@ -828,35 +594,22 @@ ENTITY_GLOBALLY_REMOVED = Šis entitetas yra pašalintas globaliai.
 
 [sk]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Entít:
 MENU_AIM_TITLE = \r[FWO] \d- \wOdstrániť Zamierenú Entitu:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wOdstrániť Entitu: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntity Mapy:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wMožnosti pre %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wOdstrániť Zamierenú Entitu
 MENU_OPTION_MAP_ENTITIES = \wEntity Mapy
 MENU_OPTION_RESET_SETTINGS = \wObnoviť Všetky Nastavenia^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wOdstrániť
 MENU_OPTION_UNDO = \wVrátit
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wÁno
 MENU_OPTION_NO = \wNie
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntita #%d
 MENU_STATUS_REMOVED = \r[Odstránená]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wŽiadne entity nenájdené
-
-; Existing Messages
 NO_ENTITY = Entita nenájdená.
 ENTITY_REMOVED = Entita odstránená: &x04%s
 LAST_REMOVAL_UNDONE = Posledné odstránenie zrušené: &x04%s
@@ -874,35 +627,22 @@ ENTITY_GLOBALLY_REMOVED = Táto entita je globálne odstránená.
 
 [mk]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wМени за Ентитети:
 MENU_AIM_TITLE = \r[FWO] \d- \wОтстрани Насочен Ентитет:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wОтстрани Ентитет: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wЕнтитети на Мапата:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции за %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wОтстрани Насочен Ентитет
 MENU_OPTION_MAP_ENTITIES = \wЕнтитети на Мапата
 MENU_OPTION_RESET_SETTINGS = \wРесетирај Сите Поставки^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wОтстрани
 MENU_OPTION_UNDO = \wОткажи
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wДа
 MENU_OPTION_NO = \wНе
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wЕнтитет #%d
 MENU_STATUS_REMOVED = \r[Отстранет]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wНема пронајдени ентитети
-
-; Existing Messages
 NO_ENTITY = Не е пронајдена ентитет.
 ENTITY_REMOVED = Ентитет отстранет: &x04%s
 LAST_REMOVAL_UNDONE = Последното отстранување е поништено: &x04%s
@@ -920,35 +660,22 @@ ENTITY_GLOBALLY_REMOVED = Овој ентитет е глобално отстр
 
 [hr]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wIzbornik Entiteta:
 MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Ciljani Entitet:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Karte:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Karte
 MENU_OPTION_RESET_SETTINGS = \wPoništi Sva Podešavanja^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wUkloni
 MENU_OPTION_UNDO = \wPoništi
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wDa
 MENU_OPTION_NO = \wNe
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitet #%d
 MENU_STATUS_REMOVED = \r[Uklonjen]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNema pronađenih entiteta
-
-; Existing Messages
 NO_ENTITY = Entitet nije pronađen.
 ENTITY_REMOVED = Entitet uklonjen: &x04%s
 LAST_REMOVAL_UNDONE = Posljednje uklanjanje poništeno: &x04%s
@@ -966,35 +693,22 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [bs]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wIzbornik Entiteta:
 MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Ciljani Entitet:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Karte:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Karte
 MENU_OPTION_RESET_SETTINGS = \wPoništi Sva Podešavanja^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wUkloni
 MENU_OPTION_UNDO = \wPoništi
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wDa
 MENU_OPTION_NO = \wNe
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitet #%d
 MENU_STATUS_REMOVED = \r[Uklonjen]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wNema pronađenih entiteta
-
-; Existing Messages
 NO_ENTITY = Entitet nije pronađen.
 ENTITY_REMOVED = Entitet uklonjen: &x04%s
 LAST_REMOVAL_UNDONE = Posljednje uklanjanje poništeno: &x04%s
@@ -1012,35 +726,22 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [ru]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wМеню Существ:
 MENU_AIM_TITLE = \r[FWO] \d- \wУдалить Целевую Сущность:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wУдалить Сущность: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wСущности Карты:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции для %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wУдалить Целевую Сущность
 MENU_OPTION_MAP_ENTITIES = \wСущности Карты
 MENU_OPTION_RESET_SETTINGS = \wСбросить Все Настройки^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wУдалить
 MENU_OPTION_UNDO = \wОтменить
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wДа
 MENU_OPTION_NO = \wНет
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wСущность #%d
 MENU_STATUS_REMOVED = \r[Удалено]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wСущности не найдены
-
-; Existing Messages
 NO_ENTITY = Сущность не найдена.
 ENTITY_REMOVED = Сущность удалена: &x04%s
 LAST_REMOVAL_UNDONE = Последнее удаление отменено: &x04%s
@@ -1058,35 +759,22 @@ ENTITY_GLOBALLY_REMOVED = Эта сущность глобально удале�
 
 [cn]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \w实体菜单:
 MENU_AIM_TITLE = \r[FWO] \d- \w移除瞄准的实体:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \w移除实体: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \w地图实体:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s选项:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \w移除瞄准的实体
 MENU_OPTION_MAP_ENTITIES = \w地图实体
 MENU_OPTION_RESET_SETTINGS = \w重置所有设置^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \w移除
 MENU_OPTION_UNDO = \w撤销
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \w是
 MENU_OPTION_NO = \w否
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \w实体 #%d
 MENU_STATUS_REMOVED = \r[移除]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \w未找到实体
-
-; Existing Messages
 NO_ENTITY = 未找到实体.
 ENTITY_REMOVED = 实体已移除: &x04%s
 LAST_REMOVAL_UNDONE = 最后一次移除已撤销: &x04%s
@@ -1104,35 +792,22 @@ ENTITY_GLOBALLY_REMOVED = 此实体已被全局移除。
 
 [al]
 
-; Menu Titles
 MENU_MAIN_TITLE = \r[FWO] \d- \wMenu e Entiteteve:
 MENU_AIM_TITLE = \r[FWO] \d- \wHiq Entitetin e Targetuar:
 MENU_CONFIRM_TITLE = \r[FWO] \d- \wHiq Entitetin: \y%s?
 MENU_MAP_TITLE = \r[FWO] \d- \wEntitetet e Hartës:
 MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpsione për %s:
-
-; Main Menu Options
 MENU_OPTION_REMOVE_AIMED = \wHiq Entitetin e Targetuar
 MENU_OPTION_MAP_ENTITIES = \wEntitetet e Hartës
 MENU_OPTION_RESET_SETTINGS = \wRivendos Të Gjitha Rregullimet^n
-
-; Aim Menu Options
 MENU_OPTION_REMOVE = \wHiq
 MENU_OPTION_UNDO = \wAnulo
-
-; Confirmation Menu Options
 MENU_OPTION_YES = \wPo
 MENU_OPTION_NO = \wJo
-
-; Entity Options Menu
 MENU_OPTION_TOGGLE = %s %s
 MENU_OPTION_ENTITY = \wEntitet #%d
 MENU_STATUS_REMOVED = \r[Hequr]
-
-; Additional Menu Messages
 MENU_NO_ENTITIES = \wAsgjë nuk u gjet
-
-; Existing Messages
 NO_ENTITY = Asgjë nuk u gjet.
 ENTITY_REMOVED = Entiteti u hoq: &x04%s
 LAST_REMOVAL_UNDONE = Heqja e fundit është anuluar: &x04%s
