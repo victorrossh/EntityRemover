@@ -5,8 +5,8 @@
 #include <xs>
 #include <cromchat2>
 #include <sqlx>
-#include <entity_remover_globals>
-#include <entity_remover_db>
+#include "include/entity_remover_globals"
+#include "include/entity_remover_db"
 
 #define PLUGIN "Entity Remover"
 #define VERSION "2.0"
@@ -181,12 +181,6 @@ public ScanMapEntities() {
 			}
 
 			g_map_entity_count++;
-		}
-	}
-
-	for (new i = 0; i < g_map_entity_type_count; i++) {
-		if (g_remove_map_entities[i]) {
-			ApplyMapEntityToggle(i, true);
 		}
 	}
 }
