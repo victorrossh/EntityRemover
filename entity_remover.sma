@@ -15,7 +15,7 @@
 
 public plugin_init()
 {
-	register_plugin("Entity Remover", "1.0", "MrShark45");
+	register_plugin("Entity Remover", "1.0", "ftl & MrShark45");
 	
 	register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 	register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
