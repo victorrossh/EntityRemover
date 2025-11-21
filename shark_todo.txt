@@ -1,4 +1,0 @@
-Remove entities based on classname on new round ( use tries iterate through all keys or compute a faster array of all deleted entities and recompute it on any changes made)
-Implement Undo
-Implement teleport to entity and guide line
-Implement text base saving option

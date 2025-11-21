@@ -5,8 +5,8 @@
 #include <xs>
 #include <cromchat2>
 #include <sqlx>
-#include "include/entity_remover_globals"
-#include "include/entity_remover_db"
+#include <entity_remover_globals>
+#include <entity_remover_db>
 
 #define PLUGIN "Entity Remover"
 #define VERSION "2.0"
@@ -17,7 +17,7 @@
 
 public plugin_precache() {
 	register_forward(FM_Spawn, "FwdSpawn", 0);
-	
+
 	g_class = ArrayCreate(32, 1);
 	g_model = ArrayCreate(32, 1);
 	g_total = 0;
@@ -59,7 +59,7 @@ public plugin_init() {
 	#if USE_SQL
 		mysql_init();
 	#endif
-	
+
 	//Chat prefix
 	CC_SetPrefix("&x04[FWO]");
 
@@ -156,14 +156,14 @@ public ScanMapEntities() {
 				ent_info[ei_solid] = ArrayCreate(1, 1);
 				ent_info[ei_rendermode] = ArrayCreate(1, 1);
 				ent_info[ei_renderamt] = ArrayCreate(1, 1);
-				
+
 				ArrayPushCell(ent_info[ei_indices], entity_index);
 				ArrayPushCell(ent_info[ei_solid], pev(entity_index, pev_solid));
 				ArrayPushCell(ent_info[ei_rendermode], pev(entity_index, pev_rendermode));
 				new Float:renderamt;
 				pev(entity_index, pev_renderamt, renderamt);
 				ArrayPushCell(ent_info[ei_renderamt], renderamt);
-				
+
 				ArrayPushArray(g_map_entity_types, ent_info);
 				g_map_entity_type_count++;
 			} else {
@@ -183,6 +183,12 @@ public ScanMapEntities() {
 			g_map_entity_count++;
 		}
 	}
+
+	for (new i = 0; i < g_map_entity_type_count; i++) {
+		if (g_remove_map_entities[i]) {
+			ApplyMapEntityToggle(i, true);
+		}
+	}
 }
 
 public FwdSpawn(ent) {
@@ -193,7 +199,7 @@ public FwdSpawn(ent) {
 
 public TaskDelayedCheck(ent) {
 	if(!pev_valid(ent)) return;
-	
+
 	if(TrieKeyExists(g_removed_entities, fmt("%d", ent))) {
 		RemoveEntity(ent);
 	}
@@ -293,7 +299,7 @@ public AimMenuHandler(id, menu, item) {
 			if(pev_valid(ent)) {
 				new class[32];
 				pev(ent, pev_classname, class, 31);
-			
+
 				OpenConfirmationMenu(id, ent, class);
 			}
 			else {
@@ -322,7 +328,7 @@ public OpenConfirmationMenu(id, ent, const class[]) {
 
 	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_NO");
 	menu_additem(menu, szItem, "2");
-	
+
 	menu_display(id, menu, 0);
 }
 
@@ -339,7 +345,7 @@ public ConfirmationMenuHandler(id, menu, item) {
 		new info[8], dummy;
 		menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
 		new ent = str_to_num(info);
-		
+
 		if(pev_valid(ent)) {
 			new ent_data[EntityData];
 			ent_data[ent_index] = ent;
@@ -372,12 +378,12 @@ public UndoLastRemoval(id) {
 		ArrayGetArray(g_undo_stack[id], g_undo_size[id]-1, ent_data);
 		ArrayDeleteItem(g_undo_stack[id], g_undo_size[id]-1);
 		g_undo_size[id]--;
-		
+
 		if(pev_valid(ent_data[ent_index])) {
 			set_pev(ent_data[ent_index], pev_solid, SOLID_BSP);
 			set_pev(ent_data[ent_index], pev_rendermode, ent_data[ent_rendermode]);
 			set_pev(ent_data[ent_index], pev_renderamt, ent_data[ent_renderamt]);
-			
+
 			#if USE_SQL
 				DB_RemoveSavedEntity(ent_data[ent_model], ent_data[ent_index]);
 			#else
@@ -443,7 +449,7 @@ public map_entities_handler(id, menu, item) {
 public OpenEntityOptionsMenu(id, type_index) {
 	new ent_info[EntityInfo];
 	ArrayGetArray(g_map_entity_types, type_index, ent_info);
-	
+
 	new szTitle[64];
 	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_OPTIONS_TITLE", ent_info[ei_classname]);
 	new menu = menu_create(szTitle, "EntityOptionsHandler");
@@ -452,20 +458,20 @@ public OpenEntityOptionsMenu(id, type_index) {
 	format(status, 7, g_remove_map_entities[type_index] ? "\y[ON]" : "\r[OFF]");
 	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_TOGGLE", ent_info[ei_classname], status);
 	menu_additem(menu, szItem, fmt("%d", type_index));
-	
+
 	// Uniques entities 
 	for (new i = 0; i < ent_info[ei_count]; i++) {
 		new item_name[64];
 		new ent_id = ArrayGetCell(ent_info[ei_indices], i);
-		
+
 		if (pev_valid(ent_id)) {
 			new class[32], model[32];
 			pev(ent_id, pev_classname, class, 31);
 			pev(ent_id, pev_model, model, 31);
-			
+
 			// Mark as removed if global removal is ON or entity is individually removed
 			new bool:is_removed = g_remove_map_entities[type_index] || TrieKeyExists(g_removed_entities, fmt("%d", ent_id));
-			
+
 			formatex(item_name, sizeof(item_name) - 1, is_removed ? "%L %L" : "%L" , LANG_PLAYER, "MENU_OPTION_ENTITY", i + 1, LANG_PLAYER, "MENU_STATUS_REMOVED");
 			menu_additem(menu, item_name, fmt("%d", type_index * 1000 + i));
 		}
@@ -546,7 +552,7 @@ public EntityOptionsHandler(id, menu, item) {
 public ApplyMapEntityToggle(type_index, bool:remove) {
 	new ent_info[EntityInfo];
 	ArrayGetArray(g_map_entity_types, type_index, ent_info);
-	
+
 	new ent = -1;
 	new index = 0;
 	while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", ent_info[ei_classname])) != 0) {
@@ -558,7 +564,7 @@ public ApplyMapEntityToggle(type_index, bool:remove) {
 				new solid = ArrayGetCell(ent_info[ei_solid], index);
 				new rendermode = ArrayGetCell(ent_info[ei_rendermode], index);
 				new Float:renderamt = Float:ArrayGetCell(ent_info[ei_renderamt], index);
-				
+
 				set_pev(ent, pev_rendermode, rendermode);
 				set_pev(ent, pev_renderamt, renderamt);
 				set_pev(ent, pev_solid, solid); // Instead of using SOLID_BSP, we use the stored original value, avoiding becoming opaque
@@ -574,10 +580,10 @@ public SaveSpecificEntity(const class[], const model[], ent) {
 	ArrayPushString(g_class, class);
 	ArrayPushString(g_model, save_str);
 	g_total++;
-	
+
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
-	
+
 	new file = fopen(filepath, "at");
 	if(file) {
 		if(containi(model, ".") != -1) {
@@ -587,7 +593,7 @@ public SaveSpecificEntity(const class[], const model[], ent) {
 		}
 		fclose(file);
 	}
-	
+
 	if(ent > 0 && pev_valid(ent)) {
 		RemoveEntity(ent);
 		TrieSetCell(g_removed_entities, fmt("%d", ent), 1);
@@ -598,7 +604,7 @@ public RemoveSavedEntity(const model[], ent_id) {
 	for(new i = 0; i < g_total; i++) {
 		new saved_str[64];
 		ArrayGetString(g_model, i, saved_str, 63);
-		
+
 		if(equali(model, saved_str)) {
 			ArrayDeleteItem(g_class, i);
 			ArrayDeleteItem(g_model, i);
@@ -618,19 +624,19 @@ public ResetSettings(id) {
 			ApplyMapEntityToggle(i, false);
 		}
 	}
-	
+
 	// Reset specific entities (menu 1)
 	if(g_total > 0) {
 		new ent = 0;
 		new class[32], model[32];
 		new max_entities = engfunc(EngFunc_NumberOfEntities);
-		
+
 		// Scan all entities in the map
 		for(ent = 1; ent < max_entities; ent++) {
 			if(pev_valid(ent)) {
 				pev(ent, pev_classname, class, 31);
 				pev(ent, pev_model, model, 31);
-				
+
 				if(TrieKeyExists(g_removed_entities, fmt("%d", ent))) {
 					set_pev(ent, pev_rendermode, kRenderNormal);
 					set_pev(ent, pev_renderamt, 255.0);
@@ -638,14 +644,14 @@ public ResetSettings(id) {
 				}
 			}
 		}
-		
+
 		// Clear specific entity arrays
 		ArrayClear(g_class);
 		ArrayClear(g_model);
 		g_total = 0;
 	}
 	TrieClear(g_removed_entities);
-	
+
 	// Delete config file
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
@@ -669,16 +675,16 @@ public GetAimAtEnt(id) {
 	pev(id, pev_origin, start);
 	pev(id, pev_view_ofs, view_ofs);
 	xs_vec_add(start, view_ofs, start);
-	
+
 	pev(id, pev_v_angle, dest);
 	engfunc(EngFunc_MakeVectors, dest);
 	global_get(glb_v_forward, dest);
-	
+
 	xs_vec_mul_scalar(dest, 9999.0, dest);
 	xs_vec_add(start, dest, dest);
-	
+
 	engfunc(EngFunc_TraceLine, start, dest, DONT_IGNORE_MONSTERS, id, 0);
-	
+
 	new ent = get_tr2(0, TR_pHit);
 	if(pev_valid(ent)) {
 		new class[32];
@@ -692,7 +698,7 @@ public GetAimAtEnt(id) {
 
 public ToggleNoclip(id) {
 	g_noclip_enabled[id] = !g_noclip_enabled[id];
-	
+
 	set_pev(id, pev_movetype, g_noclip_enabled[id] ? MOVETYPE_NOCLIP : MOVETYPE_WALK);
 	MainEntityMenu(id, ADMIN_IMMUNITY, 0);
 }
@@ -713,7 +719,7 @@ public TeleportPlayerToEnt(id, ent_id)
 
 	xs_vec_neg(vec_dir, vec_dir);
 	xs_vec_add_scaled(ent_origin, vec_dir, dist_to_ent, player_origin);
-	
+
 	set_pev(id, pev_origin, player_origin);
 	SetUserAgl(id, player_angles);
 }
@@ -726,21 +732,21 @@ stock SetUserAgl(id, Float:agl[3])
 
 public CreateGuideLine(id, ent_id) {
 	new Float:player_origin[3], Float:ent_origin[3];
-	
+
 	// Get the player's position
 	pev(id, pev_origin, player_origin);
 	player_origin[2] += 10.0; // Adjust the line to be created at the player's eye level
-	
+
 	// Get the entity's position
 	get_brush_entity_origin(ent_id,  ent_origin);
-	
+
 	if (!g_noclip_enabled[id]) { 
 		g_noclip_enabled[id] = true;
 		set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
 		//CC_SendMessage(id, "Noclip &x06activated&x01, follow the plasma to visualize the desired entity.");
 		CC_SendMessage(id, "%L", id, "NOCLIP_TO_PLASMA");
 	}
-	
+
 	// Create the beam between segment_start and segment_end
 	message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
 	write_byte(TE_BEAMPOINTS);                          // Temporary entity type: line between two points
@@ -787,7 +793,7 @@ public EventNewRound() {
 		for (new i = 0; i < g_total; i++) {
 			ArrayGetString(g_class, i, saved_class, 31);
 			ArrayGetString(g_model, i, saved_model, 63);
-			
+
 			ent = 0;
 			while ((ent = engfunc(EngFunc_FindEntityByString, ent, "classname", saved_class)) != 0) {
 				if (pev_valid(ent)) {
@@ -825,24 +831,24 @@ public load_ignored_entities() {
 
 public load_map_config() {
 	TrieClear(g_removed_entities);
-	
+
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
-	
+
 	if(file_exists(filepath)) {
 		new file = fopen(filepath, "rt");
 		if(file) {
 			new line[256];
 			while(fgets(file, line, 255)) {
 				trim(line);
-				
+
 				if(contain(line, "^"") != -1) {
 					new class[32], model[64], ent_id_str[16];
 					new parsed = parse(line, class, 31, model, 63, ent_id_str, 15);
 					replace(class, 31, "^"", "");
 					replace(model, 63, "^"", "");
 					replace(ent_id_str, 15, "^"", "");
-					
+
 					if(equali(model, "GLOBAL")) {
 						// Global entity (menu2)
 						if(parsed >= 2) {
@@ -863,7 +869,7 @@ public load_map_config() {
 						ArrayPushString(g_class, class);
 						ArrayPushString(g_model, save_str);
 						g_total++;
-						
+
 						if(parsed >= 3 && containi(model, ".") != -1) {
 							new ent_id = str_to_num(ent_id_str);
 							if(ent_id > 0) {
@@ -902,7 +908,7 @@ public load_map_config() {
 public save_map_config() {
 	new filepath[256];
 	formatex(filepath, 255, "%s/%s.txt", CONFIG_FOLDER, g_szMapName);
-	
+
 	new file = fopen(filepath, "wt");
 	if (file) {
 		// Save map entities (menu 2)
@@ -914,13 +920,13 @@ public save_map_config() {
 				fprintf(file, "^"%s^" ^"GLOBAL^"^n", ent_info[ei_classname]);
 			}
 		}
-		
+
 		// Save specific entities (menu 1 and menu 2 unique)
 		for(new i = 0; i < g_total; i++) {
 			new class[32], model[64];
 			ArrayGetString(g_class, i, class, 31);
 			ArrayGetString(g_model, i, model, 63);
-			
+
 			if(containi(model, ".") != -1) {
 				new ent_id;
 				for(new j = 0; j < g_map_entity_type_count; j++) {
@@ -939,7 +945,7 @@ public save_map_config() {
 						break;
 					}
 				}
-				
+
 				if (ent_id > 0) {
 					fprintf(file, "^"%s^" ^"%s^" ^"%d^"^n", class, model, ent_id);
 				}
@@ -947,7 +953,6 @@ public save_map_config() {
 				fprintf(file, "^"%s^" ^"%s^"^n", class, model);
 			}
 		}
-		
+
 		fclose(file);
 	}
-}
