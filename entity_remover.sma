@@ -21,6 +21,8 @@ public plugin_init()
 	register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 
 	register_event("HLTV", "EventNewRound", "a", "1=0", "2=0");
+
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_precache()
