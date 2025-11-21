@@ -4,4 +4,6 @@ Create lang for the Toggle in the menu
 Keep the menu open when pressing 1 and no entity is found, showing the “entity not found” message in chat
 Add a message when there are no more entities available for undo
 Keep the menu open when noclip is activated
-Add chat prefix “FWO”
+Add a message for entity removed when removing via menu 2, whether the entity was removed individually or globally
+Add a message when resetting all map entities
+When restoring an entity, it currently shows the entity ID, remove this or standardize messages for removed entities
