@@ -6,7 +6,7 @@
 #include <fun>
 #include <cromchat2>
 
-#define DEBUG 1
+#define DEBUG 0
 
 #include "include/globals.inc"
 #include "include/db.inc"
@@ -15,15 +15,10 @@
 
 public plugin_init()
 {
-	//init cvars
-
 	register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 	register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
 
 	register_event("HLTV", "EventNewRound", "a", "1=0", "2=0");
-	register_logevent("EventNewRound", 2, "1=Round_Start");
-	register_logevent("EventNewRound", 2, "1=Round_End");
-
 }
 
 public plugin_precache()
@@ -31,6 +26,8 @@ public plugin_precache()
 	get_mapname(g_szMapName, charsmax(g_szMapName));
 	LOAD_SETTINGS();
 	mysql_init();
+
+	g_iPlasmaSprite = precache_model(PLASMA_SPRITE);
 }
 
 public plugin_cfg()
@@ -43,7 +40,7 @@ public plugin_cfg()
 	g_aDeletedEntites = ArrayCreate(eEntityInfo);
 	g_aIgnoredClassnames = ArrayCreate(32);
 
-	g_aUndoHistory = ArrayCreate();
+	g_aUndoHistory = ArrayCreate(eUndoRecord);
 
 	g_tRemovedEntities = TrieCreate();
 	TrieClear(g_tRemovedEntities);
@@ -88,6 +85,19 @@ public EventNewRound()
 		set_pev(entity_index, pev_rendermode, kRenderTransAlpha);
 		set_pev(entity_index, pev_renderamt, 0.0);
 		set_pev(entity_index, pev_solid, SOLID_NOT);
+	}
+
+	new classname[64];
+
+	new TrieIter:trieIter = TrieIterCreate(g_tRemovedClassnames);
+
+	while(!TrieIterEnded(trieIter))
+	{
+		TrieIterGetKey(trieIter, classname, charsmax(classname));
+		new found = ArrayFindString(g_aMapClassnames, classname);
+		DeleteClassname(found, false);
+
+		TrieIterNext(trieIter);
 	}
 }
 
@@ -190,7 +200,7 @@ public ScanMapEntities()
 	}
 }
 
-stock DeleteClassname(classname_index, update_database = true)
+stock DeleteClassname(classname_index, update_database = true, add_to_undo = true)
 {
 	new classname_info[eClassnameInfo];
 	ArrayGetArray(g_aMapEntites, classname_index, classname_info);
@@ -208,12 +218,26 @@ stock DeleteClassname(classname_index, update_database = true)
 	}
 	
 	if(update_database)
+	{
 		DB_DeleteClassname(classname_info);
+	}
+
+	if(add_to_undo)
+	{
+		new ur_temp[eUndoRecord];
+		ur_temp[urAction] = UA_Remove;
+		ur_temp[urTarget] = UT_Classname;
+		ur_temp[urValue] = classname_index;
+
+		ArrayPushArray(g_aUndoHistory, ur_temp);
+	}
 
 	TrieSetCell(g_tRemovedClassnames, classname_info[eClassname], 1);
+
+	
 }
 
-stock RestoreClassname(classname_index, update_database = true)
+stock RestoreClassname(classname_index, update_database = true, add_to_undo = true)
 {
 	new classname_info[eClassnameInfo];
 	ArrayGetArray(g_aMapEntites, classname_index, classname_info);
@@ -235,12 +259,24 @@ stock RestoreClassname(classname_index, update_database = true)
 	}
 	
 	if(update_database)
+	{
 		DB_RestoreClassname(classname_info);
+	}
+
+	if(add_to_undo)
+	{
+		new ur_temp[eUndoRecord];
+		ur_temp[urAction] = UA_Restore;
+		ur_temp[urTarget] = UT_Classname;
+		ur_temp[urValue] = classname_index;
+
+		ArrayPushArray(g_aUndoHistory, ur_temp);
+	}
 
 	TrieDeleteKey(g_tRemovedClassnames, classname_info[eClassname]);
 }
 
-stock DeleteEntity(entity_index, update_database = true)
+stock DeleteEntity(entity_index, update_database = true, add_to_undo = true)
 {
 	new entity_info[eEntityInfo];
 	getEntityInfo(entity_index, entity_info);
@@ -251,12 +287,24 @@ stock DeleteEntity(entity_index, update_database = true)
 	set_pev(entity_index, pev_solid, SOLID_NOT);
 
 	if(update_database)
+	{
 		DB_DeleteEntity(entity_info);
+	}
 
+	if(add_to_undo)
+	{
+		new ur_temp[eUndoRecord];
+		ur_temp[urAction] = UA_Remove;
+		ur_temp[urTarget] = UT_Entity;
+		ur_temp[urValue] = entity_index;
+
+		ArrayPushArray(g_aUndoHistory, ur_temp);
+	}
+		
 	TrieSetCell(g_tRemovedEntities, fmt("%d", entity_index), 1);
 }
 
-stock restoreEntity(entity_index, update_database = true)
+stock RestoreEntity(entity_index, update_database = true, add_to_undo = true)
 {
 	new entity_info[eEntityInfo];
 	new size = ArraySize(g_aDeletedEntites);
@@ -286,25 +334,75 @@ stock restoreEntity(entity_index, update_database = true)
 
 
 	if(update_database)
+	{
 		DB_RestoreEntity(entity_info);
+	}
 
+	if(add_to_undo)
+	{
+		new ur_temp[eUndoRecord];
+		ur_temp[urAction] = UA_Restore;
+		ur_temp[urTarget] = UT_Entity;
+		ur_temp[urValue] = entity_index;
+
+		ArrayPushArray(g_aUndoHistory, ur_temp);
+	}
+		
 	TrieDeleteKey(g_tRemovedEntities,fmt("%d", entity_index));
 }
 
 stock ResetSettings()
 {
+	new size = ArraySize(g_aDeletedEntites);
+	new entity_info[eEntityInfo];
+	new entity_index;
+	for(new i;i<size;i++)
+	{
+		ArrayGetArray(g_aDeletedEntites, i, entity_info);
+		entity_index = entity_info[eId];
 
+		set_pev(entity_index, pev_rendermode, entity_info[eRender][eRenderMode]);
+		set_pev(entity_index, pev_renderamt, entity_info[eRender][eRenderAmt]);
+		set_pev(entity_index, pev_solid, entity_info[eRender][eSolid]);
+	}
+
+	ArrayClear(g_aDeletedEntites);
+	ArrayClear(g_aUndoHistory);
+	TrieClear(g_tRemovedEntities);
+
+	new classname[64];
+
+	new TrieIter:trieIter = TrieIterCreate(g_tRemovedClassnames);
+
+	new Array:aClassnames = ArrayCreate(32);
+
+	while(!TrieIterEnded(trieIter))
+	{
+		TrieIterGetKey(trieIter, classname, charsmax(classname));
+		
+		ArrayPushString(aClassnames, classname);
+
+		TrieIterNext(trieIter);
+	}
+
+	for(new i=0;i<ArraySize(aClassnames);i++)
+	{
+		ArrayGetString(aClassnames, i, classname, charsmax(classname));
+		new found = ArrayFindString(g_aMapClassnames, classname);
+		RestoreClassname(found, false);
+	}
+	DB_DeleteMap();
 }
 
 stock getEntityInfo(entity_index, entity_info[eEntityInfo])
 {
 	new entity_classname[32];
-	pev(entity_index, pev_classname, entity_classname, sizeof(entity_classname) - 1);
+	pev(entity_index, pev_classname, entity_classname, charsmax(entity_classname));
 
 	new render_info[eRenderInfo]
 			
 	entity_info[eId] = entity_index;
-	pev(entity_index, pev_model, entity_info[eModelId], sizeof(entity_info[eModelId]) - 1);
+	pev(entity_index, pev_model, entity_info[eModelId], charsmax(entity_info[eModelId]));
 
 	render_info[eSolid] = pev(entity_index, pev_solid);
 	render_info[eRenderMode] = pev(entity_index, pev_rendermode);
@@ -316,7 +414,7 @@ stock getEntityInfo(entity_index, entity_info[eEntityInfo])
 stock getEntityInfoFromArray(entity_index, entity_info[eEntityInfo])
 {
 	new classname[32];
-	pev(entity_index, pev_classname, entity_classname, sizeof(enti`ty_classname) - 1);
+	pev(entity_index, pev_classname, entity_classname, charsmax(entity_classname));
 
 	new size = ArraySize(g_aMapEntites);
 

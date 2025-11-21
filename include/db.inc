@@ -35,8 +35,26 @@ public DB_LoadEntities()
 	}
 	
 	new szQuery[128];
-	formatex(szQuery, charsmax(szQuery), "SELECT classname, model FROM entity_remover_test WHERE map = '%s'", g_szMapName);
+	formatex(szQuery, charsmax(szQuery), "SELECT classname, model FROM entity_remover WHERE map = '%s'", g_szMapName);
 	SQL_ThreadQuery(g_iSqlTuple, "QueryLoadEntitiesHandler", szQuery);
+}
+
+public DB_DeleteMap()
+{
+    if (g_iSqlTuple == Empty_Handle) {
+        #if DEBUG
+            log_amx("Cannot delete from database: Invalid SQL tuple handle. Check database connection.");
+        #endif
+        return;
+    }
+
+    new szQuery[128];
+    formatex(szQuery, charsmax(szQuery), 
+        "DELETE FROM entity_remover WHERE map = '%s'",
+        g_szMapName
+    );
+
+    SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
 
 public QueryLoadEntitiesHandler(iFailState, Handle:iQuery, szError[], iErrorCode) {
@@ -96,7 +114,7 @@ public DB_DeleteEntity(entity_info[eEntityInfo])
 
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"INSERT IGNORE INTO entity_remover_test (map, classname, model) VALUES ('%s', '%s', '%s')", g_szMapName, entity_classname, entity_info[eModelId]);
+		"INSERT IGNORE INTO entity_remover (map, classname, model) VALUES ('%s', '%s', '%s')", g_szMapName, entity_classname, entity_info[eModelId]);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
@@ -109,7 +127,7 @@ public DB_RestoreEntity(entity_info[eEntityInfo])
 
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"DELETE FROM entity_remover_test WHERE map='%s' AND classname='%s' AND model='%s';", g_szMapName, entity_classname, entity_info[eModelId]);
+		"DELETE FROM entity_remover WHERE map='%s' AND classname='%s' AND model='%s';", g_szMapName, entity_classname, entity_info[eModelId]);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
@@ -118,7 +136,7 @@ public DB_DeleteClassname(classname_info[eClassnameInfo])
 {
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"INSERT IGNORE INTO entity_remover_test (map, classname, model) VALUES ('%s', '%s', '')", g_szMapName, classname_info[eClassname]);
+		"INSERT IGNORE INTO entity_remover (map, classname, model) VALUES ('%s', '%s', '')", g_szMapName, classname_info[eClassname]);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
@@ -127,7 +145,7 @@ public DB_RestoreClassname(classname_info[eClassnameInfo])
 {
 	new szQuery[256];
 	formatex(szQuery, sizeof(szQuery) - 1,
-		"DELETE FROM entity_remover_test WHERE map='%s' AND classname='%s' AND model='';", g_szMapName, classname_info[eClassname]);
+		"DELETE FROM entity_remover WHERE map='%s' AND classname='%s' AND model='';", g_szMapName, classname_info[eClassname]);
 	
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }

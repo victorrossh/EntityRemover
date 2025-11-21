@@ -35,16 +35,36 @@ enum eClassnameInfo
 	Array:eEntities,
 };
 
+enum eUndoAction
+{
+    UA_Remove,
+    UA_Restore
+};
+
+enum eUndoTarget
+{
+    UT_Entity,
+    UT_Classname
+};
+
+enum eUndoRecord
+{
+    eUndoAction:urAction,    // UndoAction
+    eUndoTarget:urTarget,    // UndoTarget
+    urValue        			// entity id or classname index
+};
+
+new Array:g_aUndoHistory;
+
 new Array:g_aMapEntites;
 new Array:g_aMapClassnames;
 new Array:g_aDeletedEntites;
 new Array:g_aIgnoredClassnames;
-
-new Array:g_aUndoHistory;
 
 new Trie:g_tRemovedEntities;
 new Trie:g_tRemovedClassnames;
 
 new g_szMapName[32];
 
-new bool:g_bNoclip[33];
+new bool:g_bNoclip[MAX_PLAYERS];
+new g_iLastClassIndex[MAX_PLAYERS];
