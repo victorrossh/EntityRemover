@@ -78,7 +78,7 @@ public QueryLoadEntitiesHandler(iFailState, Handle:iQuery, szError[], iErrorCode
 				#if DEBUG
 				server_print("[DEBUG] Entity Classname %s NOT FOUND!", classname);
 				#endif
-
+				SQL_NextRow(iQuery);
 				continue;
 			}
 			#if DEBUG
@@ -94,6 +94,7 @@ public QueryLoadEntitiesHandler(iFailState, Handle:iQuery, szError[], iErrorCode
 				#if DEBUG
 				server_print("[DEBUG] Entity Classname %s | Model %s NOT FOUND!", classname, model);
 				#endif
+				SQL_NextRow(iQuery);
 				continue;
 			}
 			#if DEBUG
