@@ -85,12 +85,11 @@ public EventNewRound()
 	new entity_index;
 	for(new i;i<size;i++)
 	{
+		
 		ArrayGetArray(g_aDeletedEntites, i, entity_info);
 		entity_index = entity_info[eId];
 
-		set_pev(entity_index, pev_rendermode, kRenderTransAlpha);
-		set_pev(entity_index, pev_renderamt, 0.0);
-		set_pev(entity_index, pev_solid, SOLID_NOT);
+		HideEntity(entity_index);
 	}
 
 	new classname[64];
@@ -288,9 +287,7 @@ stock DeleteEntity(entity_index, update_database = true, add_to_undo = true)
 	getEntityInfo(entity_index, entity_info);
 	ArrayPushArray(g_aDeletedEntites, entity_info);
 
-	set_pev(entity_index, pev_rendermode, kRenderTransAlpha);
-	set_pev(entity_index, pev_renderamt, 0.0);
-	set_pev(entity_index, pev_solid, SOLID_NOT);
+	HideEntity(entity_index);
 
 	if(update_database)
 	{
@@ -308,6 +305,15 @@ stock DeleteEntity(entity_index, update_database = true, add_to_undo = true)
 	}
 		
 	TrieSetCell(g_tRemovedEntities, fmt("%d", entity_index), 1);
+}
+
+public HideEntity(entity_index)
+{
+	if(!pev_valid(entity_index)) return;
+
+	set_pev(entity_index, pev_rendermode, kRenderTransAlpha);
+	set_pev(entity_index, pev_renderamt, 0.0);
+	set_pev(entity_index, pev_solid, SOLID_NOT);
 }
 
 stock RestoreEntity(entity_index, update_database = true, add_to_undo = true)
