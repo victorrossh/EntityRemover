@@ -5,11 +5,9 @@
 #include <sqlx>
 #include <fun>
 #include <cromchat2>
-
-#include "include/globals.inc"
-#include "include/db.inc"
-#include "include/menu.inc"
-
+#include <globals>
+#include <db>
+#include <menu>
 
 public plugin_init()
 {
