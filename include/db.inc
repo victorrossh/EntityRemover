@@ -1,27 +1,24 @@
 public mysql_init() {
-	#if DEBUG
-		log_amx("Attempting to create DbTuple with host: %s, user: %s, db: %s", g_eSettings[SQL_HOST], g_eSettings[SQL_USER], g_eSettings[SQL_DATABASE]);
-	#endif
+	if (g_bDebugMode)
+		log_amx("[Entity DEBUG] Attempting to create DbTuple with host: %s, user: %s, db: %s", g_eSettings[SQL_HOST], g_eSettings[SQL_USER], g_eSettings[SQL_DATABASE]);
+
 	g_iSqlTuple = SQL_MakeDbTuple(g_eSettings[SQL_HOST], g_eSettings[SQL_USER], g_eSettings[SQL_PASSWORD], g_eSettings[SQL_DATABASE]);
 	if (g_iSqlTuple == Empty_Handle) {
-		#if DEBUG
-			log_amx("Failed to create DbTuple. Check SQL_HOST, SQL_USER, SQL_PASSWORD, and SQL_DATABASE in entity_remover.cfg.");
-		#endif
+		if (g_bDebugMode)
+			log_amx("[Entity DEBUG] Failed to create DbTuple. Check SQL_HOST, SQL_USER, SQL_PASSWORD, and SQL_DATABASE in entity_remover.cfg.");
 		return;
 	}
 	SQL_SetAffinity("mysql");
 
 	new iErrorCode, szSqlError[128], Handle:iSqlConnection = SQL_Connect(g_iSqlTuple, iErrorCode, szSqlError, charsmax(szSqlError));
 	if (iSqlConnection == Empty_Handle) {
-		#if DEBUG
-			log_amx("Connection failed (%i): %s", iErrorCode, szSqlError);
-		#endif
+		if (g_bDebugMode)
+			log_amx("[Entity DEBUG] Connection failed (%i): %s", iErrorCode, szSqlError);
 		g_iSqlTuple = Empty_Handle;
 		return;
 	} else {
-		#if DEBUG
-			log_amx("Connection successful.");
-		#endif
+		if (g_bDebugMode)
+			log_amx("[Entity DEBUG] Connection successful.");
 		SQL_FreeHandle(iSqlConnection);
 	}
 }
@@ -29,9 +26,9 @@ public mysql_init() {
 public DB_LoadEntities()
 {
 	if (g_iSqlTuple == Empty_Handle) {
-		#if DEBUG
-			log_amx("Cannot load from database: Invalid SQL tuple handle. Check database connection.");
-		#endif
+		if (g_bDebugMode)
+			log_amx("[Entity DEBUG] Cannot load from database: Invalid SQL tuple handle. Check database connection.");
+		return;
 	}
 	
 	new szQuery[128];
@@ -41,27 +38,25 @@ public DB_LoadEntities()
 
 public DB_DeleteMap()
 {
-    if (g_iSqlTuple == Empty_Handle) {
-        #if DEBUG
-            log_amx("Cannot delete from database: Invalid SQL tuple handle. Check database connection.");
-        #endif
-        return;
-    }
+	if (g_iSqlTuple == Empty_Handle) {
+		if (g_bDebugMode)
+			log_amx("[Entity DEBUG] Cannot delete from database: Invalid SQL tuple handle. Check database connection.");
+		return;
+	}
 
-    new szQuery[128];
-    formatex(szQuery, charsmax(szQuery), 
-        "DELETE FROM entity_remover WHERE map = '%s'",
-        g_szMapName
-    );
+	new szQuery[128];
+	formatex(szQuery, charsmax(szQuery), 
+		"DELETE FROM entity_remover WHERE map = '%s'",
+		g_szMapName
+	);
 
-    SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
+	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
 
 public QueryLoadEntitiesHandler(iFailState, Handle:iQuery, szError[], iErrorCode) {
 	if (iFailState) {
-		#if defined DEBUG
+		if (g_bDebugMode)
 			check_and_log_query_error(iFailState, szError, iErrorCode);
-		#endif
 		return;
 	}
 
@@ -70,36 +65,32 @@ public QueryLoadEntitiesHandler(iFailState, Handle:iQuery, szError[], iErrorCode
 		SQL_ReadResult(iQuery, 0, classname, sizeof(classname) - 1);
 		SQL_ReadResult(iQuery, 1, model, sizeof(model) - 1);
 
-		if(equali(model, ""))
+		if (equali(model, ""))
 		{
 			new found = ArrayFindString(g_aMapClassnames, classname);
-			if(found < 0)
+			if (found < 0)
 			{
-				#if DEBUG
-				server_print("[DEBUG] Entity Classname %s NOT FOUND!", classname);
-				#endif
+				if (g_bDebugMode)
+					server_print("[Entity DEBUG] Entity Classname %s NOT FOUND!", classname);
 				SQL_NextRow(iQuery);
 				continue;
 			}
-			#if DEBUG
-				server_print("[DEBUG] Deleting Classname %s!", classname);
-			#endif
+			if (g_bDebugMode)
+				server_print("[Entity DEBUG] Deleting Classname %s!", classname);
 			DeleteClassname(found, false);
 		}
 		else
 		{
 			new entity_index = find_ent_by_model(0, classname, model);
-			if(!entity_index)
+			if (!entity_index)
 			{
-				#if DEBUG
-				server_print("[DEBUG] Entity Classname %s | Model %s NOT FOUND!", classname, model);
-				#endif
+				if (g_bDebugMode)
+					server_print("[Entity DEBUG] Entity Classname %s | Model %s NOT FOUND!", classname, model);
 				SQL_NextRow(iQuery);
 				continue;
 			}
-			#if DEBUG
-				server_print("[DEBUG] Deleting Entity Classname %s | Model %s!", classname, model);
-			#endif
+			if (g_bDebugMode)
+				server_print("[Entity DEBUG] Deleting Entity Classname %s | Model %s!", classname, model);
 			DeleteEntity(entity_index, false);
 		}
 		
@@ -152,14 +143,13 @@ public DB_RestoreClassname(classname_info[eClassnameInfo])
 }
 
 public QueryHandler(iFailState, Handle:iQuery, szError[], iErrorCode) {
-	#if defined DEBUG
+	if (g_bDebugMode)
 		check_and_log_query_error(iFailState, szError, iErrorCode);
-	#endif
 }
 
 check_and_log_query_error(iFailState, const szError[], iErrorCode) {
 	switch (iFailState) {
-		case TQUERY_CONNECT_FAILED: log_amx("Connection failed (%i): %s", iErrorCode, szError);
-		case TQUERY_QUERY_FAILED: log_amx("Query failed (%i): %s", iErrorCode, szError);
+		case TQUERY_CONNECT_FAILED: log_amx("[Entity DEBUG] Connection failed (%i): %s", iErrorCode, szError);
+		case TQUERY_QUERY_FAILED: log_amx("[Entity DEBUG] Query failed (%i): %s", iErrorCode, szError);
 	}
 }

@@ -6,8 +6,6 @@
 #include <fun>
 #include <cromchat2>
 
-#define DEBUG 0
-
 #include "include/globals.inc"
 #include "include/db.inc"
 #include "include/menu.inc"
@@ -23,6 +21,8 @@ public plugin_init()
 	register_event("HLTV", "EventNewRound", "a", "1=0", "2=0");
 	register_logevent("EventNewRound", 2, "1=Round_Start");
 	register_logevent("EventNewRound", 2, "1=Round_End");
+
+	g_bDebugMode = bool:(plugin_flags() & AMX_FLAG_DEBUG);
 
 	CC_SetPrefix("&x04[FWO]");
 }
@@ -58,9 +58,8 @@ public plugin_cfg()
 
 	ScanMapEntities();
 
-#if DEBUG
-	TEST_SCANMAP();
-#endif
+	if(g_bDebugMode)
+		TEST_SCANMAP();
 
 	DB_LoadEntities();
 }
@@ -151,9 +150,8 @@ public ScanMapEntities()
 	new entity_classname[32];
 	new max_entities = engfunc(EngFunc_NumberOfEntities);
 
-	#if DEBUG
-	server_print("NUMBER OF ENTITIES: %d", max_entities);
-	#endif
+	if(g_bDebugMode)
+		server_print("[Entity DEBUG] NUMBER OF ENTITIES: %d", max_entities);
 
 	for (entity = 1; entity < max_entities; entity++) {
 		if (!pev_valid(entity)) continue;
@@ -332,9 +330,9 @@ stock RestoreEntity(entity_index, update_database = true, add_to_undo = true)
 		}
 	}
 
-	if(found < 0)
+	if(found < 0 && g_bDebugMode)
 	{
-		server_print("[DEBUG] Deleted entity cannot be found!");
+		server_print("[Entity DEBUG] Deleted entity cannot be found!");
 		return;
 	}
 
