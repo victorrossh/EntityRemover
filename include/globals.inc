@@ -68,3 +68,6 @@ new g_szMapName[32];
 
 new bool:g_bNoclip[MAX_PLAYERS];
 new g_iLastClassIndex[MAX_PLAYERS];
+
+//Debug mode
+new bool:g_bDebugMode;
