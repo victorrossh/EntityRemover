@@ -10,7 +10,7 @@ public MainEntityMenu(id, level, cid) {
 	g_bNoclip[id] = bool:get_user_noclip(id);
 
 	new szTitle[128];
-	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAIN_TITLE");
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAIN_TITLE", MENU_PREFIX);
 
 	new menu = menu_create(szTitle, "MainMenuHandler");
 	new szItem[64];
@@ -146,7 +146,7 @@ stock GetUndoMessage(const undoRecord[urAction], msg[], msgLen)
 
 public OpenAimMenu(id) {
 	new szTitle[128];
-	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_AIM_TITLE");
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_AIM_TITLE", MENU_PREFIX);
 
 	new menu = menu_create(szTitle, "AimMenuHandler");
 	new szItem[64];
@@ -159,7 +159,7 @@ public OpenAimMenu(id) {
 
 public OpenConfirmationMenu(id, ent, const class[]) {
 	new szTitle[128];
-	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_CONFIRM_TITLE", class);
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_CONFIRM_TITLE", MENU_PREFIX, class);
 
 	new menu = menu_create(szTitle, "ConfirmationMenuHandler");
 	new szItem[64];
@@ -201,7 +201,7 @@ public ConfirmationMenuHandler(id, menu, item) {
 
 public ShowMapEntities(id) {
 	new szTitle[128];
-	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAP_TITLE");
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_MAP_TITLE", MENU_PREFIX);
 
 	new menu = menu_create(szTitle, "map_entities_handler");
 	new szItem[64];
@@ -253,7 +253,7 @@ public OpenClassOptionsMenu(id, type_index) {
 	ArrayGetArray(g_aMapEntites, type_index, classname_info);
 	
 	new szTitle[64];
-	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_OPTIONS_TITLE", classname_info[eClassname]);
+	formatex(szTitle, charsmax(szTitle), "%L", id, "MENU_OPTIONS_TITLE", MENU_PREFIX, classname_info[eClassname]);
 	new menu = menu_create(szTitle, "ClassOptionsHandler");
 
 	new szItem[64], status[8];
@@ -333,7 +333,7 @@ public OpenEntityOptionsMenu(id, info){
 	ArrayGetArray(g_aMapEntites, type_index, classname_info);
 
 	new szTitle[64];
-	formatex(szTitle, charsmax(szTitle), "%L - Entity %d", id, "MENU_OPTIONS_TITLE", classname_info[eClassname], entity_index);
+	formatex(szTitle, charsmax(szTitle), "%L - Entity %d", id, "MENU_OPTIONS_TITLE", MENU_PREFIX, classname_info[eClassname], entity_index);
 	new menu = menu_create(szTitle, "EntityOptionsHandler");
 
 	new szItem[64];

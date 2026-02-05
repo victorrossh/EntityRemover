@@ -1,10 +1,10 @@
 [en]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntity Menu:
-MENU_AIM_TITLE = \r[FWO] \d- \wRemove Aimed Entity:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemove Entity: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wMap Entities:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Options:
+MENU_MAIN_TITLE = %s Entity Menu:
+MENU_AIM_TITLE = %s Remove Aimed Entity:
+MENU_CONFIRM_TITLE = %s Remove Entity: \y%s?
+MENU_MAP_TITLE = %s Map Entities:
+MENU_OPTIONS_TITLE = %s %s Options:
 MENU_OPTION_REMOVE_AIMED = \wRemove Aimed Entity
 MENU_OPTION_MAP_ENTITIES = \wMap Entities
 MENU_OPTION_RESET_SETTINGS = \wReset All Settings^n
@@ -33,11 +33,11 @@ ENTITY_GLOBALLY_REMOVED = This entity is globally removed.
 
 [bp]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu de Entidades:
-MENU_AIM_TITLE = \r[FWO] \d- \wRemover Entidade:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemover Entidade: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntidades do Mapa:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpções de %s:
+MENU_MAIN_TITLE = %s Menu de Entidades:
+MENU_AIM_TITLE = %s Remover Entidade:
+MENU_CONFIRM_TITLE = %s Remover Entidade: \y%s?
+MENU_MAP_TITLE = %s Entidades do Mapa:
+MENU_OPTIONS_TITLE = %s Opções de %s:
 MENU_OPTION_REMOVE_AIMED = \wRemover Entidade Mirando
 MENU_OPTION_MAP_ENTITIES = \wEntidades do Mapa
 MENU_OPTION_RESET_SETTINGS = \wRedefinir Todas as Configurações^n
@@ -66,11 +66,11 @@ ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [ro]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMeniu Entități:
-MENU_AIM_TITLE = \r[FWO] \d- \wElimină Entitate Vizată:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wElimină Entitate: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntități Hartă:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpțiuni pentru %s:
+MENU_MAIN_TITLE = %s Meniu Entități:
+MENU_AIM_TITLE = %s Elimină Entitate Vizată:
+MENU_CONFIRM_TITLE = %s Elimină Entitate: \y%s?
+MENU_MAP_TITLE = %s Entități Hartă:
+MENU_OPTIONS_TITLE = %s Opțiuni pentru %s:
 MENU_OPTION_REMOVE_AIMED = \wElimină Entitate Vizată
 MENU_OPTION_MAP_ENTITIES = \wEntități Hartă
 MENU_OPTION_RESET_SETTINGS = \wResetează Toate Setările^n
@@ -99,11 +99,11 @@ ENTITY_GLOBALLY_REMOVED = Această entitate este eliminată global.
 
 [pt]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu de Entidades:
-MENU_AIM_TITLE = \r[FWO] \d- \wRemover Entidade:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wRemover Entidade: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntidades do Mapa:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpções de %s:
+MENU_MAIN_TITLE = %s Menu de Entidades:
+MENU_AIM_TITLE = %s Remover Entidade:
+MENU_CONFIRM_TITLE = %s Remover Entidade: \y%s?
+MENU_MAP_TITLE = %s Entidades do Mapa:
+MENU_OPTIONS_TITLE = %s Opções de %s:
 MENU_OPTION_REMOVE_AIMED = \wRemover Entidade Mirando
 MENU_OPTION_MAP_ENTITIES = \wEntidades do Mapa
 MENU_OPTION_RESET_SETTINGS = \wRedefinir Todas as Configurações^n
@@ -132,11 +132,11 @@ ENTITY_GLOBALLY_REMOVED = Esta entidade está removida globalmente.
 
 [es]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenú de Entidades:
-MENU_AIM_TITLE = \r[FWO] \d- \wEliminar Entidad Apuntada:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wEliminar Entidad: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntidades del Mapa:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpciones de %s:
+MENU_MAIN_TITLE = %s Menú de Entidades:
+MENU_AIM_TITLE = %s Eliminar Entidad Apuntada:
+MENU_CONFIRM_TITLE = %s Eliminar Entidad: \y%s?
+MENU_MAP_TITLE = %s Entidades del Mapa:
+MENU_OPTIONS_TITLE = %s Opciones de %s:
 MENU_OPTION_REMOVE_AIMED = \wEliminar Entidad Apuntada
 MENU_OPTION_MAP_ENTITIES = \wEntidades del Mapa
 MENU_OPTION_RESET_SETTINGS = \wRestablecer Todos los Ajustes^n
@@ -165,11 +165,11 @@ ENTITY_GLOBALLY_REMOVED = Esta entidad está eliminada globalmente.
 
 [de]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntitäten-Menü:
-MENU_AIM_TITLE = \r[FWO] \d- \wEntität Entfernen:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wEntität Entfernen: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wKarten-Entitäten:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOptionen für %s:
+MENU_MAIN_TITLE = %s Entitäten-Menü:
+MENU_AIM_TITLE = %s Entität Entfernen:
+MENU_CONFIRM_TITLE = %s Entität Entfernen: \y%s?
+MENU_MAP_TITLE = %s Karten-Entitäten:
+MENU_OPTIONS_TITLE = %s Optionen für %s:
 MENU_OPTION_REMOVE_AIMED = \wEntität Entfernen
 MENU_OPTION_MAP_ENTITIES = \wKarten-Entitäten
 MENU_OPTION_RESET_SETTINGS = \wAlle Einstellungen Zurücksetzen^n
@@ -198,11 +198,11 @@ ENTITY_GLOBALLY_REMOVED = Diese Entität ist global entfernt.
 
 [sr]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMeni Entiteta:
-MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Entitet:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Mape:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
+MENU_MAIN_TITLE = %s Meni Entiteta:
+MENU_AIM_TITLE = %s Ukloni Entitet:
+MENU_CONFIRM_TITLE = %s Ukloni Entitet: \y%s?
+MENU_MAP_TITLE = %s Entiteti Mape:
+MENU_OPTIONS_TITLE = %s Opcije za %s:
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Mape
 MENU_OPTION_RESET_SETTINGS = \wResetuj Sva Podešavanja^n
@@ -231,11 +231,11 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [tr]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wVarlık Menüsü:
-MENU_AIM_TITLE = \r[FWO] \d- \wHedeflenen Varlığı Kaldır:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wVarlığı Kaldır: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wHarita Varlıkları:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Seçenekleri:
+MENU_MAIN_TITLE = %s Varlık Menüsü:
+MENU_AIM_TITLE = %s Hedeflenen Varlığı Kaldır:
+MENU_CONFIRM_TITLE = %s Varlığı Kaldır: \y%s?
+MENU_MAP_TITLE = %s Harita Varlıkları:
+MENU_OPTIONS_TITLE = %s %s Seçenekleri:
 MENU_OPTION_REMOVE_AIMED = \wHedeflenen Varlığı Kaldır
 MENU_OPTION_MAP_ENTITIES = \wHarita Varlıkları
 MENU_OPTION_RESET_SETTINGS = \wTüm Ayarları Sıfırla^n
@@ -264,11 +264,11 @@ ENTITY_GLOBALLY_REMOVED = Bu varlık global olarak kaldırılmıştır.
 
 [fr]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu des Entités:
-MENU_AIM_TITLE = \r[FWO] \d- \wSupprimer l'Entité Ciblée:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wSupprimer l'Entité: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntités de la Carte:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOptions de %s:
+MENU_MAIN_TITLE = %s Menu des Entités:
+MENU_AIM_TITLE = %s Supprimer l'Entité Ciblée:
+MENU_CONFIRM_TITLE = %s Supprimer l'Entité: \y%s?
+MENU_MAP_TITLE = %s Entités de la Carte:
+MENU_OPTIONS_TITLE = %s Options de %s:
 MENU_OPTION_REMOVE_AIMED = \wSupprimer l'Entité Ciblée
 MENU_OPTION_MAP_ENTITIES = \wEntités de la Carte
 MENU_OPTION_RESET_SETTINGS = \wRéinitialiser Tous les Paramètres^n
@@ -297,11 +297,11 @@ ENTITY_GLOBALLY_REMOVED = Cette entité est supprimée globalement.
 
 [sv]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntitetsmeny:
-MENU_AIM_TITLE = \r[FWO] \d- \wTa Bort Målad Entitet:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wTa Bort Entitet: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wKartentiteter:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wAlternativ för %s:
+MENU_MAIN_TITLE = %s Entitetsmeny:
+MENU_AIM_TITLE = %s Ta Bort Målad Entitet:
+MENU_CONFIRM_TITLE = %s Ta Bort Entitet: \y%s?
+MENU_MAP_TITLE = %s Kartentiteter:
+MENU_OPTIONS_TITLE = %s Alternativ för %s:
 MENU_OPTION_REMOVE_AIMED = \wTa Bort Målad Entitet
 MENU_OPTION_MAP_ENTITIES = \wKartentiteter
 MENU_OPTION_RESET_SETTINGS = \wÅterställ Alla Inställningar^n
@@ -330,11 +330,11 @@ ENTITY_GLOBALLY_REMOVED = Denna entitet är globalt borttagen.
 
 [da]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEnheds Menu:
-MENU_AIM_TITLE = \r[FWO] \d- \wFjern Målt Enhed:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wFjern Enhed: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wKort Enheder:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wIndstillinger for %s:
+MENU_MAIN_TITLE = %s Enheds Menu:
+MENU_AIM_TITLE = %s Fjern Målt Enhed:
+MENU_CONFIRM_TITLE = %s Fjern Enhed: \y%s?
+MENU_MAP_TITLE = %s Kort Enheder:
+MENU_OPTIONS_TITLE = %s Indstillinger for %s:
 MENU_OPTION_REMOVE_AIMED = \wFjern Målt Enhed
 MENU_OPTION_MAP_ENTITIES = \wKort Enheder
 MENU_OPTION_RESET_SETTINGS = \wNulstil Alle Indstillinger^n
@@ -363,11 +363,11 @@ ENTITY_GLOBALLY_REMOVED = Denne enhed er globalt fjernet.
 
 [pl]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Jednostek:
-MENU_AIM_TITLE = \r[FWO] \d- \wUsuń Celowaną Jednostkę:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wUsuń Jednostkę: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wJednostki Mapy:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcje dla %s:
+MENU_MAIN_TITLE = %s Menu Jednostek:
+MENU_AIM_TITLE = %s Usuń Celowaną Jednostkę:
+MENU_CONFIRM_TITLE = %s Usuń Jednostkę: \y%s?
+MENU_MAP_TITLE = %s Jednostki Mapy:
+MENU_OPTIONS_TITLE = %s Opcje dla %s:
 MENU_OPTION_REMOVE_AIMED = \wUsuń Celowaną Jednostkę
 MENU_OPTION_MAP_ENTITIES = \wJednostki Mapy
 MENU_OPTION_RESET_SETTINGS = \wZresetuj Wszystkie Ustawienia^n
@@ -396,11 +396,11 @@ ENTITY_GLOBALLY_REMOVED = Ta jednostka jest globalnie usunięta.
 
 [nl]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntiteitenmenu:
-MENU_AIM_TITLE = \r[FWO] \d- \wVerwijder Gerichte Entiteit:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wVerwijder Entiteit: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wKaartentiteiten:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpties voor %s:
+MENU_MAIN_TITLE = %s Entiteitenmenu:
+MENU_AIM_TITLE = %s Verwijder Gerichte Entiteit:
+MENU_CONFIRM_TITLE = %s Verwijder Entiteit: \y%s?
+MENU_MAP_TITLE = %s Kaartentiteiten:
+MENU_OPTIONS_TITLE = %s Opties voor %s:
 MENU_OPTION_REMOVE_AIMED = \wVerwijder Gerichte Entiteit
 MENU_OPTION_MAP_ENTITIES = \wKaartentiteiten
 MENU_OPTION_RESET_SETTINGS = \wHerstel Alle Instellingen^n
@@ -429,11 +429,11 @@ ENTITY_GLOBALLY_REMOVED = Deze entiteit is globaal verwijderd.
 
 [cz]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Entit:
-MENU_AIM_TITLE = \r[FWO] \d- \wOdstraň Zaměřenou Entitu:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wOdstraň Entitu: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntit Map:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wMožnosti pro %s:
+MENU_MAIN_TITLE = %s Menu Entit:
+MENU_AIM_TITLE = %s Odstraň Zaměřenou Entitu:
+MENU_CONFIRM_TITLE = %s Odstraň Entitu: \y%s?
+MENU_MAP_TITLE = %s Entit Map:
+MENU_OPTIONS_TITLE = %s Možnosti pro %s:
 MENU_OPTION_REMOVE_AIMED = \wOdstraň Zaměřenou Entitu
 MENU_OPTION_MAP_ENTITIES = \wEntit Map
 MENU_OPTION_RESET_SETTINGS = \wObnovit Všechna Nastavení^n
@@ -462,11 +462,11 @@ ENTITY_GLOBALLY_REMOVED = Tato entita je globálně odstraněna.
 
 [fi]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntiteettivalikko:
-MENU_AIM_TITLE = \r[FWO] \d- \wPoista Kohdistettu Entiteetti:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wPoista Entiteetti: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wKartta-Entiteetit:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wVaihtoehdot %s:
+MENU_MAIN_TITLE = %s Entiteettivalikko:
+MENU_AIM_TITLE = %s Poista Kohdistettu Entiteetti:
+MENU_CONFIRM_TITLE = %s Poista Entiteetti: \y%s?
+MENU_MAP_TITLE = %s Kartta-Entiteetit:
+MENU_OPTIONS_TITLE = %s Vaihtoehdot %s:
 MENU_OPTION_REMOVE_AIMED = \wPoista Kohdistettu Entiteetti
 MENU_OPTION_MAP_ENTITIES = \wKartta-Entiteetit
 MENU_OPTION_RESET_SETTINGS = \wNollaa Kaikki Asetukset^n
@@ -495,11 +495,11 @@ ENTITY_GLOBALLY_REMOVED = Tämä entiteetti on poistettu globaalisti.
 
 [bg]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wМеню на Ентитети:
-MENU_AIM_TITLE = \r[FWO] \d- \wПремахни Насочен Ентитет:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wПремахни Ентитет: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wЕнтитети на Картата:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции за %s:
+MENU_MAIN_TITLE = %s Меню на Ентитети:
+MENU_AIM_TITLE = %s Премахни Насочен Ентитет:
+MENU_CONFIRM_TITLE = %s Премахни Ентитет: \y%s?
+MENU_MAP_TITLE = %s Ентитети на Картата:
+MENU_OPTIONS_TITLE = %s Опции за %s:
 MENU_OPTION_REMOVE_AIMED = \wПремахни Насочен Ентитет
 MENU_OPTION_MAP_ENTITIES = \wЕнтитети на Картата
 MENU_OPTION_RESET_SETTINGS = \wНулиране на Всички Настройки^n
@@ -528,11 +528,11 @@ ENTITY_GLOBALLY_REMOVED = Този ентитет е премахнат глоб
 
 [hu]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntitás Menü:
-MENU_AIM_TITLE = \r[FWO] \d- \wCélzott Entitás Eltávolítása:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wEntitás Eltávolítása: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wTérkép Entitásai:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s Beállítások:
+MENU_MAIN_TITLE = %s Entitás Menü:
+MENU_AIM_TITLE = %s Célzott Entitás Eltávolítása:
+MENU_CONFIRM_TITLE = %s Entitás Eltávolítása: \y%s?
+MENU_MAP_TITLE = %s Térkép Entitásai:
+MENU_OPTIONS_TITLE = %s %s Beállítások:
 MENU_OPTION_REMOVE_AIMED = \wCélzott Entitás Eltávolítása
 MENU_OPTION_MAP_ENTITIES = \wTérkép Entitásai
 MENU_OPTION_RESET_SETTINGS = \wMinden Beállítás Visszaállítása^n
@@ -561,11 +561,11 @@ ENTITY_GLOBALLY_REMOVED = Ez az entitás globálisan eltávolítva.
 
 [lt]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wEntitetų Meniu:
-MENU_AIM_TITLE = \r[FWO] \d- \wPašalinti Nukreiptą Entitetą:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wPašalinti Entitetą: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wŽemėlapio Entitetai:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wParinktys %s:
+MENU_MAIN_TITLE = %s Entitetų Meniu:
+MENU_AIM_TITLE = %s Pašalinti Nukreiptą Entitetą:
+MENU_CONFIRM_TITLE = %s Pašalinti Entitetą: \y%s?
+MENU_MAP_TITLE = %s Žemėlapio Entitetai:
+MENU_OPTIONS_TITLE = %s Parinktys %s:
 MENU_OPTION_REMOVE_AIMED = \wPašalinti Nukreiptą Entitetą
 MENU_OPTION_MAP_ENTITIES = \wŽemėlapio Entitetai
 MENU_OPTION_RESET_SETTINGS = \wAtstatyti Visus Nustatymus^n
@@ -594,11 +594,11 @@ ENTITY_GLOBALLY_REMOVED = Šis entitetas yra pašalintas globaliai.
 
 [sk]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu Entít:
-MENU_AIM_TITLE = \r[FWO] \d- \wOdstrániť Zamierenú Entitu:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wOdstrániť Entitu: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntity Mapy:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wMožnosti pre %s:
+MENU_MAIN_TITLE = %s Menu Entít:
+MENU_AIM_TITLE = %s Odstrániť Zamierenú Entitu:
+MENU_CONFIRM_TITLE = %s Odstrániť Entitu: \y%s?
+MENU_MAP_TITLE = %s Entity Mapy:
+MENU_OPTIONS_TITLE = %s Možnosti pre %s:
 MENU_OPTION_REMOVE_AIMED = \wOdstrániť Zamierenú Entitu
 MENU_OPTION_MAP_ENTITIES = \wEntity Mapy
 MENU_OPTION_RESET_SETTINGS = \wObnoviť Všetky Nastavenia^n
@@ -627,11 +627,11 @@ ENTITY_GLOBALLY_REMOVED = Táto entita je globálne odstránená.
 
 [mk]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wМени за Ентитети:
-MENU_AIM_TITLE = \r[FWO] \d- \wОтстрани Насочен Ентитет:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wОтстрани Ентитет: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wЕнтитети на Мапата:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции за %s:
+MENU_MAIN_TITLE = %s Мени за Ентитети:
+MENU_AIM_TITLE = %s Отстрани Насочен Ентитет:
+MENU_CONFIRM_TITLE = %s Отстрани Ентитет: \y%s?
+MENU_MAP_TITLE = %s Ентитети на Мапата:
+MENU_OPTIONS_TITLE = %s Опции за %s:
 MENU_OPTION_REMOVE_AIMED = \wОтстрани Насочен Ентитет
 MENU_OPTION_MAP_ENTITIES = \wЕнтитети на Мапата
 MENU_OPTION_RESET_SETTINGS = \wРесетирај Сите Поставки^n
@@ -660,11 +660,11 @@ ENTITY_GLOBALLY_REMOVED = Овој ентитет е глобално отстр
 
 [hr]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wIzbornik Entiteta:
-MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Ciljani Entitet:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Karte:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
+MENU_MAIN_TITLE = %s Izbornik Entiteta:
+MENU_AIM_TITLE = %s Ukloni Ciljani Entitet:
+MENU_CONFIRM_TITLE = %s Ukloni Entitet: \y%s?
+MENU_MAP_TITLE = %s Entiteti Karte:
+MENU_OPTIONS_TITLE = %s Opcije za %s:
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Karte
 MENU_OPTION_RESET_SETTINGS = \wPoništi Sva Podešavanja^n
@@ -693,11 +693,11 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [bs]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wIzbornik Entiteta:
-MENU_AIM_TITLE = \r[FWO] \d- \wUkloni Ciljani Entitet:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wUkloni Entitet: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntiteti Karte:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpcije za %s:
+MENU_MAIN_TITLE = %s Izbornik Entiteta:
+MENU_AIM_TITLE = %s Ukloni Ciljani Entitet:
+MENU_CONFIRM_TITLE = %s Ukloni Entitet: \y%s?
+MENU_MAP_TITLE = %s Entiteti Karte:
+MENU_OPTIONS_TITLE = %s Opcije za %s:
 MENU_OPTION_REMOVE_AIMED = \wUkloni Ciljani Entitet
 MENU_OPTION_MAP_ENTITIES = \wEntiteti Karte
 MENU_OPTION_RESET_SETTINGS = \wPoništi Sva Podešavanja^n
@@ -726,11 +726,11 @@ ENTITY_GLOBALLY_REMOVED = Ovaj entitet je globalno uklonjen.
 
 [ru]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wМеню Существ:
-MENU_AIM_TITLE = \r[FWO] \d- \wУдалить Целевую Сущность:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wУдалить Сущность: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wСущности Карты:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wОпции для %s:
+MENU_MAIN_TITLE = %s Меню Существ:
+MENU_AIM_TITLE = %s Удалить Целевую Сущность:
+MENU_CONFIRM_TITLE = %s Удалить Сущность: \y%s?
+MENU_MAP_TITLE = %s Сущности Карты:
+MENU_OPTIONS_TITLE = %s Опции для %s:
 MENU_OPTION_REMOVE_AIMED = \wУдалить Целевую Сущность
 MENU_OPTION_MAP_ENTITIES = \wСущности Карты
 MENU_OPTION_RESET_SETTINGS = \wСбросить Все Настройки^n
@@ -759,11 +759,11 @@ ENTITY_GLOBALLY_REMOVED = Эта сущность глобально удале�
 
 [cn]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \w实体菜单:
-MENU_AIM_TITLE = \r[FWO] \d- \w移除瞄准的实体:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \w移除实体: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \w地图实体:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \w%s选项:
+MENU_MAIN_TITLE = %s 实体菜单:
+MENU_AIM_TITLE = %s 移除瞄准的实体:
+MENU_CONFIRM_TITLE = %s 移除实体: \y%s?
+MENU_MAP_TITLE = %s 地图实体:
+MENU_OPTIONS_TITLE = %s %s选项:
 MENU_OPTION_REMOVE_AIMED = \w移除瞄准的实体
 MENU_OPTION_MAP_ENTITIES = \w地图实体
 MENU_OPTION_RESET_SETTINGS = \w重置所有设置^n
@@ -792,11 +792,11 @@ ENTITY_GLOBALLY_REMOVED = 此实体已被全局移除。
 
 [al]
 
-MENU_MAIN_TITLE = \r[FWO] \d- \wMenu e Entiteteve:
-MENU_AIM_TITLE = \r[FWO] \d- \wHiq Entitetin e Targetuar:
-MENU_CONFIRM_TITLE = \r[FWO] \d- \wHiq Entitetin: \y%s?
-MENU_MAP_TITLE = \r[FWO] \d- \wEntitetet e Hartës:
-MENU_OPTIONS_TITLE = \r[FWO] \d- \wOpsione për %s:
+MENU_MAIN_TITLE = %s Menu e Entiteteve:
+MENU_AIM_TITLE = %s Hiq Entitetin e Targetuar:
+MENU_CONFIRM_TITLE = %s Hiq Entitetin: \y%s?
+MENU_MAP_TITLE = %s Entitetet e Hartës:
+MENU_OPTIONS_TITLE = %s Opsione për %s:
 MENU_OPTION_REMOVE_AIMED = \wHiq Entitetin e Targetuar
 MENU_OPTION_MAP_ENTITIES = \wEntitetet e Hartës
 MENU_OPTION_RESET_SETTINGS = \wRivendos Të Gjitha Rregullimet^n

@@ -1,3 +1,6 @@
+// Menu PREFIX
+#define MENU_PREFIX "\r[FWO] \d-\w"
+
 new const IGNORE_CFG[] = "addons/amxmodx/configs/ignored_entities.cfg";
 new const PLASMA_SPRITE[] = "sprites/plasma.spr";
 new g_iPlasmaSprite;
