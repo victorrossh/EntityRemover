@@ -13,8 +13,8 @@ public plugin_init()
 {
 	register_plugin("Entity Remover", "1.0", "ftl~ & MrShark45");
 	
-	register_clcmd("say /remove", "MainEntityMenu", ADMIN_IMMUNITY);
-	register_clcmd("say_team /remove", "MainEntityMenu", ADMIN_IMMUNITY);
+	register_clcmd("say /remove", "MainEntityMenu", read_flags("x"));
+	register_clcmd("say_team /remove", "MainEntityMenu", read_flags("x"));
 
 	register_event("HLTV", "EventNewRound", "a", "1=0", "2=0");
 	register_logevent("EventNewRound", 2, "1=Round_Start");
