@@ -26,9 +26,7 @@ The **Entity Remover** plugin for AMX Mod X is a powerful tool designed to help 
 - **Entity Scanning:** The plugin scans the map for all valid entities and categorizes them by classname.
 - **Menu Generation:** A dynamic menu is created based on the detected entities.
 - **Entity Removal:** Entities are removed by setting their rendermode to transparent and their solid property to `SOLID_NOT`.
-- **Persistence:** Configurations are saved based on the mode:
-  - **MySQL Mode:** Queries are generated and executed to store data in the database.
-  - **.txt Mode:** Data is written to a map-specific `.txt` file.
+- **Persistence:** Configurations are saved through either MySQL or text files. Text mode stores removals in `configs/entity_remover/<map>.txt`.
 - **Undo Functionality:** The plugin stores the properties of removed entities, allowing users to restore them if needed.
 
 -------
@@ -50,26 +48,31 @@ trigger_hurt
 
 ### Data Saving Mode
 
-Set the saving mode by defining `USE_SQL` in the plugin source:
-- `#define USE_SQL 1`: Enables MySQL for configuration storage.
-- `#define USE_SQL 0`: Uses `.txt` files for configuration storage (default).
+Set `SQL_TYPE` in `addons/amxmodx/configs/entity_remover.cfg`:
+- `SQL_TYPE = "mysql"`: use MySQL.
+- `SQL_TYPE = "text"` (or `"txt"`): use map-specific text files. MySQL settings are not required in text mode.
 
-#### MySQL Configuration (USE_SQL 1)
+#### MySQL Configuration
 If using MySQL, configure the connection details in `entity_remover.cfg` located in:
 ```addons/amxmodx/configs/entity_remover.cfg```
 
 Example content:
 ```
-SQL_TYPE=mysql
+SQL_TYPE="mysql"
 SQL_HOST=your_host
 SQL_USER=your_user
 SQL_PASSWORD=your_password
 SQL_DATABASE=your_database
 ```
 
-#### .txt Configuration (USE_SQL 0)
+#### Text Configuration
 Configurations are saved as `.txt` files in:
 ```addons/amxmodx/configs/entity_remover/<map_name>.txt```
+
+Example:
+```
+SQL_TYPE="text"
+```
 
 -------
 
@@ -104,7 +107,7 @@ Use the "Undo" option in the menu to revert the last entity removal action.
 ### Save Specific Entity
 Removed entities are saved according to the configured mode:
 - **MySQL**: Stored in the `entity_remover` table.
-- **.txt**: Saved in the map-specific `.txt` file.
+- **Text**: Saved in the map-specific `.txt` file.
 
 -------
 
@@ -112,8 +115,9 @@ Removed entities are saved according to the configured mode:
 
 The configuration file stores entities in the following format:
 - For global entity removal: `"classname" "GLOBAL"`
-- For specific entity removal (no model path with `.mdl` or `.spr`): `"classname" "ent_id"`
-- For specific entity removal (with model path like `.mdl` or `.spr`): `"classname" "model" "ent_id"`
+- For a specific entity removal: `"classname" "model"`
+
+The model is the persistent identifier for an individual removal. An empty model in MySQL represents a global classname removal.
 
 Example:
 ```
@@ -121,9 +125,23 @@ Example:
 "func_conveyor" "GLOBAL"
 "func_door_rotating" "*126"
 "func_door_rotating" "*8"
-"func_door_rotating" "models/props/door.mdl" "126"
-"func_door_rotating" "models/props/door.mdl" "8"
+"func_door_rotating" "models/props/door.mdl"
 ```
+
+-------
+
+## **Manual Testing Checklist**
+
+- With `SQL_TYPE="mysql"`, remove and restore an individual entity; after a map change/restart, confirm the removal persists until restored and its database row is then cleared.
+- With `SQL_TYPE="text"`, repeat the same flow and confirm `configs/entity_remover/<map>.txt` is created, updated, and loaded on the next map load.
+- Toggle a classname globally, reload the map, then restore it; verify all matching entities and the global saved record change as expected.
+- Verify entities with empty model values are treated as global removals only.
+- Aim at nothing and choose **Remove Aimed Entity**; verify the message is shown and the main menu remains open.
+- Use **Undo** with no history; verify the no-removals message appears.
+- Remove and restore entities from the map menu; verify the feedback identifies the classname and does not display a transient entity ID.
+- Toggle noclip from the main menu; verify the menu reopens. On a fresh menu session, teleport to an entity and verify noclip is enabled before teleporting and the plasma guide line appears.
+- Reset all settings; verify the current map's entities are restored, saved settings are cleared, and the reset message appears.
+- Test the entity toggle option with every supported client language. `MENU_OPTION_TOGGLE_ENTITY` currently has an English phrase only, so the remaining language sections still need translations.
 
 -------
 

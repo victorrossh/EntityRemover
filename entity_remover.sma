@@ -29,7 +29,8 @@ public plugin_precache()
 {
 	get_mapname(g_szMapName, charsmax(g_szMapName));
 	LOAD_SETTINGS();
-	mysql_init();
+	if (!UsingTextStorage())
+		mysql_init();
 
 	g_iPlasmaSprite = precache_model(PLASMA_SPRITE);
 }
@@ -59,7 +60,7 @@ public plugin_cfg()
 	if(g_bDebugMode)
 		TEST_SCANMAP();
 
-	DB_LoadEntities();
+	LoadSavedEntities();
 }
 
 public plugin_end()
@@ -122,6 +123,8 @@ public LOAD_SETTINGS() {
 			strtok(szData, szKey, charsmax(szKey), szValue, charsmax(szValue), '=');
 			trim(szKey); trim(szValue);
 
+			remove_quotes(szValue);
+
 			if (equal(szKey, "SQL_TYPE")) {
 				format(g_eSettings[SQL_TYPE], charsmax(g_eSettings[SQL_TYPE]), szValue);
 			}
@@ -140,6 +143,19 @@ public LOAD_SETTINGS() {
 		}
 		fclose(iFilePointer);
 	}
+}
+
+stock bool:UsingTextStorage()
+{
+	return equali(g_eSettings[SQL_TYPE], "text") || equali(g_eSettings[SQL_TYPE], "txt");
+}
+
+stock LoadSavedEntities()
+{
+	if (UsingTextStorage())
+		Text_LoadEntities();
+	else
+		DB_LoadEntities();
 }
 
 public ScanMapEntities() 
@@ -213,14 +229,12 @@ stock DeleteClassname(classname_index, update_database = true, add_to_undo = tru
 	{
 		ArrayGetArray(classname_info[eEntities], i, entity_info);
 
-		set_pev(entity_info[eId], pev_rendermode, kRenderTransAlpha);
-		set_pev(entity_info[eId], pev_renderamt, 0.0);
-		set_pev(entity_info[eId], pev_solid, SOLID_NOT);
+		HideEntity(entity_info[eId]);
 	}
 	
 	if(update_database)
 	{
-		DB_DeleteClassname(classname_info);
+		SaveDeletedClassname(classname_info);
 	}
 
 	if(add_to_undo)
@@ -261,7 +275,7 @@ stock RestoreClassname(classname_index, update_database = true, add_to_undo = tr
 	
 	if(update_database)
 	{
-		DB_RestoreClassname(classname_info);
+		RemoveSavedClassname(classname_info);
 	}
 
 	if(add_to_undo)
@@ -279,15 +293,19 @@ stock RestoreClassname(classname_index, update_database = true, add_to_undo = tr
 
 stock DeleteEntity(entity_index, update_database = true, add_to_undo = true)
 {
+	if (TrieKeyExists(g_tRemovedEntities, fmt("%d", entity_index)))
+		return;
+
 	new entity_info[eEntityInfo];
-	getEntityInfo(entity_index, entity_info);
+	if (!GetStoredEntityInfo(entity_index, entity_info))
+		getEntityInfo(entity_index, entity_info);
 	ArrayPushArray(g_aDeletedEntites, entity_info);
 
 	HideEntity(entity_index);
 
 	if(update_database)
 	{
-		DB_DeleteEntity(entity_info);
+		SaveDeletedEntity(entity_info);
 	}
 
 	if(add_to_undo)
@@ -328,22 +346,26 @@ stock RestoreEntity(entity_index, update_database = true, add_to_undo = true)
 		}
 	}
 
-	if(found < 0 && g_bDebugMode)
+	if(found < 0)
 	{
-		server_print("[Entity DEBUG] Deleted entity cannot be found!");
+		if (g_bDebugMode)
+			server_print("[Entity DEBUG] Deleted entity cannot be found!");
 		return;
 	}
 
 	ArrayDeleteItem(g_aDeletedEntites, found);
 
-	set_pev(entity_index, pev_rendermode, entity_info[eRender][eRenderMode]);
-	set_pev(entity_index, pev_renderamt, entity_info[eRender][eRenderAmt]);
-	set_pev(entity_index, pev_solid, entity_info[eRender][eSolid]);
+	if (pev_valid(entity_index))
+	{
+		set_pev(entity_index, pev_rendermode, entity_info[eRender][eRenderMode]);
+		set_pev(entity_index, pev_renderamt, entity_info[eRender][eRenderAmt]);
+		set_pev(entity_index, pev_solid, entity_info[eRender][eSolid]);
+	}
 
 
 	if(update_database)
 	{
-		DB_RestoreEntity(entity_info);
+		RemoveSavedEntity(entity_info);
 	}
 
 	if(add_to_undo)
@@ -399,7 +421,7 @@ stock ResetSettings()
 		new found = ArrayFindString(g_aMapClassnames, classname);
 		RestoreClassname(found, false);
 	}
-	DB_DeleteMap();
+	ClearSavedEntities();
 }
 
 stock getEntityInfo(entity_index, entity_info[eEntityInfo])
@@ -417,6 +439,27 @@ stock getEntityInfo(entity_index, entity_info[eEntityInfo])
 	pev(entity_index, pev_renderamt, render_info[eRenderAmt]);
 
 	entity_info[eRender] = render_info;
+}
+
+stock bool:GetStoredEntityInfo(entity_index, entity_info[eEntityInfo])
+{
+	new classname_info[eClassnameInfo], stored_info[eEntityInfo];
+	new class_count = ArraySize(g_aMapEntites);
+	for (new i = 0; i < class_count; i++)
+	{
+		ArrayGetArray(g_aMapEntites, i, classname_info);
+		new entity_count = ArraySize(classname_info[eEntities]);
+		for (new j = 0; j < entity_count; j++)
+		{
+			ArrayGetArray(classname_info[eEntities], j, stored_info);
+			if (stored_info[eId] == entity_index)
+			{
+				entity_info = stored_info;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 stock getEntityInfoFromArray(entity_index, entity_info[eEntityInfo])

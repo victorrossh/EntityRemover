@@ -68,6 +68,7 @@ new Trie:g_tRemovedEntities;
 new Trie:g_tRemovedClassnames;
 
 new g_szMapName[32];
+new g_szStoragePath[192];
 
 new bool:g_bNoclip[MAX_PLAYERS];
 new g_iLastClassIndex[MAX_PLAYERS];

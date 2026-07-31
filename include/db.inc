@@ -142,6 +142,149 @@ public DB_RestoreClassname(classname_info[eClassnameInfo])
 	SQL_ThreadQuery(g_iSqlTuple, "QueryHandler", szQuery);
 }
 
+stock SaveDeletedEntity(entity_info[eEntityInfo])
+{
+	if (UsingTextStorage()) Text_AddEntity(entity_info);
+	else DB_DeleteEntity(entity_info);
+}
+
+stock RemoveSavedEntity(entity_info[eEntityInfo])
+{
+	if (UsingTextStorage()) Text_RemoveEntity(entity_info);
+	else DB_RestoreEntity(entity_info);
+}
+
+stock SaveDeletedClassname(classname_info[eClassnameInfo])
+{
+	if (UsingTextStorage()) Text_AddClassname(classname_info);
+	else DB_DeleteClassname(classname_info);
+}
+
+stock RemoveSavedClassname(classname_info[eClassnameInfo])
+{
+	if (UsingTextStorage()) Text_RemoveClassname(classname_info);
+	else DB_RestoreClassname(classname_info);
+}
+
+stock ClearSavedEntities()
+{
+	if (UsingTextStorage()) Text_ClearEntities();
+	else DB_DeleteMap();
+}
+
+stock Text_GetPath()
+{
+	new directory[192];
+	get_configsdir(directory, charsmax(directory));
+	add(directory, charsmax(directory), "/entity_remover");
+	mkdir(directory);
+	format(g_szStoragePath, charsmax(g_szStoragePath), "%s/%s.txt", directory, g_szMapName);
+}
+
+stock Text_LoadEntities()
+{
+	Text_GetPath();
+	new file = fopen(g_szStoragePath, "rt");
+	if (!file) return;
+
+	new line[192], classname[32], model[64], entity_id[12], global[4];
+	while (!feof(file))
+	{
+		fgets(file, line, charsmax(line));
+		trim(line);
+		if (!line[0]) continue;
+		parse(line, classname, charsmax(classname), model, charsmax(model), entity_id, charsmax(entity_id), global, charsmax(global));
+		if (equal(model, "GLOBAL") || str_to_num(global))
+		{
+			new index = ArrayFindString(g_aMapClassnames, classname);
+			if (index >= 0) DeleteClassname(index, false, false);
+		}
+		else
+		{
+			new index = find_ent_by_model(0, classname, model);
+			if (pev_valid(index)) DeleteEntity(index, false, false);
+		}
+	}
+	fclose(file);
+}
+
+stock Text_ReadLines(Array:lines)
+{
+	Text_GetPath();
+	new file = fopen(g_szStoragePath, "rt"), line[192];
+	if (!file) return;
+	while (!feof(file))
+	{
+		fgets(file, line, charsmax(line));
+		trim(line);
+		if (line[0]) ArrayPushString(lines, line);
+	}
+	fclose(file);
+}
+
+stock Text_WriteLines(Array:lines)
+{
+	Text_GetPath();
+	new file = fopen(g_szStoragePath, "wt"), line[192];
+	for (new i = 0; i < ArraySize(lines); i++)
+	{
+		ArrayGetString(lines, i, line, charsmax(line));
+		fprintf(file, "%s^n", line);
+	}
+	fclose(file);
+}
+
+stock Text_AddEntity(entity_info[eEntityInfo])
+{
+	new Array:lines = ArrayCreate(192), line[192], classname[32];
+	Text_ReadLines(lines);
+	pev(entity_info[eId], pev_classname, classname, charsmax(classname));
+	formatex(line, charsmax(line), "%c%s%c %c%s%c", 34, classname, 34, 34, entity_info[eModelId], 34);
+	if (ArrayFindString(lines, line) == -1) ArrayPushString(lines, line);
+	Text_WriteLines(lines);
+	ArrayDestroy(lines);
+}
+
+stock Text_AddClassname(classname_info[eClassnameInfo])
+{
+	new Array:lines = ArrayCreate(192), line[192];
+	Text_ReadLines(lines);
+	formatex(line, charsmax(line), "%c%s%c %cGLOBAL%c", 34, classname_info[eClassname], 34, 34, 34);
+	if (ArrayFindString(lines, line) == -1) ArrayPushString(lines, line);
+	Text_WriteLines(lines);
+	ArrayDestroy(lines);
+}
+
+stock Text_RemoveEntity(entity_info[eEntityInfo])
+{
+	new classname[32];
+	pev(entity_info[eId], pev_classname, classname, charsmax(classname));
+	Text_Remove(false, classname, entity_info[eModelId]);
+}
+stock Text_RemoveClassname(classname_info[eClassnameInfo]) { Text_Remove(true, classname_info[eClassname], "GLOBAL"); }
+
+stock Text_Remove(bool:is_global, const classname[], const target_model[])
+{
+	new Array:lines = ArrayCreate(192), Array:kept = ArrayCreate(192), line[192], saved_class[32], model[64], saved_id[12], global[4];
+	Text_ReadLines(lines);
+	for (new i = 0; i < ArraySize(lines); i++)
+	{
+		ArrayGetString(lines, i, line, charsmax(line));
+		parse(line, saved_class, charsmax(saved_class), model, charsmax(model), saved_id, charsmax(saved_id), global, charsmax(global));
+		if ((is_global && (str_to_num(global) || equal(model, "GLOBAL")) && equal(saved_class, classname)) || (!is_global && equal(saved_class, classname) && equal(model, target_model))) continue;
+		ArrayPushString(kept, line);
+	}
+	Text_WriteLines(kept);
+	ArrayDestroy(lines); ArrayDestroy(kept);
+}
+
+stock Text_ClearEntities()
+{
+	Text_GetPath();
+	delete_file(g_szStoragePath);
+}
+
+
 public QueryHandler(iFailState, Handle:iQuery, szError[], iErrorCode) {
 	if (g_bDebugMode)
 		check_and_log_query_error(iFailState, szError, iErrorCode);

@@ -55,10 +55,17 @@ public MainMenuHandler(id, menu, item) {
 			
 				OpenConfirmationMenu(id, ent, class);
 			}
+			else
+			{
+				CC_SendMessage(id, "%L", id, "NO_ENTITY");
+				MainEntityMenu(id, 0, 0);
+			}
 		}
 		case 1: ShowMapEntities(id);
 		case 2: {
 			ResetSettings();
+			CC_SendMessage(id, "%L", id, "ALL_SETTINGS_RESET");
+			MainEntityMenu(id, 0, 0);
 		}
 		case 3: UndoAction(id);
 		case 4: ToggleNoclip(id);
@@ -70,6 +77,7 @@ public UndoAction(id)
 {
 	if(!ArraySize(g_aUndoHistory))
 	{
+		CC_SendMessage(id, "%L", id, "NO_REMOVALS");
 		MainEntityMenu(id, 0, 0);
 		return;
 	}
@@ -306,9 +314,19 @@ public ClassOptionsHandler(id, menu, item) {
 		new bool:classname_removed = TrieKeyExists(g_tRemovedClassnames, classname_info[eClassname]);
 
 		if(classname_removed)
+		{
 			RestoreClassname(type_index);
+			new status[32];
+			formatex(status, charsmax(status), "%L", id, "MSG_GLOBAL_RESTORED");
+			CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", classname_info[eClassname], status);
+		}
 		else
+		{
 			DeleteClassname(type_index);
+			new status[32];
+			formatex(status, charsmax(status), "%L", id, "MSG_GLOBAL_REMOVED");
+			CC_SendMessage(id, "%L", id, "GLOBAL_ENTITY_TOGGLED", classname_info[eClassname], status);
+		}
 
 		OpenClassOptionsMenu(id, type_index);
 	} else if (item >= 1) { 
@@ -339,7 +357,7 @@ public OpenEntityOptionsMenu(id, info){
 	new szItem[64];
 	new bool:is_removed = TrieKeyExists(g_tRemovedEntities, fmt("%d", entity_index));
 
-	formatex(szItem, charsmax(szItem), is_removed ? "Toggle %L" : "Toggle", LANG_PLAYER, "MENU_STATUS_REMOVED");
+	formatex(szItem, charsmax(szItem), "%L", id, "MENU_OPTION_TOGGLE_ENTITY", is_removed ? "\r[OFF]" : "\y[ON]");
 	menu_additem(menu, szItem, fmt("%d", type_index * 1000 + entity_index));
 
 	menu_additem(menu, "Teleport", fmt("%d", type_index * 1000 + entity_index));
@@ -368,6 +386,8 @@ public EntityOptionsHandler(id, menu, item) {
 	menu_item_getinfo(menu, item, dummy, info, sizeof(info) - 1, _, _, _);
 	new type_index = str_to_num(info) / 1000;
 	new entity_index = str_to_num(info) % 1000;
+	new classname_info[eClassnameInfo];
+	ArrayGetArray(g_aMapEntites, type_index, classname_info);
 
 	if(item == 0){
 		// Check if entity is already deleted using a trie
@@ -375,14 +395,17 @@ public EntityOptionsHandler(id, menu, item) {
 		if(is_deleted)
 		{
 			RestoreEntity(entity_index);
+			CC_SendMessage(id, "%L", id, "LAST_REMOVAL_UNDONE", classname_info[eClassname]);
 		}
 		else
 		{
 			DeleteEntity(entity_index);
+			CC_SendMessage(id, "%L", id, "ENTITY_REMOVED", classname_info[eClassname]);
 		}
 	}
 
 	if(item == 1){
+		EnableNoclipForPlasma(id);
 		TeleportPlayerToEnt(id, entity_index);
 		CreateGuideLine(id, entity_index);
 	}
@@ -391,6 +414,7 @@ public EntityOptionsHandler(id, menu, item) {
 		//TODO Highlight
 	}
 
+	menu_destroy(menu);
 	OpenEntityOptionsMenu(id, type_index * 1000 + entity_index);
 
 	return PLUGIN_HANDLED;
@@ -399,9 +423,29 @@ public EntityOptionsHandler(id, menu, item) {
 stock ToggleNoclip(id)
 {
 	if(!get_user_noclip(id))
+	{
 		set_user_noclip(id, true);
+		g_bNoclip[id] = true;
+	}
 	else
+	{
 		set_user_noclip(id, false);
+		g_bNoclip[id] = false;
+	}
+	MainEntityMenu(id, 0, 0);
+}
+
+stock EnableNoclipForPlasma(id)
+{
+	if (get_user_noclip(id))
+	{
+		g_bNoclip[id] = true;
+		return;
+	}
+
+	set_user_noclip(id, true);
+	g_bNoclip[id] = true;
+	CC_SendMessage(id, "%L", id, "NOCLIP_TO_PLASMA");
 }
 
 public TeleportPlayerToEnt(id, ent_id)
@@ -434,13 +478,6 @@ public CreateGuideLine(id, ent_id) {
 	
 	// Get the entity's position
 	get_brush_entity_origin(ent_id,  ent_origin);
-	
-	if (!g_bNoclip[id]) { 
-		g_bNoclip[id] = true;
-		set_pev(id, pev_movetype, MOVETYPE_NOCLIP);
-		//CC_SendMessage(id, "Noclip &x06activated&x01, follow the plasma to visualize the desired entity.");
-		CC_SendMessage(id, "%L", id, "NOCLIP_TO_PLASMA");
-	}
 	
 	// Create the beam between segment_start and segment_end
 	message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
